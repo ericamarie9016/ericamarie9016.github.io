@@ -1,16 +1,16 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About Erica"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Erica Dale",
     "section": "",
     "text": "Welcome to my world!\n---\nMy professional bio will be updated shortly."
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "https://github.com/quarto-ext/fontawesome\n \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<i class=\"fa-brands fa-github\"></i>"
   }
 ]
