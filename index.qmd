@@ -1,15 +1,23 @@
 ---
-title: "ericamarie9016.github.io"
+title: "Erica Dale"
+image: images/headshot.jpg
+about: 
+  template: trestles
+  image-shape: rounded
+  image-width: 15em
+  links:
+    - text: LinkedIn
+      href: https://www.linkedin.com/in/erica-dale-05851924/
+    - text: Github
+      href: https://github.com/ericamarie9016/
+    - text: Email
+      href: ericadale@bren.ucsb.edu
 ---
-
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
 
 **Hello world!**
 
 Welcome to my world!
+
+\-\--
+
+My professional bio will be updated shortly.
