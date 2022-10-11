@@ -15,9 +15,11 @@ website:
 format:
   html:
     theme: 
-      light: minty
-      dark: slate
-    css: styles.css
+      - mystyles.scss
+#      light: morph
+#      dark: slate
+#    css: styles.css
+    mainfont: Lato
     toc: true
 
 editor: visual

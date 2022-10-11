@@ -12,12 +12,14 @@ about:
       href: https://github.com/ericamarie9016/
     - text: Email
       href: ericadale@bren.ucsb.edu
+    - text: UCSB profile
+      href: https://bren.ucsb.edu/people/erica-dale
 ---
 
-**Hello world!**
+<h3>**Hello world!**</h3>
 
-Welcome to my world!
+<h2 class="custom-subtitle">Welcome to my world!</h2>
 
-\-\--
+<br></br>
 
-My professional bio will be updated shortly.
+I am a current Masters of Environmental Data Science student at the Bren School of Environmental Science & Management - University of California, Santa Barbara. My professional bio will be updated shortly.\
