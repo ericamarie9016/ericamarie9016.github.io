@@ -7,8 +7,6 @@ https://github.com/quarto-ext/fontawesome
 
 https://github.com/quarto-ext/fontawesome
 
-
-
     {{< fa thumbs-up >}} 
     {{< fa folder >}}
     {{< fa chess-pawn >}}
