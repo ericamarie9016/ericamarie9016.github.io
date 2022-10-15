@@ -18,7 +18,11 @@ about:
 
 <h3>**Hello world!**</h3>
 
-<h2 class="custom-subtitle">Welcome to my world!</h2>
+<h2 class="custom-subtitle">
+
+Welcome to my world!
+
+</h2>
 
 <br></br>
 
