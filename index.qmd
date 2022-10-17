@@ -6,13 +6,15 @@ about:
   image-shape: round
   image-width: 15em
   links:
-    - text: LinkedIn
+    - text: '{{< fa thumbs-up >}} &nbsp; LinkedIn'
       href: https://www.linkedin.com/in/erica-dale-05851924/
-    - text: Github
+    - text: '{{< fa brands github >}} &nbsp; Github'
       href: https://github.com/ericamarie9016/
-    - text: Email
-      href: ericadale@bren.ucsb.edu
-    - text: UCSB profile
+    - text: '{{< fa envelope >}} &nbsp; Email'
+      href: mailto:ericadale@bren.ucsb.edu
+    - text: '{{< fa brands twitter >}} &nbsp; Twitter'
+      href: https://twitter.com/EricaMarie9016
+    - text: <img src='images/meds.svg' class='bren-logo'>UCSB profile
       href: https://bren.ucsb.edu/people/erica-dale
 ---
 
