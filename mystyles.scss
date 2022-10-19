@@ -34,11 +34,20 @@ h1, h3 {
 
 // inspect webpage to discover class types
 // class selector overwrites any other 
-// start class selector with .title {}
+// start class selector with .name {}
 .custom-subtitle {
   font-size: 22px;
   font-style: italix;
   
+}
+
+.bren-logo {
+  
+}
+
+a:hover {
+  font-weight: 800;
+  border-width: 2px !important;
 }
 
 // <p class="custom-subtitle"></p>

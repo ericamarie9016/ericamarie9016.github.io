@@ -3,14 +3,23 @@ project:
   output-dir: docs
 
 website:
-  title: "ericamarie9016.github.io"
+  title: "Erica Dale"
   navbar:
+    title: "Erica M. Dale"
     background: primary
     left:
       - href: index.qmd
         text: Home
       - about.qmd
       - projects.qmd
+      - href: /docs/Erica-Dale-Resume.pdf
+        text: Resume
+    page-footer:
+      left:
+      - "Copyright 2022, Erica Dale"
+      right: 
+      - icon: github
+        href: http://github.com/ericamarie9016
 
 format:
   html:
