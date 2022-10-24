@@ -1,0 +1,13 @@
+# Options specified here apply to all qmds in the posts folder
+
+
+
+# Prevent posts from auto rerendering
+freeze: true
+# Helpful because some posts might be time consuming to rerun each time
+# Need to explicitly call blog post to update
+
+
+# Enable banner style title blocks
+title-block-banner: true
+
