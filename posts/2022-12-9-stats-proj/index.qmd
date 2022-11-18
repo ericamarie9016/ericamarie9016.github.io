@@ -1,0 +1,83 @@
+---
+title: "Statistics Blog Post"
+description: "Exploring the variation of Urchin counts in protected versus developed piers in Southern California."
+author:
+  - name: Erica Dale
+    url: http://ericamarie9016.githubt.io
+    affiliation: MEDS
+    affiliation-url: http://ucsb-meds.github.io
+date: 2022-11-18
+output:
+  distill::distill_article:
+    toc: yes
+    code_folding: yes
+    self_contained: no
+  html_document:
+    toc: yes
+    df_print: paged
+  pdf_document:
+    fig_caption: yes
+    categories: [MEDS, Statistics, R]
+citation: 
+  url: http://ericamarie9016.github.io/2022-12-9-stats-proj
+#bibliography: references.bib
+# image: 
+# draft: TRUE
+---
+
+```{r setup, include=FALSE}
+# All libraries here
+library(tidyverse)
+library(here)
+
+```
+
+# Research Question
+
+The aim of this project is to
+
+Background
+
+------------------------------------------------------------------------
+
+# Data Collection and Tidying
+
+## Urchin Dataset
+
+```{r}
+Urchins <- read_csv(here("posts", "2022-11-18-stats-proj", "Invertebrate_Settlement_All_Years_20220722.csv"))
+
+# Review the column names
+names(Urchins)
+
+# plot(Urchins)
+
+```
+
+## Protected Dataset
+
+This data was not immediately available, I had to create a dataframe with the values 1 for protected, 0 for not protected.
+
+```{r}
+# View the names of the Urchin sites
+unique(Urchins$SITE)
+
+
+Protection <- data.frame(
+  Fullname = c("Anacapa", "Point Cabrillo", "Gaviota", "Ocean Beach", "Ellwood Pier", "Stearns Wharf", "Scripps", "Avila Beach"),
+  NAME = c("ANACAPA", "FBPC", "GAVIOTA", "OCNBCH", "SBELL", "SBSTWRF", "SIO", "AVILA"),
+  Protection = c(1, 1, 0, 0, 0, 0, 0, 0))
+)
+
+head(Protection)
+```
+
+# Analysis
+
+## Plan
+
+## Results
+
+# References
+
+https://search.dataone.org/view/https%3A%2F%2Fpasta.lternet.edu%2Fpackage%2Fmetadata%2Feml%2Fknb-lter-sbc%2F52%2F11#https%3A%2F%2Fpasta.lternet.edu%2Fpackage%2Fdata%2Feml%2Fknb-lter-sbc%2F52%2F11%2F6f1d97294f041ee3d39cda102e0223af
