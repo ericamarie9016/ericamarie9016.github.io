@@ -7,17 +7,17 @@ author:
     affiliation: MEDS
     affiliation-url: http://ucsb-meds.github.io
 date: 2022-11-18
-output:
-  distill::distill_article:
-    toc: yes
-    code_folding: yes
-    self_contained: no
-  html_document:
-    toc: yes
-    df_print: paged
-  pdf_document:
-    fig_caption: yes
-    categories: [MEDS, Statistics, R]
+#output:
+#  distill::distill_article:
+#    toc: yes
+#    code_folding: yes
+#    self_contained: no
+#  html_document:
+#    toc: yes
+#    df_print: paged
+#  pdf_document:
+#   fig_caption: yes
+#    categories: [MEDS, Statistics, R]
 citation: 
   url: http://ericamarie9016.github.io/2022-12-9-stats-proj
 #bibliography: references.bib
@@ -45,7 +45,7 @@ Background
 ## Urchin Dataset
 
 ```{r}
-Urchins <- read_csv(here("posts", "2022-11-18-stats-proj", "Invertebrate_Settlement_All_Years_20220722.csv"))
+Urchins <- read_csv(here("posts", "2022-12-9-stats-proj", "Invertebrate_Settlement_All_Years_20220722.csv"))
 
 # Review the column names
 names(Urchins)
@@ -66,7 +66,7 @@ unique(Urchins$SITE)
 Protection <- data.frame(
   Fullname = c("Anacapa", "Point Cabrillo", "Gaviota", "Ocean Beach", "Ellwood Pier", "Stearns Wharf", "Scripps", "Avila Beach"),
   NAME = c("ANACAPA", "FBPC", "GAVIOTA", "OCNBCH", "SBELL", "SBSTWRF", "SIO", "AVILA"),
-  Protection = c(1, 1, 0, 0, 0, 0, 0, 0))
+  Protection = c(1, 1, 0, 0, 0, 0, 0, 0)
 )
 
 head(Protection)
