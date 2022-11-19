@@ -12,7 +12,7 @@ $light-green: #e9f2ea;
 $deep-green: #549668;
 
 // Base Document Colors
-$body-bg: $light-green;
+$body-bg: #ffffff;
 $body-color: $deep-green; // page text color;
 $navbar-bg: $gray-purple;
 $link-color: $gray-purple;
@@ -26,6 +26,7 @@ $link-color: $gray-purple;
 
 /*-- scss:rules--*/
 
+// Heading text
 h1, h3 {
   letter-spacing: 8px;
   font-weight: 700;

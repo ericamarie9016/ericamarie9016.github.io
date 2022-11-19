@@ -1,0 +1,16 @@
+---
+title: "Ethics Blog Post"
+author:
+  - name: Erica Dale
+    url: http://ericamarie9016.githubt.io
+    affiliation: MEDS
+    affiliation-url: http://ucsb-meds.github.io
+editor: visual
+date: 2022-12-5
+categories: [MEDS, Ethics, Data Access]
+citation: 
+  url: http://ericamarie9016.github.io/2022-12-5-ethics-proj
+# bibliography: references.bib
+# image: 
+# draft: TRUE
+---

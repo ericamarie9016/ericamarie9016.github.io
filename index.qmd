@@ -1,6 +1,7 @@
 ---
 title: "Erica Dale"
 image: images/headshot.jpg
+page-layout: full
 about: 
   template: trestles
   image-shape: round
@@ -28,4 +29,6 @@ Welcome to my world!
 
 <br></br>
 
-I am a current Masters of Environmental Data Science student at the Bren School of Environmental Science & Management - University of California, Santa Barbara. My professional bio will be updated shortly.\
+I am a current Masters of Environmental Data Science student at the Bren School of Environmental Science & Management - University of California, Santa Barbara.
+
+My professional bio will be updated shortly.\
