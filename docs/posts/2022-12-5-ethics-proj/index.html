@@ -7,11 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Erica Dale">
-<meta name="author" content="Atahualpa Ayala">
-<meta name="dcterms.date" content="2022-11-18">
-<meta name="description" content="Exploring Deforestation in Paraguay.">
+<meta name="dcterms.date" content="2022-12-05">
 
-<title>Erica M. Dale - Forest Blog Post</title>
+<title>Erica M. Dale - Ethics Blog Post</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -97,38 +95,21 @@ ul.task-list{list-style: none;}
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Forest Blog Post</h1>
-                  <div>
-        <div class="description">
-          Exploring Deforestation in Paraguay.
-        </div>
-      </div>
-                          <div class="quarto-categories">
+      <h1 class="title">Ethics Blog Post</h1>
+                                <div class="quarto-categories">
                 <div class="quarto-category">MEDS</div>
-                <div class="quarto-category">Forests</div>
-                <div class="quarto-category">Deforestation</div>
-                <div class="quarto-category">Paraguay</div>
-                <div class="quarto-category">R</div>
+                <div class="quarto-category">Ethics</div>
+                <div class="quarto-category">Data Access</div>
               </div>
                   </div>
   </div>
     
   <div class="quarto-title-meta-author">
-    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-heading">Affiliation</div>
     
       <div class="quarto-title-meta-contents">
       <a href="http://ericamarie9016.githubt.io">Erica Dale</a> 
-    </div>
-      <div class="quarto-title-meta-contents">
-          <p class="affiliation">
-              <a href="http://ucsb-meds.github.io">
-              MEDS
-              </a>
-            </p>
-        </div>
-        <div class="quarto-title-meta-contents">
-      Atahualpa Ayala 
     </div>
       <div class="quarto-title-meta-contents">
           <p class="affiliation">
@@ -145,7 +126,7 @@ ul.task-list{list-style: none;}
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">November 18, 2022</p>
+        <p class="date">December 5, 2022</p>
       </div>
     </div>
       
@@ -156,22 +137,7 @@ ul.task-list{list-style: none;}
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#mapping-illegal-deforestation-in-paraguays-national-forests" id="toc-mapping-illegal-deforestation-in-paraguays-national-forests" class="nav-link active" data-scroll-target="#mapping-illegal-deforestation-in-paraguays-national-forests">Mapping Illegal Deforestation in Paraguay’s National Forests</a>
-  <ul class="collapse">
-  <li><a href="#workflow" id="toc-workflow" class="nav-link" data-scroll-target="#workflow">Workflow</a>
-  <ul class="collapse">
-  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
-  </ul></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
-  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
-  <li><a href="#further-work" id="toc-further-work" class="nav-link" data-scroll-target="#further-work">Further Work</a></li>
-  </ul></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -179,44 +145,18 @@ ul.task-list{list-style: none;}
 
 
 
-<section id="mapping-illegal-deforestation-in-paraguays-national-forests" class="level1">
-<h1>Mapping Illegal Deforestation in Paraguay’s National Forests</h1>
-<p>The Chaco is a 1.1 million km2 ecoregion in South America that, since 1985, has lost 28 percent of its woodlands as a result of widespread conversion to extensive cattle ranching and cropping. With global attention towards the deforestation of this region, policymakers are attempting to implement reforms for forest conservation. Paraguay’s National Forest Institute (INFONA) have requirements for forest conservation on private properties in the Paraguayan Chaco. Some ranches are not implementing these requirements, continuing in illegal deforestation activities. We want to detect these regions of illegal deforestation and determine the percent of ranch area that is legal versus illegal.</p>
-<section id="workflow" class="level2">
-<h2 class="anchored" data-anchor-id="workflow">Workflow</h2>
-<p>Utilizing the R programming language to complete spatial and statistical analysis of illegal logging in Paraguay’s Chaco forest. We will overlay layers of current forest cover and approved land-use plans with vector interactions to highlight regions of illegal deforestation.</p>
-<section id="data" class="level3">
-<h3 class="anchored" data-anchor-id="data">Data</h3>
-<ol type="1">
-<li>Land use: Maps of forest cover (2020), as generated by INFONA.</li>
-<li>Permitted land use: INFONA’s spatial database of land use permits issued in the Chaco between 1994-2022.</li>
-</ol>
-</section>
-</section>
-<section id="results" class="level2">
-<h2 class="anchored" data-anchor-id="results">Results</h2>
-<p>Sub-setting allows us to compare how two layers are related in space. These relationships are logical in question, resulting in TRUE/FALSE statements for each line. In this case, we are interested in</p>
-</section>
-<section id="interpretation" class="level2">
-<h2 class="anchored" data-anchor-id="interpretation">Interpretation</h2>
-</section>
-<section id="further-work" class="level2">
-<h2 class="anchored" data-anchor-id="further-work">Further Work</h2>
 
 
-</section>
-</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dale2022,
-  author = {Erica Dale and Atahualpa Ayala},
-  title = {Forest {Blog} {Post}},
-  date = {2022-11-18},
-  url = {http://ericamarie9016.github.io/2022-12-6-forest-proj},
+  author = {Erica Dale},
+  title = {Ethics {Blog} {Post}},
+  date = {2022/12/05},
+  url = {http://ericamarie9016.github.io/2022-12-5-ethics-proj},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dale2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-Erica Dale, and Atahualpa Ayala. 2022. <span>“Forest Blog Post.”</span>
-November 18, 2022. <a href="http://ericamarie9016.github.io/2022-12-6-forest-proj">http://ericamarie9016.github.io/2022-12-6-forest-proj</a>.
+Erica Dale. 2022–12AD. <span>“Ethics Blog Post.”</span> 2022–12AD. <a href="http://ericamarie9016.github.io/2022-12-5-ethics-proj">http://ericamarie9016.github.io/2022-12-5-ethics-proj</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

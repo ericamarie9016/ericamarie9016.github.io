@@ -34,6 +34,8 @@ Utilizing the R programming language to complete spatial and statistical analysi
 
 ## Results
 
+Sub-setting allows us to compare how two layers are related in space. These relationships are logical in question, resulting in TRUE/FALSE statements for each line. In this case, we are interested in
+
 ## Interpretation
 
 ## Further Work

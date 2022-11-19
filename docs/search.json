@@ -18,7 +18,7 @@
     "href": "posts.html",
     "title": "My Posts",
     "section": "",
-    "text": "MEDS\n\n\nForests\n\n\nDeforestation\n\n\nParaguay\n\n\nR\n\n\n\n\nExploring Deforestation in Paraguay.\n\n\n\n\n\n\nNov 18, 2022\n\n\nErica Dale, Atahualpa Ayala\n\n\n\n\n\n\n\n\n\n\n\n\nExploring the variation of Urchin counts in protected versus developed piers in Southern California.\n\n\n\n\n\n\nNov 18, 2022\n\n\nErica Dale\n\n\n\n\n\n\nNo matching items"
+    "text": "MEDS\n\n\nEthics\n\n\nData Access\n\n\n\n\n\n\n\n\n\n\n\nDec 5, 2022\n\n\nErica Dale\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMEDS\n\n\nForests\n\n\nDeforestation\n\n\nParaguay\n\n\nR\n\n\n\n\nExploring Deforestation in Paraguay.\n\n\n\n\n\n\nNov 18, 2022\n\n\nErica Dale, Atahualpa Ayala\n\n\n\n\n\n\n\n\n\n\n\n\nExploring the variation of Urchin counts in protected versus developed piers in Southern California.\n\n\n\n\n\n\nNov 18, 2022\n\n\nErica Dale\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/2022-10-24-first-post/index.html",
@@ -68,5 +68,12 @@
     "title": "Forest Blog Post",
     "section": "",
     "text": "CitationBibTeX citation:@online{dale2022,\n  author = {Erica Dale and Atahualpa Ayala},\n  title = {Forest {Blog} {Post}},\n  date = {2022-11-18},\n  url = {http://ericamarie9016.github.io/2022-12-6-forest-proj},\n  langid = {en}\n}\nFor attribution, please cite this work as:\nErica Dale, and Atahualpa Ayala. 2022. “Forest Blog Post.”\nNovember 18, 2022. http://ericamarie9016.github.io/2022-12-6-forest-proj."
+  },
+  {
+    "objectID": "posts/2022-12-5-ethics-proj/index.html",
+    "href": "posts/2022-12-5-ethics-proj/index.html",
+    "title": "Ethics Blog Post",
+    "section": "",
+    "text": "BibTeX citation:@online{dale2022,\n  author = {Erica Dale},\n  title = {Ethics {Blog} {Post}},\n  date = {2022/12/05},\n  url = {http://ericamarie9016.github.io/2022-12-5-ethics-proj},\n  langid = {en}\n}\nFor attribution, please cite this work as:\nErica Dale. 2022–12AD. “Ethics Blog Post.” 2022–12AD. http://ericamarie9016.github.io/2022-12-5-ethics-proj."
   }
 ]
