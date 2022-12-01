@@ -10,14 +10,14 @@ date: 2022-11-18
 output:
   distill::distill_article:
     toc: yes
-    code_folding: yes
+    code_folding: yes  # ASK ABOUT CODE FOLDING!!!
     self_contained: no
   html_document:
     toc: yes
     df_print: paged
   pdf_document:
     fig_caption: yes
-    categories: [MEDS, Statistics, R]
+    categories: [MEDS, Statistics, R, Southern California, Urchins]
 citation: 
   url: http://ericamarie9016.github.io/2022-12-9-stats-proj
 #bibliography: references.bib
@@ -28,55 +28,368 @@ citation:
 ```{r setup, include=FALSE}
 # All libraries here
 library(tidyverse)
+library(lubridate)
+library(ggpubr)    # Combines ggplots
 library(here)
-
+library(readr)
+library(gt)
+library(tufte)
+library(feasts)
+library(knitr)
 ```
 
 # Research Question
 
-The aim of this project is to
+The aim of this project is to visualize the impact of protected regions on Urchin density plus selected bivalves, gastropods and crabs.
 
-Background
+Let's explore the tidal zone! This data set explores a variety of species:\
+
+Phylum Arthropoda: invertebrate animals with a hard exoskeleton, segmented body, jointed appendages. Cuticle/exoskeleton made of chitin often mineralised with calcium carbonate (issue with ocean acidification). Lobsters, crabs, barnacles - https://manoa.hawaii.edu/exploringourfluidearth/biological/invertebrates/phylum-arthropoda
+
+Bivalvia (Class) belong to phylum Mollusca - shell divided in two, filter feeders clams, oysters, mussels - https://www.britannica.com/animal/bivalve
+
+Gastropoda (Class) belong to phylum Mollusca - snails, conch, abalone, limpets, whelks - range from scavengers, predators, herbivores, parasites - https://www.britannica.com/animal/gastropod
+
+Ophiuroidea asterpodea (Species) belong to phylum Echinodermata - brittle stars - carnivores, filter feeders, scavengers - http://bioweb.uwlax.edu/bio203/f2013/lee_abby/classification.htm
+
+S purpuratus - Pacific purple sea urchin - sedentary, primarily feed on algae https://animaldiversity.org/accounts/Strongylocentrotus_purpuratus/
+
+M franciscanus - Red sea urchin - eat kept and seaweed - https://animaldiversity.org/accounts/Strongylocentrotus_franciscanus/
+
+Total Urchins counts these last two
+
+The locations:
+
+Sea urchins and their environment interactions
+
+https://oceanconservancy.org/blog/2020/07/29/sea-urchins/
+
+-   Grind and scrape algee, plankton, kelp
+
+-   Grazers keep algae in check, which helps reduce algae takeover in corals depriving sunlight access
+
+https://www.discovermagazine.com/environment/why-are-sea-urchins-so-destructive-to-kelp-forests
+
+-   Coexist peacefully in kelp forests (Southern Africa to Southern Alaska) until out of balance
+
+-   Healthy kelp forests, urchins feed mainly on detritus/scraps of kelp that shed naturally, stay in hiding spots and eat fallen scraps of kelp
+
+-   When detritus is scares, urchins begin to leave their hiding spots to search for food, feeding on living kelp - "urchin barrens"
+
+-   Not simply overpopulation, can shift between kelp forests and urchin barrens without changing urchin density
+
+Smith, J. G., *et al*. (2022) Alternations in the foraging behaviour of a primary consumer drive patch transition dynamics in a temperate rocky reef ecosystem. *Ecology Letters.* [doi:10.1111/ele.14064](https://doi.org/10.1111/ele.14064).
+
+-   2014 outbreak of sea urchins along California's Central coast causing urchin barrens - causes was: loss of their main predator (sunflower sea star due to sea star wasting disease) and maritime heatwave made it difficult for kelp to grow, main culprit of eating living kelp was purple sea urchins
 
 ------------------------------------------------------------------------
 
 # Data Collection and Tidying
 
-## Urchin Dataset
+### Importing and Creating Data Frames
+
+I imported the Urchin data found via LTER Santa Barbara Coastal, the metadata stated NA's were written in the data as '-99999'. The protection data was not immediately available, I had to create a data frame with the values 1 for protected, 0 for unprotected.
 
 ```{r}
-Urchins <- read_csv(here("posts", "2022-12-9-stats-proj", "Invertebrate_Settlement_All_Years_20220722.csv"))
-
-# Review the column names
-names(Urchins)
-
-# plot(Urchins)
-
-```
-
-## Protected Dataset
-
-This data was not immediately available, I had to create a dataframe with the values 1 for protected, 0 for not protected.
-
-```{r}
-# View the names of the Urchin sites
-unique(Urchins$SITE)
+## Import Urchins data 
+UrchinsDF <- read_csv(here("posts", "2022-12-9-stats-proj", "Invertebrate_Settlement_All_Years_20220722.csv"), na = "-99999")
+names(UrchinsData)                 # Review the column names
+unique(Urchins$SITE)           # View the names of the Urchin sites
 
 
-Protection <- data.frame(
+## Create Protection data frame
+ProtectionDF <- data.frame(
   Fullname = c("Anacapa", "Point Cabrillo", "Gaviota", "Ocean Beach", "Ellwood Pier", "Stearns Wharf", "Scripps", "Avila Beach"),
-  NAME = c("ANACAPA", "FBPC", "GAVIOTA", "OCNBCH", "SBELL", "SBSTWRF", "SIO", "AVILA"),
+  SITE = c("ANACAPA", "FBPC", "GAVIOTA", "OCNBCH", "SBELL", "SBSTWRF", "SIO", "AVILA"),
   Protection = c(1, 1, 0, 0, 0, 0, 0, 0)
 )
 
-head(Protection)
+head(ProtectionDF, n = 8)
 ```
 
-# Analysis
+### Combine Data Frames
+
+```{r}
+## Join and select column fields
+Urchins <- left_join(UrchinsDF, ProtectionDF, by = "SITE") |> 
+  select(SITE, Protection, DATE_RETRIEVED, ARTHROPODA, BIVALVIA, GASTROPODA, OPHIUROIDEA_ASTERPODEA, S_PURPURATUS, M_FRANCISCANUS, TOTAL_URCHINS)
+
+## Set as date class
+Urchins$DATE_RETRIEVED <- lubridate::mdy(Urchins$DATE_RETRIEVED)
+class(Urchins$DATE_RETRIEVED)
+
+## Collapse repeated surveys per day by site
+Urchins <- Urchins |> 
+  group_by(SITE, DATE_RETRIEVED) |>        # Combine by date, per site
+  summarise(ARTHROPODA = sum(ARTHROPODA, na.rm = TRUE),
+            BIVALVIA = sum(BIVALVIA, na.rm = TRUE),
+            GASTROPODA = sum(GASTROPODA, na.rm = TRUE),
+            OPHIUROIDEA_ASTERPODEA = sum(OPHIUROIDEA_ASTERPODEA, na.rm = TRUE),
+            S_PURPURATUS = sum(S_PURPURATUS, na.rm = TRUE),
+            M_FRANCISCANUS = sum(M_FRANCISCANUS, na.rm = TRUE),
+            TOTAL_URCHINS = sum(TOTAL_URCHINS, na.rm = TRUE),
+            Protection = mean(Protection))
+```
+
+### Tidy Data
+
+Here I removed the total urchin row to focus on each species then pivoted the entire frame longer along each Species.
+
+```{r}
+## Create Species Data Frame
+SpeciesDF <- Urchins |> 
+  select(-TOTAL_URCHINS) |>                       # Remove columns
+  pivot_longer(cols = c("ARTHROPODA", "BIVALVIA", "GASTROPODA", "OPHIUROIDEA_ASTERPODEA", "S_PURPURATUS", "M_FRANCISCANUS"),
+               names_to = "Urchin_Species",
+               values_to = "Count",
+               values_drop_na = TRUE)              # Drop NA values
+```
+
+------------------------------------------------------------------------
+
+# Data Exploration
+
+Minimum total urchins found in a survey was 0, and the maximum total was 1804.
+
+```{r}
+min(Urchins$TOTAL_URCHINS, na.rm = TRUE)
+max(Urchins$TOTAL_URCHINS, na.rm = TRUE)
+
+min(SpeciesDF$Count, na.rm = TRUE)
+max(SpeciesDF$Count, na.rm = TRUE)
+```
+
+## Initial visualizations
+
+Visualization of Total Urchins per site over time
+
+```{r}
+# Change class to TRUE/FALSE for use in ggplot shape aesthetic
+Urchins$Protection <- as.logical(Urchins$Protection)
+class(Urchins$Protection)
+
+TotalUrchins <- ggplot(Urchins, aes(x = DATE_RETRIEVED, y = TOTAL_URCHINS)) +
+  geom_point(aes(color = SITE, shape = Protection), alpha = .3, size = 2) +
+  labs(title = "Total Urchins collected at Sites in Southern CA") +
+  xlab("Date Collected") +
+  ylab("Total Urchin Count")
+TotalUrchins
+```
+
+Explore Each Site
+
+We see a lot of high spikes in this data, and does not appear linear in nature.
+
+```{r}
+## How does each species vary per site:
+
+Ana <- SpeciesDF |> 
+  filter(SITE == "ANACAPA") |> 
+  ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Urchin_Species)) +
+  geom_line() +
+  labs(title = "Anacapa") +
+  xlab("Date Collected") +
+  ylab("Species Count")
+
+FBPC <- SpeciesDF |> 
+  filter(SITE == "FBPC") |> 
+  ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Urchin_Species)) +
+  geom_line() +
+  labs(title = "Point Cabrillo") +
+  xlab("Date Collected") +
+  ylab("Species Count")
+
+Gav <- SpeciesDF |> 
+  filter(SITE == "GAVIOTA") |> 
+  ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Urchin_Species)) +
+  geom_line() +
+  labs(title = "Gaviota") +
+  xlab("Date Collected") +
+  ylab("Species Count")
+
+OB <- SpeciesDF |> 
+  filter(SITE == "OCNBCH") |> 
+  ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Urchin_Species)) +
+  geom_line() +
+  labs(title = "Ocean Beach") +
+  xlab("Date Collected") +
+  ylab("Species Count")
+
+EL <- SpeciesDF |> 
+  filter(SITE == "SBELL") |> 
+  ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Urchin_Species)) +
+  geom_line() +
+  labs(title = "Ellwood Pier") +
+  xlab("Date Collected") +
+  ylab("Species Count")
+
+SW <- SpeciesDF |> 
+  filter(SITE == "SBSTWRF") |> 
+  ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Urchin_Species)) +
+  geom_line() +
+  labs(title = "Stearns Wharf") +
+  xlab("Date Collected") +
+  ylab("Species Count")
+
+Scrip <- SpeciesDF |> 
+  filter(SITE == "SIO") |> 
+  ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Urchin_Species)) +
+  geom_line() +
+  labs(title = "Scripps") +
+  xlab("Date Collected") +
+  ylab("Species Count")
+
+AV <- SpeciesDF |> 
+  filter(SITE == "AVILA") |> 
+  ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Urchin_Species)) +
+  geom_line() +
+  labs(title = "Avila Beach") +
+  xlab("Date Collected") +
+  ylab("Species Count")
+
+ggarrange(Ana, FBPC, Gav, OB, EL, SW, Scrip, AV + rremove("x.text"), 
+          labels = c("A", "B", "C"),
+          ncol = 2, nrow = 4, legend = "none")
+
+# Add separate legend
+leg <- get_legend(Ana)
+as_ggplot(leg)
+```
+
+------------------------------------------------------------------------
 
 ## Plan
 
-## Results
+First, I want to check if there is a difference in means between protected and unprotected sites for total urchins and other species. The goal is to understand if any species are sensitive to unprotected regions. The null hypothesis predicts there is no change between the abundance of each species in protected versus unprotected regions.
+
+$$H_0: \mu_{protected} - \mu_{unprotected} = 0 $$
+
+$$H_A: \mu_{protected} - \mu_{unprotected} \neq = 0 $$
+
+## Analysis
+
+### Hypothesis Testing
+
+```{r}
+### Protection on total urchins
+Protect_Ttest <- t.test(Urchins$TOTAL_URCHINS[Urchins$Protection == 1],
+       Urchins$TOTAL_URCHINS[Urchins$Protection == 0])
+Protect_Ttest
+# Welch Two Sample t-test
+# mean 6.035 protected
+# mean 8.31 unprotected
+# 95% [-4.84, .26] that the difference between the two is in this range
+# pvalue .07951
+# Do not have enough evidence to reject the null (difference in means)
+
+# Repeat for diff species
+Art_Ttest <- t.test(Urchins$ARTHROPODA[Urchins$Protection == 1],
+       Urchins$ARTHROPODA[Urchins$Protection == 0])
+Art_Ttest
+# Significant
+
+Biv_Ttest <- t.test(Urchins$BIVALVIA[Urchins$Protection == 1],
+       Urchins$BIVALVIA[Urchins$Protection == 0])
+Biv_Ttest
+# Significant
+
+Gast_Ttest <- t.test(Urchins$GASTROPODA[Urchins$Protection == 1],
+       Urchins$GASTROPODA[Urchins$Protection == 0])
+Gast_Ttest
+# Significant
+
+Oph_Ttest <- t.test(Urchins$OPHIUROIDEA_ASTERPODEA[Urchins$Protection == 1],
+       Urchins$OPHIUROIDEA_ASTERPODEA[Urchins$Protection == 0])
+Oph_Ttest
+# Not significant
+
+Purp_Ttest <- t.test(Urchins$S_PURPURATUS[Urchins$Protection == 1],
+       Urchins$S_PURPURATUS[Urchins$Protection == 0])
+Purp_Ttest
+# Not significant
+
+Fran_Ttest <- t.test(Urchins$M_FRANCISCANUS[Urchins$Protection == 1],
+       Urchins$M_FRANCISCANUS[Urchins$Protection == 0])
+Fran_Ttest
+# Significant
+```
+
+### Interaction Model Ideas
+
+-   Exploring species interactions to understand the ecological dynamics.
+
+```{r}
+# Basic linear regression of impact of protection on urchins, no time variable
+summary(lm(species1 ~ species2 + species3 + Protection + Protection:species2, data = Urchins)) # Cannot use y as an interaction, look at species??
+
+
+# Each species on total urchins
+summary(lm(TOTAL_URCHINS ~ ARTHROPODA + BIVALVIA + GASTROPODA + OPHIUROIDEA_ASTERPODEA, data = Urchins))
+
+# Species Interactions focused on which species of urchin
+```
+
+### Time Series Ideas
+
+$$
+Time Series: UrchinDensity = B_0 + B_1 date_t + E_t
+$$
+
+-   Time versus density
+
+-   Before/After Heat Blob 2014 Recovery
+
+    -    2 time series, 1 species or total, 1 protected and 1 no
+
+Attempted a time series, because I wanted to explore the time variable. Look at
+
+```{r}
+
+# Time series Time versus Density in Protected versus Unprotected
+summary(lm(TOTAL_URCHINS ~ DATE_RETRIEVED + Protection + Protection:DATE_RETRIEVED, data = Urchins))
+# High pvalie, change is not statistically significant due to time
+# Interaction, .24 high pvalue, interaction significance
+### 24% probability get sample from the population even if null were true
+# Do not have enough evidence to reject the null
+# What are the values?
+
+
+# There does not seem to be entire seasons (data collected only during summer)
+TSUrchins <- SpeciesDF |> 
+  filter(ANACAPA)
+  select(DATE_RETRIEVED, Urchin_Species, Count)
+
+as_tsibble(TSUrchins) %>%
+  model(
+    classical_decomposition(value, type = "additive")
+  ) %>%
+  components() %>%
+  autoplot() # Why is this not working?
+```
+
+## Tamma's ideas - linear probability model
+
+The data has large spikes which was making a linear regression challenging, so we edit to look just at species presence.
+
+Create dataframe with species presence 1 or 0
+
+t-test
+
+```{r}
+for i in Urchins
+  if > 0
+    replace 1
+  else
+    0
+
+t.test(Urchins$TOTAL_URCHINS[Urchins$Protection == 1],
+       Urchins$TOTAL_URCHINS[Urchins$Protection == 0])
+
+```
+
+# Discussion
+
+------------------------------------------------------------------------
 
 # References
 
