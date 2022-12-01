@@ -15,8 +15,264 @@ citation:
 # draft: TRUE
 ---
 
-## Title
+## 
 
-### First Section
+Ethics Blog Post
 
-Build the issue
+**The Inaccessibility of Data for Indigenous Groups**
+
+**What Data Access Could Mean to Indigenous Groups and Conservation**
+
+My goal was to put together an argument about lack of data
+accessibility and rights to tribes for their own informed decision making, and
+how industry has taken advantage of the gap and put native\'s at risk (health
+and environmental) with resource extraction. I continue to argue how the field
+of conservation in Western hands has been at a loss for not including Native traditional
+management and perspectives on ecological data available.
+
+Introduce the issue:
+
+Small communities and indigenous groups around the world
+have limited access to data and to tools for gathering and utilizing data. This
+data includes information about their citizens, communities, lands, resources,
+and culture which has been collected through \"satellite research\" by entities such
+as government and academia but not shared with the tribes. This leaves groups vulnerable
+due to lack of their own tools and infrastructure to incorporate data for
+decision making, and limited visibility on a global scale. These regions have
+been taken advantage of by industry and the government, using this global blind
+spot on indigenous lands and environmental impacts. This invisible gap includes
+approximately 370 million Indigenous peoples living in 90 countries around the
+world (United 2009).
+
+Internet and tool access:
+
+Some tribes have 0 internet accessibility, and few have
+affordable access, which is why just over half of Native American\'s living on
+reservations with a computer have access to high-speed internet service. This
+is the lowest percent internet coverage in the nation (Wang 2018). Without
+internet tribes do not have educational access for the tools to analyze data,
+or access to the larger global community, which also means their voices are
+unheard in global conversations, including landscape conservation and resource
+management.
+
+Ecological impact without Natives:
+
+There is a larger ecological and conservation impact of
+these groups being isolated. Without visibility on a global scale, there is not
+attention towards the industrial pressure on Native landscape. In addition, the
+knowledge and different perspectives within these tribes that could be brought
+into conservation efforts for landscape are overlooked. Keeping conservation
+sciences as \"western\" science isolates other perspectives and cultural
+significance of landscapes and ecosystems. Western science has dictated how we
+view data and how to use it, analyze it, and make decisions from it. Data can
+be used as a tool for natives to tell stories and turn the information into art
+to understand the world in a different way, and weigh the data differently for informed
+decision making.
+
+Examples of industry taking advantage of this gap in data
+accessibility and land rights:
+
+Indigenous land rights are only recognized in a few
+countries around the world, and even in these few there are complications with
+land titling and the governments have often leased out the lands for resource
+extraction without consultation (6). In many cases, this has led to indigenous
+groups have forced to leave their lands due to the destruction of their
+self-sustaining ecosystems (6). Resource extraction for mineral, oil, gas
+deposits has caused environmental degradation on native lands without the knowledge
+of the wider global arena interested in conservation efforts. The native communities
+have the negative fallout of environmental hazards, and the extracted resources
+do not go towards them.
+
+\"In 2009 An Australian mining company, Azumah Resources
+Limited, was granted a concession by the government of Ghana giving them more
+than 2,000 square kilometers of the upper west region, which includes the
+Tanchara community, for gold prospecting and mining.\" (Guri 2022) The mining
+company was causing rapid decline in the savred groves and other surrounding
+sites in the community, including significant plant species becoming locally
+extinct and the loss of wildlife. The natives are often unaware of the
+decisions, their rights, and the impact. In this case, the threat to their
+sacred groves and natural sites was reviewed by an outside group (Center for
+Indigenous Knowledge and Organizational Development in Ghana). This center was
+able to speak up to the government on behalf of the Natives, who did not have
+the tools for the impact surveys and the medium to speak up (Guri 2022). This
+was a win for the community, but often there is no one looking when the rights
+of tribes are taken advantage of for industrial progress.
+
+Brazil\'s indigenous lands are under threat under different
+political agendas, with Bolsanaro campaigning to opening up indigenous lands to
+exploitation. He issued an executive order transferring regulation of
+indigenous reserves from the government\'s indigenous agency (FUNAI) to the
+Ministry of Agriculture, which is invested in agribusiness interests. He
+further announced plans to open indigenous reserves to development without
+requiring indigenous consent. Even with government checks returning some of the
+land rights to indigenous tribes, these actions encouraged a 40% increase of
+illegal miners entering Indigenous Territory, polluting rivers with mercury (Squires
+2020).
+
+Deforestation image: Aerial shot of deforestation in the
+Karipuna Indigenous Territory in the state of Rondônia, in November 2021. Photo
+by Alexandre Cruz Noronha/Amazônia Real (CC BY-NC-ND 2.0).
+
+How indigenous tribes take care of their land when given
+rights, data access:
+
+A study reviewing 169 publications of different forms of conservation
+management found that conservation efforts without Indigenous groups resulted
+generally in ineffective conservation (Dawson 2019). Indigenous lands generally
+had higher levels of biodiversity and natural productivity than other managed
+lands. Equitable conservation provides local groups the tools and empowerment
+to be stewards of their land (Dawson 2019).
+
+Tribes have a different viewpoint of conservation,
+connecting the landscape with art and culture. There are different motivations
+for conserving the ecosystems, and understandings of the ecological
+interactions. Bringing power to the tribes to protect and conserve their lands
+will benefit conservation movements as a whole. Ultimately Native voices should
+be uplifted to have a larger say in conservation efforts outside of their
+reservations within their historic territories. An example of the different
+approaches to wildlife management can be found in the first tribal wilderness
+area, Mission Mountain Wilderness Area, which annually closes off 10,000 acres
+for grizzly bears to feed high in the mountains undisturbed (Robbins 2021).
+This extra consideration for the habits of the wildlife are unheard of in
+western management styles.
+
+Rewrite this: The difference in
+conservation can be seen in the use of the land. In most cases, traditional use
+entails sustainable harvesting practices that are vital to the well-being of
+the resource; in turn, the transmission of such practices to younger
+generations ensures the sustained relationship that a people has with a
+particular plant or animal (Maffi 2001b) Difference
+in resource management style from current conservation: Research on tribal
+resource access can inform tribal policy and management and thus contribute to
+both resource- and relationship-based approaches to tribal environmental
+governance. For example, Cherokee elders stress that, when seeking plant
+medicine, one should not uproot the first identified plant; rather, one must
+pass over at least four plant individuals before commencing to gather.
+
+A study reviewing Indigenous-managed lands through
+Australia, Brazil, and Canada found these areas were richer in vertebrate
+species than existing government protected landscapes (Robbins 2021).
+
+Tie below in with data access:
+
+Indigenous management styles have evolved over centuries
+with these cultures immersed in nature (Robbins 2021). The style of management differs
+due to the varied concepts of nature, Indigenous knowledge tending to be more
+holistic and presenting characteristics to wildlife that westerners only attribute
+to humans (Robbins 2021). Traditional ecological knowledge had been lost in
+conservation, such as the traditional use of prescribed fires to manage
+resources (Robbins 2021). They knew how to use fire to manage wildlife habitat
+and forests, increasing ecological resilience, and encourage growth of useful
+species (Robbins 2021). Their management is more active, as they see the land
+to live with, versus western view of highly developing a region and keeping
+protected areas isolated. The tribes ensure a healthy landscape and wildlife
+populations that they can live with and utilize.
+
+Indigenous regions with proper protection are successful
+with their own interests of conservation, for example some of the world\'s
+healthiest tropical forests are within protected Indigenous areas (Abulu 2022).
+Without these protections, resource extractive companies will enter often with
+government support, and the Native\'s are unable to resist (Abulu 2022). The
+integrity of these forests, and overall biodiversity scores, are highest in Indigenous
+communities compared to any other land management with human development. Most
+of the high-integrity forests left are occupied by Natives, and conservation
+efforts must consider protecting both the ecosystem and the people (Abulu 2022).
+This highlights two issues, one is conservation of the ecosystems, and the
+other is conservation of the culture and people. The tribes culture and
+lifestyle is entwined with their surroundings and their management of the landscape,
+utilizing traditional knowledge to support wildlife and protect ancestral
+grounds. Creation of protected park areas do not need to remove tribes to
+protect these ecosystems, it would be more beneficial to provide native\'s
+around the world with land tenure rights and their own ability to manage the
+landscape.
+
+What can be done?
+
+BisonImage: The National Bison Range in Montana, now
+managed by the Confederated Salish and Kootenai Tribes. DAVE FITZPATRICK / U.S.FISH AND WILDLIFE SERVICE
+
+In North America, a previously seized 18000 acres of land
+set aside for bison conservation has been returned to the tribes. Bison were plentiful
+before colonization and development, so it is cruelly ironic to have taken the
+land and bison away from the people who were properly managing the populations
+before. The U.S. government attempt at managing these populations was isolated
+from the ancestral knowledge the tribes had of the animals and land, displaying
+the lack of data transfer between both parties. These animals are considered
+almost familial to the tribes who once relied on their abundance for food,
+clothing, and shelter. The change in management back to the tribes has changed
+the focus of conservation, acknowledging the animal\'s characteristics that were
+otherwise overlooked in western management practices. The native\'s management
+of these herds recognize the importance of family groups and practice to keep
+these groups together.(Robbins 2021) Prescribed fires were also used to manage
+the buffalo and landscape traditionally, a practice they are returning
+
+Conservation movement
+would be stronger with the allies of natives, providing them with the resources
+and voice to speak up.
+
+COnervation focus open up to not what to conserve, but how
+to conserve it and who manages it.
+
+Provide access on data collected on the Native\'s land from
+outside groups such as government, academic, and industry. Provide affordable
+internet and training opportunities for tribal members to learn how to use the
+tools available. Give the baseline for each tribe to decide how to collect and
+use their data. Provide them the ability to make their own sovereign decisions,
+and creative perspective towards data collection and uses, empowering their
+voices on a global scale. Implement community-based mapping, monitoring, and
+information systems and provide education to utilize the tools.
+
+Providing land tenure and management to the tribes will
+benefit conservation as a whole. Across the United States, there has been a
+slow movement in recent years to return land to native tribes including 1,000 acres
+of redwood forest in California and a 150 acre island in Maine(Robbins 2021). The
+Nature Conservancy has also transferred land rights back to native\'s on a
+global scale (Robbins 2021). An increase of co-management with Natives is also
+benefitting conservation of wildlife and plants. Increasing visibility of the
+tribes to bring attention to the
+
+The Australian government has bought up a series of farm
+properties with the goal to restore the beneficial wetlands that were degraded
+from agriculture and water diversion (Robbins 2021). The government accepted
+proposals for the management of these wetlands and ultimately gave the right to
+the Indigenous group Nari Nari who had inhabited the region for 50,000 years (Robbins
+2021). This ancestral knowledge held within this tribe is unavailable to
+outside sources, and invaluable to restore and protect the landscape they lived
+so closely with (Robbins 2021).
+
+One larger attempt to bring data collection and the power of
+data to indigenous groups is through the Indigenous Navigator, focuses on
+Indigenous rights including land and conservation rights, which even includes a
+Biodiversity program (Calatan 2022). The Indigenous Navigator was created with
+the spirit of indigenous values and cultures, respecting the diversity of
+groups around the world. The purpose is to assist with data collection to
+support each group\'s innovation to \"contemporary problem-solving through community
+assessments, mapping, environmental tracking, and support for their livelihoods
+and social enterprises\" (Calatan 2022). Community-based monitoring and information
+systems allow data to be collected from within the indigenous groups, and are
+then connected with the Indigenous Navigator to relevant actors on a global
+scale. This organization collectively attacks the problem of data rights by
+providing the groups ability to collect their own data, and bringing visibility
+and connectivity regarding problems faced by the groups.
+
+#### References
+
+United Nations Department of Economic and Social Affairs. (2009). State of the world's Indigenous peoples. New York, NY: United Nations Publications.  <https://www.un.org/esa/socdev/unpfii/documents/SOWIP/en/SOWIP_web.pdf>
+
+Wang, Hansi Lo. "Native Americans On Tribal Land Are 'The Least Connected' To High-Speed Internet." *NPR*, December 6, 2018. <https://www.npr.org/2018/12/06/673364305/native-americans-on-tribal-land-are-the-least-connected-to-high-speed-internet>.
+
+Abulu, Latoya, and Laurel Sutherland. "Indigenous Lands Hold the World's Healthiest Forests - but Only When Their Rights Are Protected." *Mongabay*, Indigenous Peoples and Conservation, November 7, 2022. https://news.mongabay.com/2022/11/indigenous-lands-hold-the-worlds-healthiest-forests-but-only-when-their-rights-are-protected/ 
+
+Robbins, Jim. "How Returning Lands to Native Tribes Is Helping Protect Nature." *Yale Environment 360*, June 3, 2021. <https://e360.yale.edu/features/how-returning-lands-to-native-tribes-is-helping-protect-nature>.
+
+Calatan, Jimrex. "Raising Indigenous Voices through the Indigenous Navigator Framework." *TebTebba*, May 28, 2022. [https://tebtebba.org/index.php/news-and-updates/raising-indigenous-voices-through-the-indigenous-navigator-framework-indigenous-data-to-secure-rights](https://doi.org/•%09https:/tebtebba.org/index.php/news-and-updates/raising-indigenous-voices-through-the-indigenous-navigator-framework-indigenous-data-to-secure-rights).\
+\
+Guri, Bernard. "Rescuing Tanchara Community Lands from Gold Mining Through Biocultural Community Protocols." *Cultural Survival*, August 31, 2022. [https://www.culturalsurvival.org/publications/cultural-survival-quarterly/rescuing-tanchara-community-lands-gold-mining-through](https://doi.org/o%09https:/www.culturalsurvival.org/publications/cultural-survival-quarterly/rescuing-tanchara-community-lands-gold-mining-through).
+
+Maffi, L. (Ed.). (2001). *On Biocultural Diversity: Linking Language, Knowledge, and the Environment*. Washington and London: Smithsonian Institution Press.
+
+Dawson, N. M., B. Coolsaet, E. J. Sterling, R. Loveridge, N. D. Gross-Camp, S. Wongbusarakum, K. K. Sangha, L. M. Scherl, H. Phuong Phan, N. Zafra-Calvo, W. G. Lavey, P. Byakagaba, C. J. Idrobo, A. Chenet, N. J. Bennett, S. Mansourian, and F. J. Rosado-May. 2021. The role of Indigenous peoples and local communities in effective and equitable conservation. *Ecology and Society* 26(3):19. https://doi.org/10.5751/ES-12625-260319\
+
+Squires, Carter, Kelsey Landau, and Robin Lewis.
+\"Uncommon Ground: The Impact of Natural Resource Corruption on Indigenous
+Peoples.\" *Brookings*, August 7, 2020. [https://www.brookings.edu/blog/up-front/2020/08/07/uncommon-ground-the-impact-of-natural-resource-corruption-on-indigenous-](https://www.brookings.edu/blog/up-front/2020/08/07/uncommon-ground-the-impact-of-natural-resource-corruption-on-indigenous-peoples/)
