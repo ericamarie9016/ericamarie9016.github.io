@@ -7,17 +7,14 @@ author:
     affiliation: MEDS
     affiliation-url: http://ucsb-meds.github.io
 date: 2022-11-18
-output:
-  distill::distill_article:
-    toc: yes
-    code_folding: yes  # ASK ABOUT CODE FOLDING!!!
-    self_contained: no
-  html_document:
-    toc: yes
-    df_print: paged
-  pdf_document:
-    fig_caption: yes
-    categories: [MEDS, Statistics, R, Southern California, Urchins]
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+code-overflow: wrap
+code-block-bg: true
+code-block-border-left: "#6B5A75"
+categories: [MEDS, Statistics, R, Southern California, Urchins]
 citation: 
   url: http://ericamarie9016.github.io/2022-12-9-stats-proj
 #bibliography: references.bib
@@ -42,7 +39,15 @@ library(knitr)
 
 The aim of this project is to visualize the impact of protected regions on Urchin density plus selected bivalves, gastropods and crabs.
 
-Let's explore the tidal zone! This data set explores a variety of species:\
+#### Let's explore the littoral zone!
+
+##### The locations are at the end of piers, in the marine littoral zone:
+
+The littoral zone is below the low-tide level and experiences the effects of tidal and longshore currents, and breaking waves (). https://www.britannica.com/science/littoral-zone
+
+This dataset has 8 survey locations off piers in Southern California. Two of the piers are off protected coastal regions, the rest are populated and developed piers.
+
+##### This data set explores a variety of species:
 
 Phylum Arthropoda: invertebrate animals with a hard exoskeleton, segmented body, jointed appendages. Cuticle/exoskeleton made of chitin often mineralised with calcium carbonate (issue with ocean acidification). Lobsters, crabs, barnacles - https://manoa.hawaii.edu/exploringourfluidearth/biological/invertebrates/phylum-arthropoda
 
@@ -58,7 +63,7 @@ M franciscanus - Red sea urchin - eat kept and seaweed - https://animaldiversity
 
 Total Urchins counts these last two
 
-The locations:
+##### 
 
 Sea urchins and their environment interactions
 
@@ -339,7 +344,7 @@ $$
 
 -   Before/After Heat Blob 2014 Recovery
 
-    -    2 time series, 1 species or total, 1 protected and 1 no
+    -   2 time series, 1 species or total, 1 protected and 1 no
 
 Attempted a time series, because I wanted to explore the time variable. Look at
 
