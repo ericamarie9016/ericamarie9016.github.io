@@ -1,0 +1,290 @@
+---
+title: "Geospatial Blog Post"
+description: "Creating a Function for Coastal Species Habitat"
+author:
+  - name: Erica Dale
+    url: http://ericamarie9016.githubt.io
+    affiliation: MEDS
+    affiliation-url: http://ucsb-meds.github.io
+date: 2022-12-02
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+code-overflow: wrap
+code-block-bg: true
+code-block-border-left: "#6B5A75"
+categories: [MEDS, Geospatial, R, West Coast, Oysters]
+citation: 
+  url: http://ericamarie9016.github.io/2022-12-02-geospatial
+#bibliography: references.bib
+# image: 
+# draft: TRUE
+---
+
+## Introduction
+
+This project explores the suitable habitats for species along the Western Coast, beginning with an Oyster and then creating a function to explore any species. The parameters to explore are depth and sea surface temperature. This could futher be expanded with more variables, including change of temperature within the water column. These regions are broken down to five Exclusive Economic Zones (EEZ) along the West Coast of the US.
+
+This could be applied for restoration efforts to determine where habitat is suitable for any oceanic species.\
+
+### Data
+
+#### Sea Surface Temperature
+
+Average annual sea surface temperature (SST) from the years 2008 to 2012 are used to characterize the average sea surface temperature within the region. Originally generated from [NOAA's 5km Daily Global Satellite Sea Surface Temperature Anomaly v3.1](https://coralreefwatch.noaa.gov/product/5km/index_5km_ssta.php).
+
+#### Bathymetry
+
+To characterize the depth of the ocean: [General Bathymetric Chart of the Oceans (GEBCO)](https://www.gebco.net/data_and_products/gridded_bathymetry_data/#area).[^1]
+
+[^1]: GEBCO Compilation Group (2022) GEBCO_2022 Grid (<doi:10.5285/e0f0bb80-ab44-2739-e053-6c86abc0289c>).
+
+#### Exclusive Economic Zones
+
+Exclusive Economic Zones off of the west coast of US: [Marineregions.org](https://www.marineregions.org/eez.php).
+
+## Data Import
+
+```{r include=TRUE, warning=FALSE, messages=FALSE}
+library(terra)
+library(here)
+library(sf)
+library(tidyverse)
+library(tmap)
+library(ggpubr)    # Combines ggplots
+```
+
+```{r}
+Regions <- read_sf("~/MEDS/Fall-EDS223-Geospatial/data/data_4/wc_regions_clean.shp")
+st_crs(Regions)       # WGS84 EPSG 4326
+
+Annual2008 <- rast("~/MEDS/Fall-EDS223-Geospatial/data/data_4/average_annual_sst_2008.tif")
+Annual2009 <- rast("~/MEDS/Fall-EDS223-Geospatial/data/data_4/average_annual_sst_2009.tif")
+Annual2010 <- rast("~/MEDS/Fall-EDS223-Geospatial/data/data_4/average_annual_sst_2010.tif")
+Annual2011 <- rast("~/MEDS/Fall-EDS223-Geospatial/data/data_4/average_annual_sst_2011.tif")
+Annual2012 <- rast("~/MEDS/Fall-EDS223-Geospatial/data/data_4/average_annual_sst_2012.tif")
+SSTAnnual <- c(Annual2008, Annual2009, Annual2010, Annual2011, Annual2012)     # stack the annual
+st_crs(SSTAnnual)    # WGS84, EPSG 9122
+
+Depth <- rast("~/MEDS/Fall-EDS223-Geospatial/data/data_4/depth.tif")
+st_crs(Depth)        # WGS84, EPSG 4326
+
+
+
+#### Reproject ###
+
+SSTAnnual <- project(SSTAnnual, Depth)
+st_crs(SSTAnnual)     # WGS84, EPSG 4326
+```
+
+#### Data Prep
+
+```{r include=TRUE}
+### Find mean SST ###
+
+# Collapse down layers to one SST mean
+SSTMean <- mean(SSTAnnual)
+SSTMean <- (SSTMean$mean - 273.15)
+plot(SSTMean)
+```
+
+```{r}
+### Crop depth raster to match extent of SST raster ###
+# crop()
+
+# Already matched due to projection method
+#Depth         # extent      : -132, -114, 29, 50
+#SSTAnnual     # extent      : -132, -114, 29, 50
+```
+
+```{r}
+### Match resolutions ###
+
+# Already matched due to projection method
+#Depth        #resolution  : 0.004166667, 0.004166667  (x, y)
+#SSTAnnual    #resolution  : 0.004166667, 0.004166667  (x, y)
+
+## IS THIS A PROBLEM SINCE IT WASN'T NEAREST NEIGHBOR??
+
+#Check
+SSTDepth <- c(Depth, SSTMean)
+```
+
+#### Find suitable locations
+
+```{r include=TRUE}
+# sea surface temperature: 11-30°C = 284.15 - 303.15
+# depth: 0-70 meters below sea level
+
+### Set up reclassification matrices ###
+SSTrcl <- matrix(c(-Inf, 11, NA,
+                   11, 30, 1,   
+                   30, Inf, NA),
+                     ncol = 3, byrow = TRUE)
+OysterSST <- classify(SSTMean, rcl = SSTrcl)
+plot(OysterSST, col = "blue")
+
+
+Depthrcl <- matrix(c(-Inf, -70, NA,
+                     -70, 0, 1,
+                     0, Inf, NA),
+                     ncol = 3, byrow = TRUE)
+OysterDepth <- classify(Depth, rcl = Depthrcl)
+plot(OysterDepth, col = "blue")
+
+
+
+### Overlay # Find areas that satisfy BOTH
+
+fun_mult = function(x,y){return(x*y)}     # Function to multiply layers
+
+OystersHabitat <- lapp(c(OysterSST, OysterDepth), fun_mult)
+plot(OystersHabitat, col = "blue")
+```
+
+#### Determine the most suitable EEZ
+
+```{r include=TRUE}
+##### Turn Regions data into raster
+Regions$rgn <- as.factor(Regions$rgn)
+RegionsRast <- rasterize(vect(Regions), OystersHabitat, field = "rgn")
+plot(RegionsRast)
+
+
+##### Select suitable cells in EEZ
+ROmask <- mask(RegionsRast, OystersHabitat)
+
+
+##### Find area of grid cells
+expanse(ROmask, unit = "km")          # 11099.3 km
+
+# layer value      area
+# [1,]     1     0 3864.5258
+# [2,]     1     1  150.4956
+# [3,]     1     2 1089.7404
+# [4,]     1     3 3467.7569
+# [5,]     1     4 2526.7837
+
+##### Find total suitable area within each EEZ
+# Attempt 1
+#ROZone <- zonal(OystersHabitat, RegionsRast, fun="sum", na.rm = TRUE, as.raster = TRUE)
+#plot(ROZone)
+
+
+OysterZone <- expanse(ROmask, unit = "km", byValue = TRUE)
+OysterZone
+
+# Attempt 2
+# zonal(OystersHabitat, RegionsRast, fun="sum", na.rm = TRUE)
+
+
+##### Find percentage of each zone
+  
+# Join suitable areas by region onto EEZ vector data (Regions)
+# spatial join
+
+# math
+OysterRegion <- cbind(OysterZone, Regions)
+OysterRegion <- OysterRegion |> 
+  mutate(percent = (area/area_km2)*100)
+
+#    percent
+# 1 2.14702963
+# 2 0.09155413
+# 3 0.53751081
+# 4 1.67637234
+# 5 3.77705171
+
+print(paste("Central California has 3864.5258 km2,  2.14% of the EEZ. Northern California has 150.4956 km2, .09% of the EEZ. Orgeon has 1089.7404 km2, with .53%. Southern California has 3467.7569 km2, with 1.67%. Washington has 2526.7837 with 3.77%"))
+```
+
+#### Visualization
+
+```{r include=TRUE}
+# Total suitable area by region
+tm_shape(OysterRegion) +
+  tm_polygons("area", palette = "YlGn") +
+  tm_text(text = "rgn",
+          size = .7) +
+  tm_layout(main.title = "Suitable Oyster Area",
+            main.title.size = 1.2,
+            main.title.position = "center") +
+  tm_layout(legend.position = c("left", "bottom"))
+  
+
+# Percent suitable area by region
+tm_shape(OysterRegion) +
+  tm_polygons("percent", palette = "YlGn") +
+  tm_text(text = "rgn",
+          size = .7) +
+  tm_layout(main.title = "Suitable Oyster Percentage",
+            main.title.size = 1.2,
+            main.title.position = "center") +
+  tm_layout(legend.position = c("left", "bottom"))
+```
+
+#### Creating a Function
+
+```{r}
+Species_Habitat <- function(species_name, temp_min, temp_max, depth_max, depth_min){
+  
+  # RECLASSIFICATION #
+  SSTrcl <- matrix(c(-Inf, temp_min, NA,
+                   temp_min, temp_max, 1,
+                   temp_max, Inf, NA),
+                   ncol = 3, byrow = TRUE)
+  Depthrcl <- matrix(c(-Inf, depth_max, NA,
+                     depth_max, depth_min, 1,
+                     depth_min, Inf, NA),
+                     ncol = 3, byrow = TRUE)  
+  
+  # APPLY RECLASS TO BOTH #
+  SpeciesSST <- classify(SSTMean, rcl = SSTrcl)
+  SpeciesDepth <- classify(Depth, rcl = Depthrcl)
+  SpeciesHabitat <- lapp(c(SpeciesSST, SpeciesDepth), fun_mult)
+  
+  # # EEZ #
+  # ##### Select suitable cells in EEZ
+  Regions$rgn <- as.factor(Regions$rgn)
+  RegionsSpecRast <- rasterize(vect(Regions), SpeciesHabitat, field = "rgn")
+  RSpecmask <- mask(RegionsSpecRast, SpeciesHabitat)
+  # Checked to work to here
+
+  # ##### Find total suitable area within each EEZ
+  SpeciesZone <- expanse(RSpecmask, unit = "km", byValue = TRUE)
+  SpeciesZone # Error on row number matching???
+
+  # ##### Find percentage of each zone
+  SpeciesRegion <- cbind(SpeciesZone, Regions)
+  SpeciesRegion <- SpeciesRegion |>
+     mutate(percent = (area/area_km2)*100)
+  
+  # Total suitable area by region
+  SpecAreaMap <- tm_shape(SpeciesRegion) +
+  tm_polygons("area", palette = "YlGn") +
+  tm_text(text = "rgn",
+          size = .7) +
+  tm_layout(main.title = print(paste0(species_name,  " Suitable Area")),
+            main.title.size = 1.2,
+            main.title.position = "center") +
+  tm_layout(legend.position = c("left", "bottom"))
+  
+
+  # Percent suitable area by region
+  SpecPercMap <- tm_shape(SpeciesRegion) +
+  tm_polygons("percent", palette = "YlGn") +
+  tm_text(text = "rgn",
+          size = .7) +
+  tm_layout(main.title = print(paste0(species_name, " Suitable Percentage")),
+            main.title.size = 1.2,
+            main.title.position = "center") +
+  tm_layout(legend.position = c("left", "bottom"))
+  
+  tmap_arrange(SpecAreaMap, SpecPercMap)
+  
+}
+
+
+Species_Habitat("Dolphin", 11, 30, -70, 0)
+```

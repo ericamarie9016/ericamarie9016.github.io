@@ -3,7 +3,7 @@
 
 
 # Prevent posts from auto rerendering
-freeze: true
+#freeze: true
 # Helpful because some posts might be time consuming to rerun each time
 # Need to explicitly call blog post to update
 

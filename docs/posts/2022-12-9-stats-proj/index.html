@@ -120,6 +120,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -215,14 +216,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#research-question" id="toc-research-question" class="nav-link active" data-scroll-target="#research-question">Research Question</a></li>
   <li><a href="#data-collection-and-tidying" id="toc-data-collection-and-tidying" class="nav-link" data-scroll-target="#data-collection-and-tidying">Data Collection and Tidying</a>
   <ul class="collapse">
-  <li><a href="#urchin-dataset" id="toc-urchin-dataset" class="nav-link" data-scroll-target="#urchin-dataset">Urchin Dataset</a></li>
-  <li><a href="#protected-dataset" id="toc-protected-dataset" class="nav-link" data-scroll-target="#protected-dataset">Protected Dataset</a></li>
+  <li><a href="#importing-and-creating-data-frames" id="toc-importing-and-creating-data-frames" class="nav-link" data-scroll-target="#importing-and-creating-data-frames">Importing and Creating Data Frames</a></li>
+  <li><a href="#combine-data-frames" id="toc-combine-data-frames" class="nav-link" data-scroll-target="#combine-data-frames">Combine Data Frames</a></li>
+  <li><a href="#tidy-data" id="toc-tidy-data" class="nav-link" data-scroll-target="#tidy-data">Tidy Data</a></li>
   </ul></li>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration">Data Exploration</a>
+  <ul class="collapse">
+  <li><a href="#initial-visualizations" id="toc-initial-visualizations" class="nav-link" data-scroll-target="#initial-visualizations">Initial visualizations</a></li>
+  <li><a href="#plan" id="toc-plan" class="nav-link" data-scroll-target="#plan">Plan</a></li>
   <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
   <ul class="collapse">
-  <li><a href="#plan" id="toc-plan" class="nav-link" data-scroll-target="#plan">Plan</a></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing">Hypothesis Testing</a></li>
   </ul></li>
+  <li><a href="#double-check-xy-for-protectedunprotected" id="toc-double-check-xy-for-protectedunprotected" class="nav-link" data-scroll-target="#double-check-xy-for-protectedunprotected">DOUBLE CHECK X/Y for protected/unprotected</a>
+  <ul class="collapse">
+  <li><a href="#the-above-data-led-to-the-question" id="toc-the-above-data-led-to-the-question" class="nav-link" data-scroll-target="#the-above-data-led-to-the-question">The above data led to the question…</a></li>
+  <li><a href="#interaction-model-ideas" id="toc-interaction-model-ideas" class="nav-link" data-scroll-target="#interaction-model-ideas">Interaction Model Ideas</a></li>
+  <li><a href="#time-series-ideas" id="toc-time-series-ideas" class="nav-link" data-scroll-target="#time-series-ideas">Time Series Ideas</a></li>
+  </ul></li>
+  <li><a href="#tammas-ideas---linear-probability-model" id="toc-tammas-ideas---linear-probability-model" class="nav-link" data-scroll-target="#tammas-ideas---linear-probability-model">Tamma’s ideas - linear probability model</a></li>
+  </ul></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -235,93 +249,679 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="research-question" class="level1">
 <h1>Research Question</h1>
-<p>The aim of this project is to</p>
-<p>Background</p>
+<p>The aim of this project is to visualize the impact of protected regions on Urchin density plus selected bivalves, gastropods and crabs. This will provide an understanding of sensitivities these species have to developed coastlines.</p>
+<section id="lets-explore-the-littoral-zone" class="level4">
+<h4 class="anchored" data-anchor-id="lets-explore-the-littoral-zone">Let’s explore the littoral zone!</h4>
+<section id="the-locations-are-at-the-end-of-piers-in-the-marine-littoral-zone" class="level5">
+<h5 class="anchored" data-anchor-id="the-locations-are-at-the-end-of-piers-in-the-marine-littoral-zone">The locations are at the end of piers, in the marine littoral zone:</h5>
+<p>The littoral zone is below the low-tide level and experiences the effects of tidal and longshore currents, and breaking waves ().</p>
+<p>This dataset has 8 survey locations off piers in Southern California. Two of the piers are off protected coastal regions, the rest are populated and developed piers. The protected regions are all parks with minimal development and a marine conservation area protecting surrounding water. Gaviota Beach Pier with Kashtayit State Marine Conservation Area. Point Cabrillo Pier with the Point Cabrillo State Marine Reserve. Anacapa Island Pier with a variety of marine protected areas surrounding the Channel Islands chain.</p>
+</section>
+<section id="this-data-set-explores-a-variety-of-species" class="level5">
+<h5 class="anchored" data-anchor-id="this-data-set-explores-a-variety-of-species">This data set explores a variety of species:</h5>
+<ul>
+<li><p><strong>Arthropoda</strong>: Phylum of lobsters, crabs, barnacles. Cuticle/exoskeleton made of chitin often mineralised with calcium carbonate (issue with ocean acidification).</p></li>
+<li><p><strong>Bivalvia</strong>: class belonging to phylum Mollusca, filter feeders such as clams, oysters, and mussels.</p></li>
+<li><p><strong>Gastropoda</strong>: class belonging to phylum Mollusca including snails, conch, abalone, limpets, and whelks with a range from scavengers, predators, herbivores, parasites</p></li>
+<li><p><strong>Ophiuroidea/Asterpodea</strong>: brittle stars and sea stars belonging to phylum Echinodermata , carnivores, filter feeders, and scavengers</p></li>
+<li><p><strong>S purpuratus</strong>: Pacific purple sea urchin, a sedentary species primarily feeding on algae</p></li>
+<li><p><strong>M franciscanus</strong>: Red sea urchins, eat kept and seaweed</p></li>
+<li><p><strong>Total Urchins</strong>: counts the last two, <em>S purpuratus</em> and <em>M franciscanus</em>.</p></li>
+</ul>
+<p>Sea urchins and their environment interactions</p>
+<p>https://oceanconservancy.org/blog/2020/07/29/sea-urchins/</p>
+<ul>
+<li><p>Grind and scrape algee, plankton, kelp</p></li>
+<li><p>Grazers keep algae in check, which helps reduce algae takeover in corals depriving sunlight access</p></li>
+</ul>
+<p>https://www.discovermagazine.com/environment/why-are-sea-urchins-so-destructive-to-kelp-forests</p>
+<ul>
+<li><p>Coexist peacefully in kelp forests (Southern Africa to Southern Alaska) until out of balance</p></li>
+<li><p>Healthy kelp forests, urchins feed mainly on detritus/scraps of kelp that shed naturally, stay in hiding spots and eat fallen scraps of kelp</p></li>
+<li><p>When detritus is scares, urchins begin to leave their hiding spots to search for food, feeding on living kelp - “urchin barrens”</p></li>
+<li><p>Not simply overpopulation, can shift between kelp forests and urchin barrens without changing urchin density</p></li>
+</ul>
+<p>Smith, J. G., <em>et al</em>. (2022) Alternations in the foraging behaviour of a primary consumer drive patch transition dynamics in a temperate rocky reef ecosystem. <em>Ecology Letters.</em> <a href="https://doi.org/10.1111/ele.14064">doi:10.1111/ele.14064</a>.</p>
+<ul>
+<li>2014 outbreak of sea urchins along California’s Central coast causing urchin barrens - causes was: loss of their main predator (sunflower sea star due to sea star wasting disease) and maritime heatwave made it difficult for kelp to grow, main culprit of eating living kelp was purple sea urchins</li>
+</ul>
 <hr>
+</section>
+</section>
 </section>
 <section id="data-collection-and-tidying" class="level1">
 <h1>Data Collection and Tidying</h1>
-<section id="urchin-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="urchin-dataset">Urchin Dataset</h2>
+<section id="importing-and-creating-data-frames" class="level3">
+<h3 class="anchored" data-anchor-id="importing-and-creating-data-frames">Importing and Creating Data Frames</h3>
+<p>I imported the Urchin dataset found via LTER Santa Barbara Coastal, the metadata stated NA’s were written in the data as ‘-99999’.</p>
 <div class="cell">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Urchins <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"posts"</span>, <span class="st">"2022-12-9-stats-proj"</span>, <span class="st">"Invertebrate_Settlement_All_Years_20220722.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 60848 Columns: 15
--- Column specification --------------------------------------------------------
-Delimiter: ","
-chr  (5): SITE, DATE_DEPLOYED, DATE_RETRIEVED, POSITION, SAMPLEID
-dbl (10): DURATION, LINE, BRUSH, ARTHROPODA, BIVALVIA, GASTROPODA, OPHIUROID...
-
-i Use `spec()` to retrieve the full column specification for this data.
-i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Review the column names</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(Urchins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "SITE"                   "DATE_DEPLOYED"          "DATE_RETRIEVED"        
- [4] "DURATION"               "LINE"                   "POSITION"              
- [7] "BRUSH"                  "SAMPLEID"               "ARTHROPODA"            
-[10] "BIVALVIA"               "GASTROPODA"             "OPHIUROIDEA_ASTERPODEA"
-[13] "S_PURPURATUS"           "M_FRANCISCANUS"         "TOTAL_URCHINS"         </code></pre>
-</div>
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(Urchins)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Import Urchins data </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>UrchinsDF <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"posts"</span>, <span class="st">"2022-12-9-stats-proj"</span>, <span class="st">"Invertebrate_Settlement_All_Years_20220722.csv"</span>), <span class="at">na =</span> <span class="st">"-99999"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(UrchinsDF)                    <span class="co"># Review the column names</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(UrchinsDF<span class="sc">$</span>SITE)              <span class="co"># View the names of the Urchin sites</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="protected-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="protected-dataset">Protected Dataset</h2>
-<p>This data was not immediately available, I had to create a dataframe with the values 1 for protected, 0 for not protected.</p>
+<p>The protection data was not immediately available, I had to create a data frame with the values 1 for protected, 0 for unprotected. I determined protection by the location of the piers. A pier is labeled unprotected if located in populated developed areas such as Ocean Beach, San Diego. Protected piers are located in undeveloped parks surrounded by marine protected areas, including Channel Islands National Park and Point Cabrillo State Marine Reserve.</p>
 <div class="cell">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View the names of the Urchin sites</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(Urchins<span class="sc">$</span>SITE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Create Protection data frame</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ProtectionDF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Fullname =</span> <span class="fu">c</span>(<span class="st">"Anacapa"</span>, <span class="st">"Point Cabrillo"</span>, <span class="st">"Gaviota"</span>, <span class="st">"Ocean Beach"</span>, <span class="st">"Ellwood Pier"</span>, <span class="st">"Stearns Wharf"</span>, <span class="st">"Scripps"</span>, <span class="st">"Avila Beach"</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">SITE =</span> <span class="fu">c</span>(<span class="st">"ANACAPA"</span>, <span class="st">"FBPC"</span>, <span class="st">"GAVIOTA"</span>, <span class="st">"OCNBCH"</span>, <span class="st">"SBELL"</span>, <span class="st">"SBSTWRF"</span>, <span class="st">"SIO"</span>, <span class="st">"AVILA"</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Protection =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ProtectionDF, <span class="at">n =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "ANACAPA" "FBPC"    "GAVIOTA" "OCNBCH"  "SBELL"   "SBSTWRF" "SIO"    
-[8] "AVILA"  </code></pre>
-</div>
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Protection <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Fullname =</span> <span class="fu">c</span>(<span class="st">"Anacapa"</span>, <span class="st">"Point Cabrillo"</span>, <span class="st">"Gaviota"</span>, <span class="st">"Ocean Beach"</span>, <span class="st">"Ellwood Pier"</span>, <span class="st">"Stearns Wharf"</span>, <span class="st">"Scripps"</span>, <span class="st">"Avila Beach"</span>),</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">NAME =</span> <span class="fu">c</span>(<span class="st">"ANACAPA"</span>, <span class="st">"FBPC"</span>, <span class="st">"GAVIOTA"</span>, <span class="st">"OCNBCH"</span>, <span class="st">"SBELL"</span>, <span class="st">"SBSTWRF"</span>, <span class="st">"SIO"</span>, <span class="st">"AVILA"</span>),</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Protection =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Protection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>        Fullname    NAME Protection
+<pre><code>        Fullname    SITE Protection
 1        Anacapa ANACAPA          1
 2 Point Cabrillo    FBPC          1
-3        Gaviota GAVIOTA          0
+3        Gaviota GAVIOTA          1
 4    Ocean Beach  OCNBCH          0
 5   Ellwood Pier   SBELL          0
-6  Stearns Wharf SBSTWRF          0</code></pre>
+6  Stearns Wharf SBSTWRF          0
+7        Scripps     SIO          0
+8    Avila Beach   AVILA          0</code></pre>
 </div>
 </div>
 </section>
+<section id="combine-data-frames" class="level3">
+<h3 class="anchored" data-anchor-id="combine-data-frames">Combine Data Frames</h3>
+<p>Here the two dataframes are joined so all of the survey rows are connected with a protection status based on location. Protection status is changed to be a binary TRUE/FALSE option.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Join and select column fields</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Urchins <span class="ot">&lt;-</span> <span class="fu">left_join</span>(UrchinsDF, ProtectionDF, <span class="at">by =</span> <span class="st">"SITE"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(SITE, Protection, DATE_RETRIEVED, ARTHROPODA, BIVALVIA, GASTROPODA, OPHIUROIDEA_ASTERPODEA, S_PURPURATUS, M_FRANCISCANUS, TOTAL_URCHINS)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Set as date class</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>Urchins<span class="sc">$</span>DATE_RETRIEVED <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">mdy</span>(Urchins<span class="sc">$</span>DATE_RETRIEVED)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Collapse repeated surveys per day by site</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>Urchins <span class="ot">&lt;-</span> Urchins <span class="sc">|&gt;</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SITE, DATE_RETRIEVED) <span class="sc">|&gt;</span>        <span class="co"># Combine by date, per site</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">ARTHROPODA =</span> <span class="fu">sum</span>(ARTHROPODA, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">BIVALVIA =</span> <span class="fu">sum</span>(BIVALVIA, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">GASTROPODA =</span> <span class="fu">sum</span>(GASTROPODA, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">OPHIUROIDEA_ASTERPODEA =</span> <span class="fu">sum</span>(OPHIUROIDEA_ASTERPODEA, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">S_PURPURATUS =</span> <span class="fu">sum</span>(S_PURPURATUS, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">M_FRANCISCANUS =</span> <span class="fu">sum</span>(M_FRANCISCANUS, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">TOTAL_URCHINS =</span> <span class="fu">sum</span>(TOTAL_URCHINS, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">Protection =</span> <span class="fu">mean</span>(Protection))</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Change class to TRUE/FALSE for use in ggplot shape aesthetic</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>Urchins<span class="sc">$</span>Protection <span class="ot">&lt;-</span> <span class="fu">as.logical</span>(Urchins<span class="sc">$</span>Protection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Urchins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 x 10
+# Groups:   SITE [1]
+  SITE    DATE_RETRIEVED ARTHR~1 BIVAL~2 GASTR~3 OPHIU~4 S_PUR~5 M_FRA~6 TOTAL~7
+  &lt;chr&gt;   &lt;date&gt;           &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 ANACAPA 1992-05-19           0       0       0       0      10       1      11
+2 ANACAPA 1992-06-16           0       0       0       0       0       0       0
+3 ANACAPA 1992-06-23           0       0       0       0       0       0       0
+4 ANACAPA 1992-09-01           0       0       0       0       0       0       0
+5 ANACAPA 1992-09-08           0       0       0       0       0       0       0
+6 ANACAPA 1992-09-22           0       0       0       0       0       0       0
+# ... with 1 more variable: Protection &lt;lgl&gt;, and abbreviated variable names
+#   1: ARTHROPODA, 2: BIVALVIA, 3: GASTROPODA, 4: OPHIUROIDEA_ASTERPODEA,
+#   5: S_PURPURATUS, 6: M_FRANCISCANUS, 7: TOTAL_URCHINS</code></pre>
+</div>
+</div>
 </section>
-<section id="analysis" class="level1">
-<h1>Analysis</h1>
+<section id="tidy-data" class="level3">
+<h3 class="anchored" data-anchor-id="tidy-data">Tidy Data</h3>
+<p>Next the total urchin row is removed to focus on each species then pivoted the entire frame longer along each Species.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Create Species Data Frame</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>SpeciesDF <span class="ot">&lt;-</span> Urchins <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"ARTHROPODA"</span>, <span class="st">"BIVALVIA"</span>, <span class="st">"GASTROPODA"</span>, <span class="st">"OPHIUROIDEA_ASTERPODEA"</span>, <span class="st">"S_PURPURATUS"</span>, <span class="st">"M_FRANCISCANUS"</span>, <span class="st">"TOTAL_URCHINS"</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"Species"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Count"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_drop_na =</span> <span class="cn">TRUE</span>)              <span class="co"># Drop NA values</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a binary row for species presence </span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>SpeciesDF<span class="sc">$</span>Present[SpeciesDF<span class="sc">$</span>Count <span class="sc">&gt;=</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Unknown or uninitialised column: `Present`.</code></pre>
+</div>
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>SpeciesDF<span class="sc">$</span>Present[SpeciesDF<span class="sc">$</span>Count <span class="sc">==</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Dataframe displays only binary presence for each species per survey</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>PresentDF <span class="ot">&lt;-</span> SpeciesDF <span class="sc">|&gt;</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Count) <span class="sc">|&gt;</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">values_from =</span> <span class="st">"Present"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> <span class="st">"Species"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<hr>
+</section>
+</section>
+<section id="data-exploration" class="level1">
+<h1>Data Exploration</h1>
+<p>Summary provides an overview of each variable (column) and the range of values found over the surveys.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(Urchins))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>     SITE           DATE_RETRIEVED         ARTHROPODA         BIVALVIA      
+ Length:5935        Min.   :1990-02-26   Min.   :   0.00   Min.   :    0.0  
+ Class :character   1st Qu.:1995-09-12   1st Qu.:   0.00   1st Qu.:    0.0  
+ Mode  :character   Median :2001-01-16   Median :   1.00   Median :    7.0  
+                    Mean   :2003-01-08   Mean   :  12.88   Mean   :  109.1  
+                    3rd Qu.:2010-05-29   3rd Qu.:   8.00   3rd Qu.:   52.0  
+                    Max.   :2022-06-21   Max.   :2822.00   Max.   :16861.0  
+   GASTROPODA      OPHIUROIDEA_ASTERPODEA  S_PURPURATUS      M_FRANCISCANUS   
+ Min.   :   0.00   Min.   :  0.0000       Min.   :   0.000   Min.   : 0.0000  
+ 1st Qu.:   0.00   1st Qu.:  0.0000       1st Qu.:   0.000   1st Qu.: 0.0000  
+ Median :   1.00   Median :  0.0000       Median :   0.000   Median : 0.0000  
+ Mean   :  14.71   Mean   :  0.5582       Mean   :   7.616   Mean   : 0.2859  
+ 3rd Qu.:  12.00   3rd Qu.:  0.0000       3rd Qu.:   2.000   3rd Qu.: 0.0000  
+ Max.   :3406.00   Max.   :213.0000       Max.   :1789.000   Max.   :82.0000  
+ TOTAL_URCHINS     Protection     
+ Min.   :   0.00   Mode :logical  
+ 1st Qu.:   0.00   FALSE:3999     
+ Median :   0.00   TRUE :1936     
+ Mean   :   7.95                  
+ 3rd Qu.:   2.00                  
+ Max.   :1804.00                  </code></pre>
+</div>
+</div>
+<section id="initial-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="initial-visualizations">Initial visualizations</h2>
+<p>These initial visualizations can provide clues to trends in the data.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>TotalUrchins <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(Urchins, <span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> TOTAL_URCHINS)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> SITE, <span class="at">shape =</span> Protection), <span class="at">alpha =</span> .<span class="dv">7</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Total Urchins Collected at Sites in Southern CA"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Total Urchin Count"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Date Collected"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Site"</span>, <span class="at">shape =</span> <span class="st">"Protection"</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">hjust =</span> .<span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>TotalUrchins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Below is a series of maps of species abundance over time for each survey site. We see a lot of high spikes in this data, and does not appear linear in nature.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## How does each species vary per site:</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>Ana <span class="ot">&lt;-</span> SpeciesDF <span class="sc">|&gt;</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(SITE <span class="sc">==</span> <span class="st">"ANACAPA"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> Count, <span class="at">color =</span> Species)) <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Anacapa"</span>) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Date Collected"</span>) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Species Count"</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>FBPC <span class="ot">&lt;-</span> SpeciesDF <span class="sc">|&gt;</span> </span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(SITE <span class="sc">==</span> <span class="st">"FBPC"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> Count, <span class="at">color =</span> Species)) <span class="sc">+</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Point Cabrillo"</span>) <span class="sc">+</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Date Collected"</span>) <span class="sc">+</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Species Count"</span>)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>Gav <span class="ot">&lt;-</span> SpeciesDF <span class="sc">|&gt;</span> </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(SITE <span class="sc">==</span> <span class="st">"GAVIOTA"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> Count, <span class="at">color =</span> Species)) <span class="sc">+</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Gaviota"</span>) <span class="sc">+</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Date Collected"</span>) <span class="sc">+</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Species Count"</span>)</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>OB <span class="ot">&lt;-</span> SpeciesDF <span class="sc">|&gt;</span> </span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(SITE <span class="sc">==</span> <span class="st">"OCNBCH"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> Count, <span class="at">color =</span> Species)) <span class="sc">+</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Ocean Beach"</span>) <span class="sc">+</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Date Collected"</span>) <span class="sc">+</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Species Count"</span>)</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>EL <span class="ot">&lt;-</span> SpeciesDF <span class="sc">|&gt;</span> </span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(SITE <span class="sc">==</span> <span class="st">"SBELL"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> Count, <span class="at">color =</span> Species)) <span class="sc">+</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Ellwood Pier"</span>) <span class="sc">+</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Date Collected"</span>) <span class="sc">+</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Species Count"</span>)</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>SW <span class="ot">&lt;-</span> SpeciesDF <span class="sc">|&gt;</span> </span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(SITE <span class="sc">==</span> <span class="st">"SBSTWRF"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> Count, <span class="at">color =</span> Species)) <span class="sc">+</span></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Stearns Wharf"</span>) <span class="sc">+</span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Date Collected"</span>) <span class="sc">+</span></span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Species Count"</span>)</span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>Scrip <span class="ot">&lt;-</span> SpeciesDF <span class="sc">|&gt;</span> </span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(SITE <span class="sc">==</span> <span class="st">"SIO"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> Count, <span class="at">color =</span> Species)) <span class="sc">+</span></span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Scripps"</span>) <span class="sc">+</span></span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Date Collected"</span>) <span class="sc">+</span></span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Species Count"</span>)</span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a>AV <span class="ot">&lt;-</span> SpeciesDF <span class="sc">|&gt;</span> </span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(SITE <span class="sc">==</span> <span class="st">"AVILA"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> Count, <span class="at">color =</span> Species)) <span class="sc">+</span></span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Avila Beach"</span>) <span class="sc">+</span></span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Date Collected"</span>) <span class="sc">+</span></span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Species Count"</span>)</span>
+<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(Ana, FBPC, Gav, OB, EL, SW, Scrip, AV <span class="sc">+</span> <span class="fu">rremove</span>(<span class="st">"x.text"</span>), </span>
+<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow =</span> <span class="dv">4</span>,</span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a>          <span class="at">common.legend =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a>          <span class="at">legend =</span> <span class="st">"right"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<hr>
+</section>
 <section id="plan" class="level2">
 <h2 class="anchored" data-anchor-id="plan">Plan</h2>
+<p>First, I want to check if there is a difference in means between protected and unprotected sites for total urchins and other species. The goal is to understand if any species are sensitive to unprotected regions. The null hypothesis predicts there is no change between the abundance of each species in protected versus unprotected regions. I will repeat this for each listed species and total urchins.</p>
+<p><span class="math display">\[H_0: \mu_{protected} - \mu_{unprotected} = 0 \]</span></p>
+<p><span class="math display">\[H_A: \mu_{protected} - \mu_{unprotected} \neq  0 \]</span></p>
 </section>
-<section id="results" class="level2">
-<h2 class="anchored" data-anchor-id="results">Results</h2>
+<section id="analysis" class="level2">
+<h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
+<section id="hypothesis-testing" class="level3">
+<h3 class="anchored" data-anchor-id="hypothesis-testing">Hypothesis Testing</h3>
+<p>Welch’s Two Sample t-test</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Protect_Ttest <span class="ot">&lt;-</span> <span class="fu">t.test</span>(Urchins<span class="sc">$</span>TOTAL_URCHINS[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>       Urchins<span class="sc">$</span>TOTAL_URCHINS[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Significant</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>Art_Ttest <span class="ot">&lt;-</span> <span class="fu">t.test</span>(Urchins<span class="sc">$</span>ARTHROPODA[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>       Urchins<span class="sc">$</span>ARTHROPODA[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Significant</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>Biv_Ttest <span class="ot">&lt;-</span> <span class="fu">t.test</span>(Urchins<span class="sc">$</span>BIVALVIA[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>       Urchins<span class="sc">$</span>BIVALVIA[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Significant</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>Gast_Ttest <span class="ot">&lt;-</span> <span class="fu">t.test</span>(Urchins<span class="sc">$</span>GASTROPODA[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>       Urchins<span class="sc">$</span>GASTROPODA[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Significant</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>Oph_Ttest <span class="ot">&lt;-</span> <span class="fu">t.test</span>(Urchins<span class="sc">$</span>OPHIUROIDEA_ASTERPODEA[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>       Urchins<span class="sc">$</span>OPHIUROIDEA_ASTERPODEA[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Not Significant</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>Purp_Ttest <span class="ot">&lt;-</span> <span class="fu">t.test</span>(Urchins<span class="sc">$</span>S_PURPURATUS[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>       Urchins<span class="sc">$</span>S_PURPURATUS[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Significant</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>Fran_Ttest <span class="ot">&lt;-</span> <span class="fu">t.test</span>(Urchins<span class="sc">$</span>M_FRANCISCANUS[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>       Urchins<span class="sc">$</span>M_FRANCISCANUS[Urchins<span class="sc">$</span>Protection <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Not Significant</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Total urchins found that protected regions had a mean of 6 urchins, and unprotected a total of 8 species. There is a 95% change of the difference in mean between total urchins in protected and unprotected sites falling between [-4.84, .26]. Notably, this range includes 0 and the p-value is not low at p = .08 so the null hypothesis cannot be rejected. This means we do not find a signficant difference in total urchins per survey between the protected and unprotected regions.</p>
+<p>The Purple Sea Urchin and Brittle Star also had higher p-values (.08 and .67 respectively) so unable to reject the null hypothesis of no difference between the means of protected versus unprotected regions.</p>
+<p>This is not true for every case:</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">tribble</span>(<span class="sc">~</span>Species, <span class="sc">~</span>Confidence, <span class="sc">~</span>Pvalue, <span class="sc">~</span>Protected, <span class="sc">~</span>Unprotected,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Total Urchins"</span>, <span class="st">"[3.29, 9.99]"</span>, <span class="st">"&lt;.001"</span>, <span class="dv">12</span>, <span class="dv">5</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">"Arthropoda"</span>, <span class="st">"[-12.97, -8.37]"</span>, <span class="st">"&lt;.001"</span>, <span class="dv">6</span>, <span class="dv">16</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>       <span class="st">"Bivalvia"</span>, <span class="st">"[-121.12, -71.34]"</span>, <span class="st">"&lt;.001"</span>, <span class="dv">44</span>, <span class="dv">140</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">"Gastropoda"</span>, <span class="st">"[5.95, 15.7]"</span>, <span class="st">"&lt;.001"</span>, <span class="dv">22</span>, <span class="dv">11</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">"Sea Stars"</span>, <span class="st">"[-.07, .53]"</span>, <span class="st">".13"</span>, <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">"S purpuratus"</span>, <span class="st">"[3.18, 9.82]"</span>, <span class="st">"&lt;.001"</span>, <span class="dv">11</span>, <span class="dv">5</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>       <span class="st">"M franciscanus"</span>, <span class="st">"[-.05, .17]"</span>, <span class="st">".32"</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Species</th>
+<th style="text-align: left;">Confidence</th>
+<th style="text-align: left;">Pvalue</th>
+<th style="text-align: right;">Protected</th>
+<th style="text-align: right;">Unprotected</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Total Urchins</td>
+<td style="text-align: left;">[3.29, 9.99]</td>
+<td style="text-align: left;">&lt;.001</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Arthropoda</td>
+<td style="text-align: left;">[-12.97, -8.37]</td>
+<td style="text-align: left;">&lt;.001</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bivalvia</td>
+<td style="text-align: left;">[-121.12, -71.34]</td>
+<td style="text-align: left;">&lt;.001</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">140</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gastropoda</td>
+<td style="text-align: left;">[5.95, 15.7]</td>
+<td style="text-align: left;">&lt;.001</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sea Stars</td>
+<td style="text-align: left;">[-.07, .53]</td>
+<td style="text-align: left;">.13</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S purpuratus</td>
+<td style="text-align: left;">[3.18, 9.82]</td>
+<td style="text-align: left;">&lt;.001</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">M franciscanus</td>
+<td style="text-align: left;">[-.05, .17]</td>
+<td style="text-align: left;">.32</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The only two that were not significant, also had extremely low means for counts per survey close to 0.</p>
+<p>Rewrite the below numbers:</p>
+<p>The difference of means between protected and unprotected sites for Arthropoda is signficant with a pvalue less than .01, suggesting we can reject the null hypothesis. There is a 95% probabilty that the true difference in means falls between [-15.86, -12.08]. There is an average of 15 Arthropoda in protected sites, versus 1 in unprotected.</p>
+<p>The Bivalvia class also had a signficant difference with a 95% probability that the true difference in means is between [-136.6, -98.6]. The pvalue of under .01 suggests we can reject the null hypothesis. There is an average of 128 Bivalvia found in protected sites, versus 10 in unprotected. Gastropoda and M franciscanus also had significant p-values, shown in the table below.</p>
 </section>
+</section>
+<section id="double-check-xy-for-protectedunprotected" class="level2">
+<h2 class="anchored" data-anchor-id="double-check-xy-for-protectedunprotected">DOUBLE CHECK X/Y for protected/unprotected</h2>
+<section id="the-above-data-led-to-the-question" class="level3">
+<h3 class="anchored" data-anchor-id="the-above-data-led-to-the-question">The above data led to the question…</h3>
+<p>Does it make sense to combine total urchins for surveys, or count them separately? How to make this code make sense???</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(TOTAL_URCHINS <span class="sc">~</span> M_FRANCISCANUS, <span class="at">data =</span> Urchins))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = TOTAL_URCHINS ~ M_FRANCISCANUS, data = Urchins)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-337.41   -6.45   -6.45   -5.45 1718.72 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      6.4469     0.6456   9.986   &lt;2e-16 ***
+M_FRANCISCANUS   5.2557     0.2821  18.634   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 49.34 on 5933 degrees of freedom
+Multiple R-squared:  0.05529,   Adjusted R-squared:  0.05513 
+F-statistic: 347.2 on 1 and 5933 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(TOTAL_URCHINS <span class="sc">~</span> S_PURPURATUS, <span class="at">data =</span> Urchins))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = TOTAL_URCHINS ~ S_PURPURATUS, data = Urchins)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-15.176  -0.270  -0.261  -0.261  81.567 
+
+Coefficients:
+              Estimate Std. Error  t value Pr(&gt;|t|)    
+(Intercept)  0.2607187  0.0310821    8.388   &lt;2e-16 ***
+S_PURPURATUS 1.0095490  0.0006119 1649.960   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.367 on 5933 degrees of freedom
+Multiple R-squared:  0.9978,    Adjusted R-squared:  0.9978 
+F-statistic: 2.722e+06 on 1 and 5933 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(TOTAL_URCHINS <span class="sc">~</span> OPHIUROIDEA_ASTERPODEA, <span class="at">data =</span> Urchins))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = TOTAL_URCHINS ~ OPHIUROIDEA_ASTERPODEA, data = Urchins)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-117.36   -7.36   -7.36   -5.36 1796.64 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)              7.3626     0.6607   11.14  &lt; 2e-16 ***
+OPHIUROIDEA_ASTERPODEA   1.0516     0.1414    7.44 1.15e-13 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 50.53 on 5933 degrees of freedom
+Multiple R-squared:  0.009243,  Adjusted R-squared:  0.009076 
+F-statistic: 55.35 on 1 and 5933 DF,  p-value: 1.152e-13</code></pre>
+</div>
+</div>
+</section>
+<section id="interaction-model-ideas" class="level3">
+<h3 class="anchored" data-anchor-id="interaction-model-ideas">Interaction Model Ideas</h3>
+<ul>
+<li>Exploring species interactions to understand the ecological dynamics.</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic linear regression of impact of protection on urchins, no time variable</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(lm(species1 ~ species2 + species3 + Protection + Protection:species2, data = Urchins)) # Cannot use y as an interaction, look at species??</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Each species on total urchins</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(TOTAL_URCHINS <span class="sc">~</span> ARTHROPODA <span class="sc">+</span> BIVALVIA <span class="sc">+</span> GASTROPODA <span class="sc">+</span> OPHIUROIDEA_ASTERPODEA, <span class="at">data =</span> Urchins))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = TOTAL_URCHINS ~ ARTHROPODA + BIVALVIA + GASTROPODA + 
+    OPHIUROIDEA_ASTERPODEA, data = Urchins)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-171.11   -6.90   -6.56   -5.56 1793.68 
+
+Coefficients:
+                         Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)             6.5585247  0.6960460   9.423  &lt; 2e-16 ***
+ARTHROPODA              0.0600197  0.0117889   5.091 3.67e-07 ***
+BIVALVIA               -0.0007678  0.0010559  -0.727    0.467    
+GASTROPODA              0.0086916  0.0099323   0.875    0.382    
+OPHIUROIDEA_ASTERPODEA  1.0280257  0.1412025   7.281 3.76e-13 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 50.43 on 5930 degrees of freedom
+Multiple R-squared:  0.01378,   Adjusted R-squared:  0.01312 
+F-statistic: 20.72 on 4 and 5930 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Species Interactions focused on which species of urchin</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="do">#### Look at interaction of protection with species that have significant difference in protection</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(lm(TOTAL_URCHINS ~ ARTHROPODA + BIVALVIA + GASTROPODA + OPHIUROIDEA_ASTERPODEA + Protection + :Protection, data = Urchins))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="time-series-ideas" class="level3">
+<h3 class="anchored" data-anchor-id="time-series-ideas">Time Series Ideas</h3>
+<p><span class="math display">\[
+Time Series: UrchinDensity = B_0 + B_1 date_t + E_t
+\]</span></p>
+<ul>
+<li><p>Time versus density</p></li>
+<li><p>Before/After Heat Blob 2014 Recovery</p>
+<ul>
+<li>2 time series, 1 species or total, 1 protected and 1 no</li>
+</ul></li>
+</ul>
+<p>Attempted a time series, because I wanted to explore the time variable. Look at</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Time series Time versus Density in Protected versus Unprotected</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(TOTAL_URCHINS <span class="sc">~</span> DATE_RETRIEVED <span class="sc">+</span> Protection <span class="sc">+</span> Protection<span class="sc">:</span>DATE_RETRIEVED, <span class="at">data =</span> Urchins))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = TOTAL_URCHINS ~ DATE_RETRIEVED + Protection + Protection:DATE_RETRIEVED, 
+    data = Urchins)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+ -12.60   -8.48   -5.66   -4.74 1791.54 
+
+Coefficients:
+                                Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)                    3.9273974  3.1886338   1.232    0.218
+DATE_RETRIEVED                 0.0001549  0.0002579   0.601    0.548
+ProtectionTRUE                 8.9307081  5.4423514   1.641    0.101
+DATE_RETRIEVED:ProtectionTRUE -0.0001901  0.0004327  -0.439    0.661
+
+Residual standard error: 50.68 on 5931 degrees of freedom
+Multiple R-squared:  0.00383,   Adjusted R-squared:  0.003326 
+F-statistic: 7.601 on 3 and 5931 DF,  p-value: 4.526e-05</code></pre>
+</div>
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># High pvalie, change is not statistically significant due to time</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Interaction, .24 high pvalue, interaction significance</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="do">### 24% probability get sample from the population even if null were true</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Do not have enough evidence to reject the null</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># What are the values?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="tammas-ideas---linear-probability-model" class="level2">
+<h2 class="anchored" data-anchor-id="tammas-ideas---linear-probability-model">Tamma’s ideas - linear probability model</h2>
+<p>The data has large spikes which was making a linear regression challenging, so we edit to look just at species presence.</p>
+<p>Create dataframe with species presence 1 or 0</p>
+<p>t-test</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Linear Regression on just presence</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(TOTAL_URCHINS <span class="sc">~</span> DATE_RETRIEVED <span class="sc">+</span> Protection <span class="sc">+</span> Protection<span class="sc">:</span>DATE_RETRIEVED, <span class="at">data =</span> PresentDF))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = TOTAL_URCHINS ~ DATE_RETRIEVED + Protection + Protection:DATE_RETRIEVED, 
+    data = PresentDF)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-0.4492 -0.3303 -0.3300  0.5612  0.6704 
+
+Coefficients:
+                                Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                    3.309e-01  3.015e-02  10.977   &lt;2e-16 ***
+DATE_RETRIEVED                -7.141e-08  2.438e-06  -0.029   0.9766    
+ProtectionTRUE                 9.868e-02  5.146e-02   1.918   0.0552 .  
+DATE_RETRIEVED:ProtectionTRUE  1.094e-06  4.091e-06   0.268   0.7891    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4792 on 5931 degrees of freedom
+Multiple R-squared:  0.0119,    Adjusted R-squared:  0.0114 
+F-statistic: 23.82 on 3 and 5931 DF,  p-value: 2.57e-15</code></pre>
+</div>
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># as_tsibble(Urchins) %&gt;%</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   model(</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     classical_decomposition(value, type = "additive")</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   ) %&gt;%</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   components() %&gt;%</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   autoplot() # why is this not working?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="discussion" class="level1">
+<h1>Discussion</h1>
+<p>This analysis found that some species are more sensitive to protection from coastal human development, including Arthropoda, Bivalvia, Gastropoda, and M franciscanus. Total urchins do not seem sensitive to the difference, but that changes when we separate the two urchin species, as the Purple Pacific Sea Urchin does not show a difference but the Red Sea Urchin does between the sites. Although the confidence interval is close to 0 with the means at 1 and 0, this may need to be reviewed further for signficance as the species appears to have generally low abundance in the data. This signifies an importance to measure them separately</p>
+<p>Continued research could look further into the factors that affect these species, such as pollution levels due to high human activity</p>
+<hr>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
+<p>Britannica, The Editors of Encyclopaedia. “littoral zone”. Encyclopedia Britannica, 8 Aug.&nbsp;2019, https://www.britannica.com/science/littoral-zone. Accessed 3 December 2022.</p>
 <p>https://search.dataone.org/view/https%3A%2F%2Fpasta.lternet.edu%2Fpackage%2Fmetadata%2Feml%2Fknb-lter-sbc%2F52%2F11#https%3A%2F%2Fpasta.lternet.edu%2Fpackage%2Fdata%2Feml%2Fknb-lter-sbc%2F52%2F11%2F6f1d97294f041ee3d39cda102e0223af</p>
 
 
