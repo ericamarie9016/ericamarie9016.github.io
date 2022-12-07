@@ -389,10 +389,17 @@ Time_Franc <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = M_FRANCISCANUS, colo
 ```
 
 ```{r}
-ggarrange(Time_Urch, Time_Art, Time_Biv, Time_Gast, Time_Oph, Time_Purp, Time_Franc + rremove("x.text"), 
-          ncol = 1, nrow = 7,
-          common.legend = TRUE,
-          legend = "right")
+# ggarrange(Time_Urch, Time_Art, Time_Biv, Time_Gast, Time_Oph, Time_Purp, Time_Franc + rremove("x.text"), 
+#           ncol = 1, nrow = 7,
+#           common.legend = TRUE,
+#           legend = "right")
+Time_Urch
+Time_Art
+Time_Biv
+Time_Gast
+Time_Oph
+Time_Purp
+Time_Franc
 ```
 
 There is a low p-value associated with time displaying significance in this variable for Arthropoda, Bivalvia, Gastropoda, and Ophiuroidea/Asterpodea. Time was not significant for Total Urchins, *S purpuratus*, or *M franciscanus.* Interesting to note, in this linear regression time series the protection was found to be significant for Ophiuroidea/Asterpodea and *M franciscanus* while the earlier t-test did not. Overall these regressions have low R squared values, which signify the proportion of the species presence explained by time and protection.
