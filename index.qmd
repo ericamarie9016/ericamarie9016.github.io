@@ -1,6 +1,6 @@
 ---
 title: "Erica Dale"
-image: images/headshot.jpg
+image: images/CACoast2023.jpg
 page-layout: full
 about: 
   template: trestles
@@ -29,6 +29,10 @@ Welcome to my world!
 
 <br></br>
 
-I am a current Masters of Environmental Data Science student at the Bren School of Environmental Science & Management - University of California, Santa Barbara.
+<h3>Background: </h3>
 
-My professional bio will be updated shortly.\
+Current Masters of Environmental Data Science student at the Bren School of Environmental Science & Management - University of California, Santa Barbara: Expected June 2023
+
+Bachelors of Science in Biology, Concentration Organismal Biology and Ecology: June 2016.
+
+Experience with greenhouse, lab, and field research focused on botanical and ecological interactions. I am passionate to apply data skills to global conservation issues. My blog highlights essays and data focused projects from my Master's program.
