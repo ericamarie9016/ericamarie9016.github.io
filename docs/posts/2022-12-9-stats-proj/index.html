@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Erica Dale">
-<meta name="dcterms.date" content="2022-11-18">
+<meta name="dcterms.date" content="2022-12-09">
 <meta name="description" content="Comparing Species Abundance off Protected and Developed Coastlines in Southern California">
 
 <title>Erica M. Dale - Statistics Blog Post</title>
@@ -170,8 +170,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
                 <div class="quarto-category">MEDS</div>
                 <div class="quarto-category">Statistics</div>
                 <div class="quarto-category">R</div>
-                <div class="quarto-category">Southern California</div>
-                <div class="quarto-category">Urchins</div>
+                <div class="quarto-category">California</div>
+                <div class="quarto-category">Coastal Ecology</div>
+                <div class="quarto-category">Hypothesis Testing</div>
+                <div class="quarto-category">Time Series</div>
               </div>
                   </div>
   </div>
@@ -198,7 +200,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">November 18, 2022</p>
+        <p class="date">December 9, 2022</p>
       </div>
     </div>
       
@@ -213,18 +215,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#coastal-species-diversity-in-protected-versus-unprotected-regions" id="toc-coastal-species-diversity-in-protected-versus-unprotected-regions" class="nav-link active" data-scroll-target="#coastal-species-diversity-in-protected-versus-unprotected-regions">Coastal Species Diversity in Protected versus Unprotected Regions</a></li>
-  <li><a href="#data-collection-and-tidying" id="toc-data-collection-and-tidying" class="nav-link" data-scroll-target="#data-collection-and-tidying">Data Collection and Tidying</a>
-  <ul class="collapse">
-  <li><a href="#importing-and-creating-data-frames" id="toc-importing-and-creating-data-frames" class="nav-link" data-scroll-target="#importing-and-creating-data-frames">Importing and Creating Data Frames</a></li>
-  <li><a href="#combine-data-frames" id="toc-combine-data-frames" class="nav-link" data-scroll-target="#combine-data-frames">Combine Data Frames</a></li>
-  <li><a href="#tidy-data" id="toc-tidy-data" class="nav-link" data-scroll-target="#tidy-data">Tidy Data</a></li>
-  </ul></li>
-  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration">Data Exploration</a>
-  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data-collection-and-tidying" id="toc-data-collection-and-tidying" class="nav-link" data-scroll-target="#data-collection-and-tidying">Data Collection and Tidying</a></li>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration">Data Exploration</a></li>
   <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing">Hypothesis Testing</a></li>
   <li><a href="#time-series" id="toc-time-series" class="nav-link" data-scroll-target="#time-series">Time Series</a></li>
-  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -235,8 +230,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<section id="coastal-species-diversity-in-protected-versus-unprotected-regions" class="level1">
-<h1>Coastal Species Diversity in Protected versus Unprotected Regions</h1>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
 <p>I currently enjoy living near the beach in Santa Barbara, but this comes with inadvertent ecological impacts with coastal development increasing pollutants and high recreational use of the water. Questions arise: Does human development on land cause significant change in the species abundance of coastal waters? The aim of this project is to provide an understanding of sensitivities select species have to developed coastlines.</p>
 <p>Data was used from the Santa Barbara Coastal Long Term Ecological Research dataset “Settlement of urchins and other invertebrates, ongoing since 1990.” This project collects counts on six taxonomic groups through regular summer surveys.</p>
 <p>The survey locations are throughout southern California with one north of San Francisco. Each location is a pier, counts collected from the end of the pier in the littoral zone. The littoral zone is below the low-tide level and experiences the effects of tidal and longshore currents, and breaking waves.</p>
@@ -247,8 +242,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p></p><figcaption class="figure-caption">Locations of the LTER Survey Sites</figcaption><p></p>
 </figure>
 </div>
-<section id="this-data-set-explores-a-variety-of-species-spanning-different-ecological-functions" class="level5">
-<h5 class="anchored" data-anchor-id="this-data-set-explores-a-variety-of-species-spanning-different-ecological-functions">This data set explores a variety of species spanning different ecological functions:</h5>
+<p>This data set explores a variety of species spanning different ecological functions:</p>
 <ul>
 <li><p><strong>Arthropoda</strong>: Phylum of lobsters, crabs, and barnacles which have an exoskeleton made of chitin and risks mineralizing in calcium carbonate, a risk of ocean acidification.</p></li>
 <li><p><strong>Bivalvia</strong>: Class belonging to phylum Mollusca, includes filter feeders such as clams, oysters, and mussels.</p></li>
@@ -260,11 +254,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <hr>
 </section>
-</section>
-<section id="data-collection-and-tidying" class="level1">
-<h1>Data Collection and Tidying</h1>
-<section id="importing-and-creating-data-frames" class="level3">
-<h3 class="anchored" data-anchor-id="importing-and-creating-data-frames">Importing and Creating Data Frames</h3>
+<section id="data-collection-and-tidying" class="level3">
+<h3 class="anchored" data-anchor-id="data-collection-and-tidying">Data Collection and Tidying</h3>
+<section id="importing-and-creating-data-frames" class="level4">
+<h4 class="anchored" data-anchor-id="importing-and-creating-data-frames">Importing and Creating Data frames</h4>
 <p>This dataset was initially downloaded via DataOne website, link in the references. The metadata stated NA’s were written in the data as ‘-99999’, so I included this while importing the data.</p>
 <div class="cell">
 <details>
@@ -341,8 +334,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="combine-data-frames" class="level3">
-<h3 class="anchored" data-anchor-id="combine-data-frames">Combine Data Frames</h3>
+<section id="combine-data-frames" class="level4">
+<h4 class="anchored" data-anchor-id="combine-data-frames">Combine Data Frames</h4>
 <p>Here the two dataframes are joined so all of the survey rows are connected with a protection status based on location. Protection status is changed to be a binary TRUE/FALSE option, and the date class is changed. There are repeated surveys per day so these are collapsed down to one survey per day per site for my dataframe.</p>
 <div class="cell">
 <details>
@@ -371,8 +364,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </details>
 </div>
 </section>
-<section id="tidy-data" class="level3">
-<h3 class="anchored" data-anchor-id="tidy-data">Tidy Data</h3>
+<section id="tidy-data" class="level4">
+<h4 class="anchored" data-anchor-id="tidy-data">Tidy Data</h4>
 <p>Next the entire dataframe is pivoted to be longer along each Species, so now each species per survey has its own row for count. For later analysis, I use this longer dataframe to simplify the counts for each species to 1 or 0 for presence or absence. This is saved as a new dataframe and widened to return to a survey per row.</p>
 <div class="cell">
 <details>
@@ -399,8 +392,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <hr>
 </section>
 </section>
-<section id="data-exploration" class="level1">
-<h1>Data Exploration</h1>
+<section id="data-exploration" class="level3">
+<h3 class="anchored" data-anchor-id="data-exploration">Data Exploration</h3>
 <p>These initial visualizations can provide clues to trends in the data. This first plot shows the data distribution over time with total species count at each site, highlighting if protected or not. There are several major spikes, potential outliers, and many zeros. Overall this visualization is too crowded to infer any patterns.</p>
 <div class="cell">
 <details>
@@ -509,6 +502,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <hr>
+</section>
 <section id="hypothesis-testing" class="level3">
 <h3 class="anchored" data-anchor-id="hypothesis-testing">Hypothesis Testing</h3>
 <p>First, I want to check if there is a difference in means between protected and unprotected sites for each species with Welch’s Two Sample t-test. The goal is to understand if any species are sensitive to unprotected regions. The null hypothesis predicts there is no change between the abundance of each species in protected versus unprotected regions. I will repeat this for each listed species and total urchins.</p>
@@ -738,9 +732,8 @@ SpeciesPresence = B_0 + B_1 date_t + B_2 protection + E_t
 <p>Overall, I have found there are sensitivities to some species between protected and unprotected coastlines. Continued research could look further into the factors that affect these species, such as pollution levels due to high human activity or change of the ecosystem dynamics due to fishing and other recreational activities.</p>
 <hr>
 </section>
-</section>
-<section id="references" class="level1">
-<h1>References</h1>
+<section id="references" class="level3">
+<h3 class="anchored" data-anchor-id="references">References</h3>
 <p>Britannica, The Editors of Encyclopaedia. “littoral zone”. Encyclopedia Britannica, 8 Aug.&nbsp;2019, https://www.britannica.com/science/littoral-zone. Accessed 3 December 2022.</p>
 <p>Santa Barbara Coastal LTER, Steven C Schroeter, John Douglas Dixon, Thomas Ebert, and John Richards. 2022. <a href="https://search.dataone.org/view/https%3A%2F%2Fpasta.lternet.edu%2Fpackage%2Fmetadata%2Feml%2Fknb-lter-sbc%2F52%2F11"><strong>SBC LTER: Settlement of urchins and other invertebrates, ongoing since 1990.</strong></a>LTER Network Member Node. https://pasta.lternet.edu/package/metadata/eml/knb-lter-sbc/52/11.</p>
 
@@ -750,13 +743,13 @@ SpeciesPresence = B_0 + B_1 date_t + B_2 protection + E_t
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dale2022,
   author = {Erica Dale},
   title = {Statistics {Blog} {Post}},
-  date = {2022-11-18},
+  date = {2022-12-09},
   url = {http://ericamarie9016.github.io/2022-12-9-stats-proj},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dale2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-Erica Dale. 2022. <span>“Statistics Blog Post.”</span> November 18,
-2022. <a href="http://ericamarie9016.github.io/2022-12-9-stats-proj">http://ericamarie9016.github.io/2022-12-9-stats-proj</a>.
+Erica Dale. 2022. <span>“Statistics Blog Post.”</span> December 9, 2022.
+<a href="http://ericamarie9016.github.io/2022-12-9-stats-proj">http://ericamarie9016.github.io/2022-12-9-stats-proj</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

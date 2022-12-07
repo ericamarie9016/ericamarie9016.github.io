@@ -6,7 +6,7 @@ author:
     url: http://ericamarie9016.githubt.io
     affiliation: MEDS
     affiliation-url: http://ucsb-meds.github.io
-date: 2022-11-18
+date: 2022-12-09
 format:
   html:
     code-fold: true
@@ -14,12 +14,10 @@ format:
 code-overflow: wrap
 code-block-bg: true
 code-block-border-left: "#6B5A75"
-categories: [MEDS, Statistics, R, Southern California, Urchins]
+categories: [MEDS, Statistics, R, California, Coastal Ecology, Hypothesis Testing, Time Series]
 citation: 
   url: http://ericamarie9016.github.io/2022-12-9-stats-proj
-#bibliography: references.bib
-# image: 
-# draft: TRUE
+image: RedUrchin.png
 ---
 
 ```{r setup, include=FALSE}
@@ -35,7 +33,7 @@ library(feasts)
 library(knitr)     # Creates nice tables
 ```
 
-# Coastal Species Diversity in Protected versus Unprotected Regions
+### Introduction
 
 I currently enjoy living near the beach in Santa Barbara, but this comes with inadvertent ecological impacts with coastal development increasing pollutants and high recreational use of the water. Questions arise: Does human development on land cause significant change in the species abundance of coastal waters? The aim of this project is to provide an understanding of sensitivities select species have to developed coastlines.
 
@@ -47,7 +45,7 @@ Three of the piers are off protected coastal regions, the rest are populated and
 
 ![Locations of the LTER Survey Sites](images/Map.png)
 
-##### This data set explores a variety of species spanning different ecological functions:
+This data set explores a variety of species spanning different ecological functions:
 
 -   **Arthropoda**: Phylum of lobsters, crabs, and barnacles which have an exoskeleton made of chitin and risks mineralizing in calcium carbonate, a risk of ocean acidification.
 
@@ -65,9 +63,9 @@ Three of the piers are off protected coastal regions, the rest are populated and
 
 ------------------------------------------------------------------------
 
-# Data Collection and Tidying
+### Data Collection and Tidying
 
-### Importing and Creating Data Frames
+#### Importing and Creating Data frames
 
 This dataset was initially downloaded via DataOne website, link in the references. The metadata stated NA's were written in the data as '-99999', so I included this while importing the data.
 
@@ -89,7 +87,7 @@ ProtectionDF <- data.frame(
 kable(ProtectionDF, n = 8)
 ```
 
-### Combine Data Frames
+#### Combine Data Frames
 
 Here the two dataframes are joined so all of the survey rows are connected with a protection status based on location. Protection status is changed to be a binary TRUE/FALSE option, and the date class is changed. There are repeated surveys per day so these are collapsed down to one survey per day per site for my dataframe.
 
@@ -117,7 +115,7 @@ Urchins <- Urchins |>
 Urchins$Protection <- as.logical(Urchins$Protection)
 ```
 
-### Tidy Data
+#### Tidy Data
 
 Next the entire dataframe is pivoted to be longer along each Species, so now each species per survey has its own row for count. For later analysis, I use this longer dataframe to simplify the counts for each species to 1 or 0 for presence or absence. This is saved as a new dataframe and widened to return to a survey per row.
 
@@ -143,7 +141,7 @@ PresentDF <- SpeciesDF |>
 
 ------------------------------------------------------------------------
 
-# Data Exploration
+### Data Exploration
 
 These initial visualizations can provide clues to trends in the data. This first plot shows the data distribution over time with total species count at each site, highlighting if protected or not. There are several major spikes, potential outliers, and many zeros. Overall this visualization is too crowded to infer any patterns.
 
@@ -403,7 +401,7 @@ Overall, I have found there are sensitivities to some species between protected 
 
 ------------------------------------------------------------------------
 
-# References
+### References
 
 Britannica, The Editors of Encyclopaedia. "littoral zone". Encyclopedia Britannica, 8 Aug. 2019, https://www.britannica.com/science/littoral-zone. Accessed 3 December 2022.
 
