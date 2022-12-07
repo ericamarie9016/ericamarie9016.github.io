@@ -35,25 +35,21 @@ library(feasts)
 library(knitr)     # Creates nice tables
 ```
 
-# Research Question
+# Coastal Species Diversity in Protected versus Unprotected Regions
 
-I currently enjoy living near the beach in Santa Barbara, but this comes with inadvertent ecological impacts with coastal development increasing pollutants and high recreational use of the water. Questions arise: is there a significant difference between species counts in surveys of protected and unprotected regions? Does human development on land cause significant change in the species abundance of coastal waters? The aim of this project is to provide an understanding of sensitivities select species have to developed coastlines.
+I currently enjoy living near the beach in Santa Barbara, but this comes with inadvertent ecological impacts with coastal development increasing pollutants and high recreational use of the water. Questions arise: Does human development on land cause significant change in the species abundance of coastal waters? The aim of this project is to provide an understanding of sensitivities select species have to developed coastlines.
 
 Data was used from the Santa Barbara Coastal Long Term Ecological Research dataset "Settlement of urchins and other invertebrates, ongoing since 1990." This project collects counts on six taxonomic groups through regular summer surveys.
 
-#### Let's explore the littoral zone!
-
 The survey locations are throughout southern California with one north of San Francisco. Each location is a pier, counts collected from the end of the pier in the littoral zone. The littoral zone is below the low-tide level and experiences the effects of tidal and longshore currents, and breaking waves.
 
-Three of the piers are off protected coastal regions, the rest are populated and developed piers. The protected regions are all parks with minimal development and a marine conservation area protecting surrounding water. Gaviota Beach Pier with Kashtayit State Marine Conservation Area. Point Cabrillo Pier with the Point Cabrillo State Marine Reserve. Anacapa Island Pier with a variety of marine protected areas surrounding the Channel Islands chain. The maps below display the survey locations, 3 protected and 5 unprotected.
+Three of the piers are off protected coastal regions, the rest are populated and developed piers. The protected regions are all parks with minimal development and a marine conservation area protecting surrounding water: Gaviota Beach Pier with Kashtayit State Marine Conservation Area, Point Cabrillo Pier with the Point Cabrillo State Marine Reserve, Anacapa Island Pier with a variety of marine protected areas surrounding the Channel Islands chain. The maps below display the survey locations, 3 protected and 5 unprotected.
 
-![](images/paste-0C4A0C8C.png){width="347"}
-
-![](https://lh6.googleusercontent.com/ejBnDmJ71mK6gAObwJgaop7xZQkSjZogK8DG2snfxrPmH9kzLvUay4OhYjgvXCDzqWD_HaVY4yAjxgQ3Pg7tdbipxX0QK6RCa22i-xWFZNxHm_e5ADq38jydaoeexWL0AotziLeMDVnnu4DWtTlSkQv3YQ)
+![Locations of the LTER Survey Sites](images/Map.png)
 
 ##### This data set explores a variety of species spanning different ecological functions:
 
--   **Arthropoda**: Phylum of lobsters, crabs, and barnacles. Have an exoskeleton made of chitin which mineralizes with calcium carbonate, a risk of ocean acidification.
+-   **Arthropoda**: Phylum of lobsters, crabs, and barnacles which have an exoskeleton made of chitin and risks mineralizing in calcium carbonate, a risk of ocean acidification.
 
 -   **Bivalvia**: Class belonging to phylum Mollusca, includes filter feeders such as clams, oysters, and mussels.
 
@@ -123,9 +119,9 @@ Urchins$Protection <- as.logical(Urchins$Protection)
 
 ### Tidy Data
 
-Next the entire dataframe is pivoted the entire longer along each Species, so now each species per survey has its own row for count. For later analysis, I use this longer dataframe to simplify the counts for each species to 1 or 0 for presence or absence. This is saved as a new dataframe and widened to return to a survey per row.
+Next the entire dataframe is pivoted to be longer along each Species, so now each species per survey has its own row for count. For later analysis, I use this longer dataframe to simplify the counts for each species to 1 or 0 for presence or absence. This is saved as a new dataframe and widened to return to a survey per row.
 
-```{r}
+```{r output = FALSE}
 ## Create Species Data Frame
 SpeciesDF <- Urchins |>
   pivot_longer(cols = c("ARTHROPODA", "BIVALVIA", "GASTROPODA", "OPHIUROIDEA_ASTERPODEA", "S_PURPURATUS", "M_FRANCISCANUS", "TOTAL_URCHINS"),
@@ -149,17 +145,9 @@ PresentDF <- SpeciesDF |>
 
 # Data Exploration
 
-Summary provides an overview of each variable (column) and the range of values found over the surveys.
-
-```{r}
-print(summary(Urchins))
-```
-
-### Initial visualizations
-
 These initial visualizations can provide clues to trends in the data. This first plot shows the data distribution over time with total species count at each site, highlighting if protected or not. There are several major spikes, potential outliers, and many zeros. Overall this visualization is too crowded to infer any patterns.
 
-```{r output = FALSE}
+```{r}
 TotalUrchins <- ggplot(Urchins, aes(x = DATE_RETRIEVED, y = TOTAL_URCHINS)) +
   geom_point(aes(color = SITE, shape = Protection), alpha = .7, size = 2) +
   theme_minimal() +
@@ -173,7 +161,7 @@ TotalUrchins <- ggplot(Urchins, aes(x = DATE_RETRIEVED, y = TOTAL_URCHINS)) +
 TotalUrchins
 ```
 
-Below is a series of maps of species abundance over time for each survey site. There are a lot of high spikes in this data with a lot of zeros, and does not appear linear in nature for any of the sites. There is also not a single site, protection status or species that is the solo cause of the data spikes.
+Below is a series of maps of species abundance over time for each survey site. There are high spikes in this data with a lot of zeros, and does not appear linear in nature for any of the sites. There is also not a single site, protection status or species that is the solo cause of the data spikes.
 
 ```{r}
 ## How does each species vary per site:
@@ -183,8 +171,8 @@ Ana <- SpeciesDF |>
   ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Species)) +
   geom_line() +
   theme_minimal() +
-  labs(title = "Anacapa") +
-  xlab("Date Collected") +
+  labs(title = "Anacapa",
+       x = NULL) +
   ylab("Species Count")
 
 FBPC <- SpeciesDF |> 
@@ -192,17 +180,17 @@ FBPC <- SpeciesDF |>
   ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Species)) +
   geom_line() +
   theme_minimal() +
-  labs(title = "Point Cabrillo") +
-  xlab("Date Collected") +
-  ylab("Species Count")
+  labs(title = "Point Cabrillo",
+       x = NULL,
+       y = NULL)
 
 Gav <- SpeciesDF |> 
   filter(SITE == "GAVIOTA") |> 
   ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Species)) +
   geom_line() +
   theme_minimal() +
-  labs(title = "Gaviota") +
-  xlab("Date Collected") +
+  labs(title = "Gaviota",
+       x = NULL) +
   ylab("Species Count")
 
 OB <- SpeciesDF |> 
@@ -210,17 +198,17 @@ OB <- SpeciesDF |>
   ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Species)) +
   geom_line() +
   theme_minimal() +
-  labs(title = "Ocean Beach") +
-  xlab("Date Collected") +
-  ylab("Species Count")
+  labs(title = "Ocean Beach",
+       x = NULL,
+       y = NULL)
 
 EL <- SpeciesDF |> 
   filter(SITE == "SBELL") |> 
   ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Species)) +
   geom_line() +
   theme_minimal() +
-  labs(title = "Ellwood Pier") +
-  xlab("Date Collected") +
+  labs(title = "Ellwood Pier",
+       x = NULL) +
   ylab("Species Count")
 
 SW <- SpeciesDF |> 
@@ -228,9 +216,9 @@ SW <- SpeciesDF |>
   ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Species)) +
   geom_line() +
   theme_minimal() +
-  labs(title = "Stearns Wharf") +
-  xlab("Date Collected") +
-  ylab("Species Count")
+  labs(title = "Stearns Wharf",
+       x = NULL,
+       y = NULL)
 
 Scrip <- SpeciesDF |> 
   filter(SITE == "SIO") |> 
@@ -246,9 +234,9 @@ AV <- SpeciesDF |>
   ggplot(aes(x = DATE_RETRIEVED, y = Count, color = Species)) +
   geom_line() +
   theme_minimal() +
-  labs(title = "Avila Beach") +
-  xlab("Date Collected") +
-  ylab("Species Count")
+  labs(title = "Avila Beach",
+       y = NULL) +
+  xlab("Date Collected")
 
 ggarrange(Ana, FBPC, Gav, OB, EL, SW, Scrip, AV + rremove("x.text"), 
           ncol = 2, nrow = 4,
@@ -311,14 +299,14 @@ This analysis found that some species are more sensitive to protection from coas
 
 Not all species displayed a sensitivity or difference between the regions. Ophiuroidea/Asterpodea and *M franciscanus* each had higher p-values (.13 and .32 respectively) so unable to reject the null hypothesis of no difference between the means of protected versus unprotected regions for these groups. It is notable that Total Urchins had a significant p-value, but that changes when the two urchin species are separated, as *S purpuratus* does not show a significant difference but *M franciscanus* does between the sites. This may need to be reviewed further for significance as *M franciscanus* appears to have generally low abundance in the data with an average count of 0 between both sites. This signifies an importance to measure the species separately instead of in the combined fashion in the dataset.
 
-This plot displays for each species, the confidence interval signifies there is a 95% probability that the true difference in means for the species count at protected versus unprotected sites falls between.
+This plot displays for each species a confidence interval, for each there is a 95% probability that the true difference in means for the species count at protected versus unprotected sites falls within the confidence range.
 
 ------------------------------------------------------------------------
 
 ### Time Series
 
 $$
-Time Series: Presence = B_0 + B_1 date_t + B_2 protection + E_t
+SpeciesPresence = B_0 + B_1 date_t + B_2 protection + E_t
 $$
 
 Finally, I want to explore if there is a time element with the presence of each species. To account for the large spikes, I utilize the dataframe with the binary present/absent data for each species per survey. The below time series linear regressions compare protected versus unprotected for each species.
@@ -327,89 +315,89 @@ Finally, I want to explore if there is a time element with the presence of each 
 summary(lm(TOTAL_URCHINS ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Urch <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = TOTAL_URCHINS, color = Protection)) +
   geom_jitter(height = .1, alpha = .7) +
-  geom_smooth(method = lm) +
+  geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
-  labs(title = "Presence of Total Urchins") +
-  xlab("Date Collected") +
-  ylab("Present or Absent") +
+  labs(title = "Total Urchins",
+       x = NULL,
+       y = NULL) +
   theme(plot.title = element_text(face = "bold",
                                   hjust = .5))
 
 summary(lm(ARTHROPODA ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Art <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = ARTHROPODA, color = Protection)) +
   geom_jitter(height = .1, alpha = .7) +
-  geom_smooth(method = loess) +
+  geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
-  labs(title = "Presence of Arthropoda") +
-  xlab("Date Collected") +
-  ylab("Present or Absent") +
+  labs(title = "Arthropoda",
+       x = NULL,
+       y = NULL) +
   theme(plot.title = element_text(face = "bold",
                                   hjust = .5))
 
 summary(lm(BIVALVIA ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Biv <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = BIVALVIA, color = Protection)) +
   geom_jitter(height = .1, alpha = .7) +
-  geom_smooth(method = loess) +
+  geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
-  labs(title = "Presence of Bivalvia") +
-  xlab("Date Collected") +
-  ylab("Present or Absent") +
+  labs(title = "Bivalvia",
+       x = NULL,
+       y = NULL) +
   theme(plot.title = element_text(face = "bold",
                                   hjust = .5))
 
 summary(lm(GASTROPODA ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Gast <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = GASTROPODA, color = Protection)) +
   geom_jitter(height = .1, alpha = .7) +
-  geom_smooth(method = loess) +
+  geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
-  labs(title = "Presence of Gastropoda") +
-  xlab("Date Collected") +
-  ylab("Present or Absent") +
+  labs(title = "Gastropoda",
+       x = NULL) +
+  ylab("Present (1) or Absent (0) At Survey") +
   theme(plot.title = element_text(face = "bold",
                                   hjust = .5))
 
 summary(lm(OPHIUROIDEA_ASTERPODEA ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Oph <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = OPHIUROIDEA_ASTERPODEA, color = Protection)) +
   geom_jitter(height = .1, alpha = .7) +
-  geom_smooth(method = loess) +
+  geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
-  labs(title = "Presence of Ophiuroida/Asterpodea") +
-  xlab("Date Collected") +
-  ylab("Present or Absent") +
+  labs(title = "Ophiuroida/Asterpodea",
+       x = NULL,
+       y = NULL) +
   theme(plot.title = element_text(face = "bold",
                                   hjust = .5))
 
 summary(lm(S_PURPURATUS ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Purp <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = S_PURPURATUS, color = Protection)) +
   geom_jitter(height = .1, alpha = .7) +
-  geom_smooth(method = loess) +
+  geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
-  labs(title = "Presence of S Purpuratus") +
-  xlab("Date Collected") +
-  ylab("Present or Absent") +
+  labs(title = "S Purpuratus",
+       x = NULL,
+       y = NULL) +
   theme(plot.title = element_text(face = "bold",
                                   hjust = .5))
 
 summary(lm(M_FRANCISCANUS ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Franc <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = M_FRANCISCANUS, color = Protection)) +
   geom_jitter(height = .1, alpha = .7) +
-  geom_smooth(method = loess) +
+  geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
-  labs(title = "Presence of M franciscanus") +
+  labs(title = "M franciscanus",
+       y = NULL) +
   xlab("Date Collected") +
-  ylab("Present or Absent") +
   theme(plot.title = element_text(face = "bold",
                                   hjust = .5))
 ```
 
 ```{r}
 ggarrange(Time_Urch, Time_Art, Time_Biv, Time_Gast, Time_Oph, Time_Purp, Time_Franc + rremove("x.text"), 
-          ncol = 2, nrow = 4,
+          ncol = 1, nrow = 7,
           common.legend = TRUE,
           legend = "right")
 ```
 
-There is a low p-value associated with time displaying significance in this variable for Arthropoda, Bivalvia, Gastropoda, and Ophiuroidea/Asterpodea. Time was not significant for Total Urchins, *S purpuratus*, or *M franciscanus.* Interesting to note, in this linear regression time series the protection was found to be significant for Ophiuroidea/Asterpodea and *M franciscanus* while the earlier t-test did not. Overall these regressions have low R\^2 values, which signify the probability of collecting the sample from the population even if null were true.
+There is a low p-value associated with time displaying significance in this variable for Arthropoda, Bivalvia, Gastropoda, and Ophiuroidea/Asterpodea. Time was not significant for Total Urchins, *S purpuratus*, or *M franciscanus.* Interesting to note, in this linear regression time series the protection was found to be significant for Ophiuroidea/Asterpodea and *M franciscanus* while the earlier t-test did not. Overall these regressions have low R squared values, which signify the proportion of the species presence explained by time and protection.
 
 Overall, I have found there are sensitivities to some species between protected and unprotected coastlines. Continued research could look further into the factors that affect these species, such as pollution levels due to high human activity or change of the ecosystem dynamics due to fishing and other recreational activities.
 
