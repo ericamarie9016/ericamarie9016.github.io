@@ -267,6 +267,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </details>
 </div>
 <p>The protection data was not immediately available, I had to create a data frame with the values 1 for protected, 0 for unprotected. Protection was determined by the location of the piers. A pier is labeled unprotected if located in populated developed areas such as Ocean Beach, San Diego; protected piers are located in undeveloped parks surrounded by marine protected areas, including Channel Islands National Park and Point Cabrillo State Marine Reserve.</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAaCAYAAADFTB7LAAAAa0lEQVR42u3OywnAIBBAwcXSUoCW5D11xDoNCBGNv0MOecJOBSOi1OZMsJ4dvFxEJ1OQnMxBarIKEpNNkJbsBknJYZCSnAYJyVVQziNig7/nZkFEbhTE5HpBVO4dxOXKIDL3BLG5BJ1T6rsbMfep2CaMN00AAAAASUVORK5CYII=.png" title="Run Current Chunk" class="img-fluid"></p>
 <div class="cell">
 <details>
 <summary>Show the code</summary>
@@ -640,7 +641,7 @@ SpeciesPresence = B_0 + B_1 date_t + B_2 protection + E_t
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(TOTAL_URCHINS <span class="sc">~</span> DATE_RETRIEVED <span class="sc">+</span> Protection, <span class="at">data =</span> PresentDF))</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Time_Urch <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(PresentDF, <span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> TOTAL_URCHINS, <span class="at">color =</span> Protection)) <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">6</span>) <span class="sc">+</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> loess, <span class="at">formula =</span> <span class="st">'y ~ x'</span>) <span class="sc">+</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Total Urchins"</span>,</span>
@@ -651,7 +652,7 @@ SpeciesPresence = B_0 + B_1 date_t + B_2 protection + E_t
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(ARTHROPODA <span class="sc">~</span> DATE_RETRIEVED <span class="sc">+</span> Protection, <span class="at">data =</span> PresentDF))</span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>Time_Art <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(PresentDF, <span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> ARTHROPODA, <span class="at">color =</span> Protection)) <span class="sc">+</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">6</span>) <span class="sc">+</span></span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> loess, <span class="at">formula =</span> <span class="st">'y ~ x'</span>) <span class="sc">+</span></span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Arthropoda"</span>,</span>
@@ -662,29 +663,29 @@ SpeciesPresence = B_0 + B_1 date_t + B_2 protection + E_t
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(BIVALVIA <span class="sc">~</span> DATE_RETRIEVED <span class="sc">+</span> Protection, <span class="at">data =</span> PresentDF))</span>
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>Time_Biv <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(PresentDF, <span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> BIVALVIA, <span class="at">color =</span> Protection)) <span class="sc">+</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">6</span>) <span class="sc">+</span></span>
 <span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> loess, <span class="at">formula =</span> <span class="st">'y ~ x'</span>) <span class="sc">+</span></span>
 <span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Bivalvia"</span>,</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Present (1) or Absent (0) At Survey"</span>) <span class="sc">+</span></span>
 <span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>,</span>
 <span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">hjust =</span> .<span class="dv">5</span>))</span>
 <span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(GASTROPODA <span class="sc">~</span> DATE_RETRIEVED <span class="sc">+</span> Protection, <span class="at">data =</span> PresentDF))</span>
 <span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>Time_Gast <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(PresentDF, <span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> GASTROPODA, <span class="at">color =</span> Protection)) <span class="sc">+</span></span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">6</span>) <span class="sc">+</span></span>
 <span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> loess, <span class="at">formula =</span> <span class="st">'y ~ x'</span>) <span class="sc">+</span></span>
 <span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Gastropoda"</span>,</span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Present (1) or Absent (0) At Survey"</span>) <span class="sc">+</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
 <span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>,</span>
 <span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">hjust =</span> .<span class="dv">5</span>))</span>
 <span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(OPHIUROIDEA_ASTERPODEA <span class="sc">~</span> DATE_RETRIEVED <span class="sc">+</span> Protection, <span class="at">data =</span> PresentDF))</span>
 <span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>Time_Oph <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(PresentDF, <span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> OPHIUROIDEA_ASTERPODEA, <span class="at">color =</span> Protection)) <span class="sc">+</span></span>
-<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">6</span>) <span class="sc">+</span></span>
 <span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> loess, <span class="at">formula =</span> <span class="st">'y ~ x'</span>) <span class="sc">+</span></span>
 <span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Ophiuroida/Asterpodea"</span>,</span>
@@ -695,7 +696,7 @@ SpeciesPresence = B_0 + B_1 date_t + B_2 protection + E_t
 <span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(S_PURPURATUS <span class="sc">~</span> DATE_RETRIEVED <span class="sc">+</span> Protection, <span class="at">data =</span> PresentDF))</span>
 <span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>Time_Purp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(PresentDF, <span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> S_PURPURATUS, <span class="at">color =</span> Protection)) <span class="sc">+</span></span>
-<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">6</span>) <span class="sc">+</span></span>
 <span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> loess, <span class="at">formula =</span> <span class="st">'y ~ x'</span>) <span class="sc">+</span></span>
 <span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"S Purpuratus"</span>,</span>
@@ -706,7 +707,7 @@ SpeciesPresence = B_0 + B_1 date_t + B_2 protection + E_t
 <span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(M_FRANCISCANUS <span class="sc">~</span> DATE_RETRIEVED <span class="sc">+</span> Protection, <span class="at">data =</span> PresentDF))</span>
 <span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>Time_Franc <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(PresentDF, <span class="fu">aes</span>(<span class="at">x =</span> DATE_RETRIEVED, <span class="at">y =</span> M_FRANCISCANUS, <span class="at">color =</span> Protection)) <span class="sc">+</span></span>
-<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> .<span class="dv">1</span>, <span class="at">alpha =</span> .<span class="dv">6</span>) <span class="sc">+</span></span>
 <span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> loess, <span class="at">formula =</span> <span class="st">'y ~ x'</span>) <span class="sc">+</span></span>
 <span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"M franciscanus"</span>,</span>
@@ -719,56 +720,13 @@ SpeciesPresence = B_0 + B_1 date_t + B_2 protection + E_t
 <div class="cell">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggarrange(Time_Urch, Time_Art, Time_Biv, Time_Gast, Time_Oph, Time_Purp, Time_Franc + rremove("x.text"), </span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#           ncol = 1, nrow = 7,</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#           common.legend = TRUE,</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#           legend = "right")</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>Time_Urch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(Time_Urch, Time_Art, Time_Biv, Time_Gast, Time_Oph, Time_Purp, Time_Franc <span class="sc">+</span> <span class="fu">rremove</span>(<span class="st">"x.text"</span>),</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow =</span> <span class="dv">4</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">common.legend =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">legend =</span> <span class="st">"right"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
-</div>
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Time_Art</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid" width="672"></p>
-</div>
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Time_Biv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid" width="672"></p>
-</div>
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Time_Gast</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-10-4.png" class="img-fluid" width="672"></p>
-</div>
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Time_Oph</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-10-5.png" class="img-fluid" width="672"></p>
-</div>
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Time_Purp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-10-6.png" class="img-fluid" width="672"></p>
-</div>
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Time_Franc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-10-7.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>There is a low p-value associated with time displaying significance in this variable for Arthropoda, Bivalvia, Gastropoda, and Ophiuroidea/Asterpodea. Time was not significant for Total Urchins, <em>S purpuratus</em>, or <em>M franciscanus.</em> Interesting to note, in this linear regression time series the protection was found to be significant for Ophiuroidea/Asterpodea and <em>M franciscanus</em> while the earlier t-test did not. Overall these regressions have low R squared values, which signify the proportion of the species presence explained by time and protection.</p>

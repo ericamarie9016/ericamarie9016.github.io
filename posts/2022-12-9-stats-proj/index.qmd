@@ -76,6 +76,8 @@ UrchinsDF <- read_csv(here("posts", "2022-12-9-stats-proj", "Invertebrate_Settle
 
 The protection data was not immediately available, I had to create a data frame with the values 1 for protected, 0 for unprotected. Protection was determined by the location of the piers. A pier is labeled unprotected if located in populated developed areas such as Ocean Beach, San Diego; protected piers are located in undeveloped parks surrounded by marine protected areas, including Channel Islands National Park and Point Cabrillo State Marine Reserve.
 
+![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAaCAYAAADFTB7LAAAAa0lEQVR42u3OywnAIBBAwcXSUoCW5D11xDoNCBGNv0MOecJOBSOi1OZMsJ4dvFxEJ1OQnMxBarIKEpNNkJbsBknJYZCSnAYJyVVQziNig7/nZkFEbhTE5HpBVO4dxOXKIDL3BLG5BJ1T6rsbMfep2CaMN00AAAAASUVORK5CYII= "Run Current Chunk")
+
 ```{r}
 ## Create Protection data frame
 ProtectionDF <- data.frame(
@@ -312,7 +314,7 @@ Finally, I want to explore if there is a time element with the presence of each 
 ```{r output = FALSE}
 summary(lm(TOTAL_URCHINS ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Urch <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = TOTAL_URCHINS, color = Protection)) +
-  geom_jitter(height = .1, alpha = .7) +
+  geom_jitter(height = .1, alpha = .6) +
   geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
   labs(title = "Total Urchins",
@@ -323,7 +325,7 @@ Time_Urch <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = TOTAL_URCHINS, color 
 
 summary(lm(ARTHROPODA ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Art <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = ARTHROPODA, color = Protection)) +
-  geom_jitter(height = .1, alpha = .7) +
+  geom_jitter(height = .1, alpha = .6) +
   geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
   labs(title = "Arthropoda",
@@ -334,29 +336,29 @@ Time_Art <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = ARTHROPODA, color = Pr
 
 summary(lm(BIVALVIA ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Biv <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = BIVALVIA, color = Protection)) +
-  geom_jitter(height = .1, alpha = .7) +
+  geom_jitter(height = .1, alpha = .6) +
   geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
   labs(title = "Bivalvia",
-       x = NULL,
-       y = NULL) +
-  theme(plot.title = element_text(face = "bold",
-                                  hjust = .5))
-
-summary(lm(GASTROPODA ~ DATE_RETRIEVED + Protection, data = PresentDF))
-Time_Gast <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = GASTROPODA, color = Protection)) +
-  geom_jitter(height = .1, alpha = .7) +
-  geom_smooth(method = loess, formula = 'y ~ x') +
-  theme_minimal() +
-  labs(title = "Gastropoda",
        x = NULL) +
   ylab("Present (1) or Absent (0) At Survey") +
   theme(plot.title = element_text(face = "bold",
                                   hjust = .5))
 
+summary(lm(GASTROPODA ~ DATE_RETRIEVED + Protection, data = PresentDF))
+Time_Gast <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = GASTROPODA, color = Protection)) +
+  geom_jitter(height = .1, alpha = .6) +
+  geom_smooth(method = loess, formula = 'y ~ x') +
+  theme_minimal() +
+  labs(title = "Gastropoda",
+       x = NULL,
+       y = NULL) +
+  theme(plot.title = element_text(face = "bold",
+                                  hjust = .5))
+
 summary(lm(OPHIUROIDEA_ASTERPODEA ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Oph <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = OPHIUROIDEA_ASTERPODEA, color = Protection)) +
-  geom_jitter(height = .1, alpha = .7) +
+  geom_jitter(height = .1, alpha = .6) +
   geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
   labs(title = "Ophiuroida/Asterpodea",
@@ -367,7 +369,7 @@ Time_Oph <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = OPHIUROIDEA_ASTERPODEA
 
 summary(lm(S_PURPURATUS ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Purp <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = S_PURPURATUS, color = Protection)) +
-  geom_jitter(height = .1, alpha = .7) +
+  geom_jitter(height = .1, alpha = .6) +
   geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
   labs(title = "S Purpuratus",
@@ -378,7 +380,7 @@ Time_Purp <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = S_PURPURATUS, color =
 
 summary(lm(M_FRANCISCANUS ~ DATE_RETRIEVED + Protection, data = PresentDF))
 Time_Franc <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = M_FRANCISCANUS, color = Protection)) +
-  geom_jitter(height = .1, alpha = .7) +
+  geom_jitter(height = .1, alpha = .6) +
   geom_smooth(method = loess, formula = 'y ~ x') +
   theme_minimal() +
   labs(title = "M franciscanus",
@@ -389,17 +391,10 @@ Time_Franc <- ggplot(PresentDF, aes(x = DATE_RETRIEVED, y = M_FRANCISCANUS, colo
 ```
 
 ```{r}
-# ggarrange(Time_Urch, Time_Art, Time_Biv, Time_Gast, Time_Oph, Time_Purp, Time_Franc + rremove("x.text"), 
-#           ncol = 1, nrow = 7,
-#           common.legend = TRUE,
-#           legend = "right")
-Time_Urch
-Time_Art
-Time_Biv
-Time_Gast
-Time_Oph
-Time_Purp
-Time_Franc
+ggarrange(Time_Urch, Time_Art, Time_Biv, Time_Gast, Time_Oph, Time_Purp, Time_Franc + rremove("x.text"),
+          ncol = 2, nrow = 4,
+          common.legend = TRUE,
+          legend = "right")
 ```
 
 There is a low p-value associated with time displaying significance in this variable for Arthropoda, Bivalvia, Gastropoda, and Ophiuroidea/Asterpodea. Time was not significant for Total Urchins, *S purpuratus*, or *M franciscanus.* Interesting to note, in this linear regression time series the protection was found to be significant for Ophiuroidea/Asterpodea and *M franciscanus* while the earlier t-test did not. Overall these regressions have low R squared values, which signify the proportion of the species presence explained by time and protection.
