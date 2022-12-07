@@ -163,6 +163,7 @@ ul.task-list{list-style: none;}
   <li><a href="#mapping-illegal-deforestation-in-paraguays-national-forests" id="toc-mapping-illegal-deforestation-in-paraguays-national-forests" class="nav-link active" data-scroll-target="#mapping-illegal-deforestation-in-paraguays-national-forests">Mapping Illegal Deforestation in Paraguay’s National Forests</a>
   <ul class="collapse">
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
@@ -177,8 +178,9 @@ ul.task-list{list-style: none;}
 
 <section id="mapping-illegal-deforestation-in-paraguays-national-forests" class="level1">
 <h1>Mapping Illegal Deforestation in Paraguay’s National Forests</h1>
-<p>The Chaco is a 1.1 million km2 ecoregion in South America that, since 1985, has lost 28 percent of its woodlands as a result of widespread conversion to extensive cattle ranching and cropping. With global attention towards the deforestation of this region, policymakers are attempting to implement reforms for forest conservation. Paraguay’s National Forest Institute (INFONA) have requirements for forest conservation on private properties in the Paraguayan Chaco. Some ranches are not implementing these requirements, continuing in illegal deforestation activities. We want to detect these regions of illegal deforestation and determine the percent of ranch area that is legal versus illegal.</p>
-<p>Claims of illegal deforestation in Paraguay are at a worrisome rate, they have the second-highest rate of deforestation in Latin America in recent years. Deforestation is commonly caused by illegally burning trees to clear land for cattle ranching and soybeans, and another major cause are illegal marijuana plantations (Pechinski 2021). The president of the National Forest Institute (INFONA) of Paraguay reported that over a 2 year span 5,000 hectares of federally protected land in national parks had been destroyed by illegal deforestation (Pechinski 2021). This does not include deforestation of unprotected lands that were not permitted, so we aim to visualize these additional amounts.</p>
+<p>The Chaco is a 1.1 million km2 ecoregion in South America that, since 1985, has lost 28 percent of its woodlands as a result of widespread conversion to extensive cattle ranching and cropping. With global attention towards the deforestation of this region, policymakers are attempting to implement reforms for forest conservation. Paraguay’s National Forest Institute (INFONA) have requirements for forest conservation on private properties in the Paraguayan Chaco, requiring at least 25% of forest to be protected on agricultural lands along with maintenance of riparian forests (Andel 2019). Some ranches are not implementing these requirements, continuing in illegal deforestation activities. We want to detect these regions of illegal deforestation and determine the percent of ranch area that is legal versus illegal.</p>
+<p>The IUCN had focused on deforestation in this region because of the exponential loss of forest in the past ten years and uncertainty of the Ministry of Environment to have capacity for law enforcement. Attention is on the Chaco because it is one of the largest dry forests of South America, supporting unique species such as the jaguar, large anteaters and giant armadillos. Besides putting species at risk from fragmentation and deforestation, Indigenous communities are also suffering as fertile soil is washed away due to increased erosion in the wet season (Andel 2019).</p>
+<p>Claims of illegal deforestation in Paraguay are at a worrisome rate, they have the second-highest rate of deforestation in Latin America in recent years and are in the top five globally (Andel 2019). Deforestation is commonly caused by illegally burning trees to clear land for cattle ranching and soybeans, and another major cause in Paraguay are illegal marijuana plantations (Pechinski 2021). The president of the National Forest Institute (INFONA) of Paraguay reported that over a 2 year span 5,000 hectares of federally protected land in national parks had been destroyed by illegal deforestation (Pechinski 2021). This does not include deforestation of unprotected lands that were not permitted, so we aim to visualize these additional amounts.</p>
 <section id="data" class="level3">
 <h3 class="anchored" data-anchor-id="data">Data</h3>
 <ol type="1">
@@ -186,14 +188,17 @@ ul.task-list{list-style: none;}
 <li>Permitted land use: El Instituto Forestal Nacional (INFONA) spatial database of land use permits issued in the Chaco between 1994-2022.</li>
 </ol>
 <p>MapBiomas.org collects annual land cover imagery from Landsat satellite and utilizes it to classify 15 types of land use with the 7 spectral bands available. The images are pre-processed to select cloud-free pixels over the tens of millions of pixels that cover the Chaco region and compressed to display the median, minimum, and maximum values over a year. MapBiomas utilizes Google Earth Engine for this process and then the cloud of Google processors to interpolate the mosaic values into land cover classifications via the machine learning algorithm “random forest” before publishing. This website has a platform available to explore the land-use changes and statistics over time, but we wanted to download and explore the data to compare to INFONA’s (the National Forestry Institute of Paraguay) land-use permits.Workflow</p>
-<p>Utilizing the R programming language to complete spatial and statistical analysis of illegal logging in Paraguay’s Chaco forest. We will overlay layers of current forest cover and approved land-use plans with vector interactions to highlight regions of illegal deforestation.</p>
+</section>
+<section id="analysis" class="level3">
+<h3 class="anchored" data-anchor-id="analysis">Analysis</h3>
+<p>Utilizing the R programming language to complete spatial and statistical analysis of illegal logging in Paraguay’s Chaco forest, we will overlay layers of current forest cover and approved land-use plans with vector interactions to highlight regions of illegal deforestation. Sub-setting allows us to compare how two layers are related in space. These relationships are logical in question, resulting in TRUE/FALSE statements for each line. In this case, we are interested in the overlay of deforestation in regions that have not been permitted.</p>
 </section>
 <section id="results" class="level3">
 <h3 class="anchored" data-anchor-id="results">Results</h3>
-<p>Sub-setting allows us to compare how two layers are related in space. These relationships are logical in question, resulting in TRUE/FALSE statements for each line. In this case, we are interested in</p>
 </section>
 <section id="references" class="level3">
 <h3 class="anchored" data-anchor-id="references">References</h3>
+<p>Andel, Sander van. “Tackling Uncontrolled Deforestation in Paraguay by Improving Landscape Planning.” IUCN, June 1, 2019. https://www.iucn.nl/en/story/tackling-uncontrolled-deforestation-in-paraguay/#:~:text=The%20Paraguayan%20Chaco%20region%20is%20in%20the%20top,from%20the%20loss%20of%20habitat%20or%20habitat%20fragmentation.</p>
 <p>Pechinski, Ashley. “Mass Deforestation in Paraguay Destroys National Parks.” Insight Crime, August 26, 2021, sec.&nbsp;Environmental Crime. https://insightcrime.org/news/mass-deforestation-paraguay-destroys-national-parks/.</p>
 
 

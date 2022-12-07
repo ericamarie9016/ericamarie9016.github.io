@@ -2,8 +2,9 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/StatsBackup.html",
       "/posts/2022-12-5-ethics-proj/index.html",
-      "/posts/2022-12-6-forest-proj/index.html",
+      "/posts/2022-12-02-geospatial/index.html",
       "/posts/2022-12-9-stats-proj/index.html"
     ]
   }

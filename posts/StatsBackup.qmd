@@ -1,4 +1,9 @@
 ---
+title: "Backup"
+editor: visual
+---
+
+---
 title: "Statistics Blog Post"
 description: "Comparing Species Abundance off Protected and Developed Coastlines in Southern California"
 author:
@@ -419,4 +424,4 @@ Overall, I have found there are sensitivities to some species between protected 
 
 Britannica, The Editors of Encyclopaedia. "littoral zone". Encyclopedia Britannica, 8 Aug. 2019, https://www.britannica.com/science/littoral-zone. Accessed 3 December 2022.
 
-Santa Barbara Coastal LTER, Steven C Schroeter, John Douglas Dixon, Thomas Ebert, and John Richards. 2022. [**SBC LTER: Settlement of urchins and other invertebrates, ongoing since 1990.**](https://search.dataone.org/view/https%3A%2F%2Fpasta.lternet.edu%2Fpackage%2Fmetadata%2Feml%2Fknb-lter-sbc%2F52%2F11)LTER Network Member Node. https://pasta.lternet.edu/package/metadata/eml/knb-lter-sbc/52/11.
+Santa Barbara Coastal LTER, Steven C Schroeter, John Douglas Dixon, Thomas Ebert, and John Richards. 2022. [**SBC LTER: Settlement of urchins and other invertebrates, ongoing since 1990.** ](https://search.dataone.org/view/https%3A%2F%2Fpasta.lternet.edu%2Fpackage%2Fmetadata%2Feml%2Fknb-lter-sbc%2F52%2F11)LTER Network Member Node. https://pasta.lternet.edu/package/metadata/eml/knb-lter-sbc/52/11.
