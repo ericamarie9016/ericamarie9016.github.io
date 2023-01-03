@@ -9,8 +9,6 @@ website:
     left:
       - href: index.qmd
         text: Home
-#      - about.qmd
-      - projects.qmd
       - href: posts.qmd
         text: Blog Posts
       - href: /docs/Erica-Dale-Resume.pdf
