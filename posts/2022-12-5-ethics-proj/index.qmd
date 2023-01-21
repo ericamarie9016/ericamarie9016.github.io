@@ -14,6 +14,7 @@ citation:
 # bibliography: references.bib
 # image: 
 # draft: TRUE
+# Professor comments: Excellent blogpost.  You eloquently state the importance of centering indigenous knowledge  and culture and the challenges such as western power and colonial legacies that restrict land rights and sovereignty to hinder a broad establishment of fundamental methods ensuring indigenous knowledge is at the forefront of environmental research and action. With a growing number of voices advocating for centering indigenous knowledge I hope that fundamental change in western approaches to scientific method will occur in the near future and we will see a transformation in supporting culture as a tool for tackling the worst impacts of climate change and finding ways in which ethical data collection and analysis can can support these shifts.
 ---
 
 My goal was to put together an argument about lack of data accessibility and rights to tribes for their own informed decision making. I introduce the issue with examples of industry taking advantage of the data and power gap that puts natives at risk (health and environmental) with resource extraction. I continue to argue how the field of conservation in Western hands has been at a loss for not including Indigenous traditional management and perspectives on ecological data available. I conclude with ongoing efforts to return land and power to these Indigenous groups.
