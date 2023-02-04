@@ -35,11 +35,9 @@ library(knitr)     # Creates nice tables
 
 ### Introduction
 
-I currently enjoy living near the beach in Santa Barbara, but this comes with inadvertent ecological impacts with coastal development increasing pollutants and high recreational use of the water. Questions arise: Does human development on land cause significant change in the species abundance of coastal waters? The aim of this project is to provide an understanding of sensitivities select species have to developed coastlines.
+I currently enjoy living near the beach in Santa Barbara, but this comes with inadvertent ecological impacts as coastal development and high recreational use increase pollutants and impacts the coastal ecosystem. A major question arises: Does human development on land cause significant change in the species abundance of coastal waters? The aim of this project is to provide an understanding of sensitivities select species have to developed coastlines.
 
-Data was used from the Santa Barbara Coastal Long Term Ecological Research dataset "Settlement of urchins and other invertebrates, ongoing since 1990." This project collects counts on six taxonomic groups through regular summer surveys.
-
-The survey locations are throughout southern California with one north of San Francisco. Each location is a pier, counts collected from the end of the pier in the littoral zone. The littoral zone is below the low-tide level and experiences the effects of tidal and longshore currents, and breaking waves.
+Data was used from the Santa Barbara Coastal Long Term Ecological Research dataset "Settlement of urchins and other invertebrates, ongoing since 1990." This project collects counts on six taxonomic groups through regular summer surveys. The survey locations are throughout southern California with one north of San Francisco. Each location is a pier, the counts are collected from the end of the pier in the littoral zone. The littoral zone is below the low-tide level and experiences the effects of tidal and longshore currents, and breaking waves.
 
 Three of the piers are off protected coastal regions, the rest are populated and developed piers. The protected regions are all parks with minimal development and a marine conservation area protecting surrounding water: Gaviota Beach Pier with Kashtayit State Marine Conservation Area, Point Cabrillo Pier with the Point Cabrillo State Marine Reserve, Anacapa Island Pier with a variety of marine protected areas surrounding the Channel Islands chain. The maps below display the survey locations, 3 protected and 5 unprotected.
 
@@ -75,8 +73,6 @@ UrchinsDF <- read_csv(here("posts", "2022-12-9-stats-proj", "Invertebrate_Settle
 ```
 
 The protection data was not immediately available, I had to create a data frame with the values 1 for protected, 0 for unprotected. Protection was determined by the location of the piers. A pier is labeled unprotected if located in populated developed areas such as Ocean Beach, San Diego; protected piers are located in undeveloped parks surrounded by marine protected areas, including Channel Islands National Park and Point Cabrillo State Marine Reserve.
-
-![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAaCAYAAADFTB7LAAAAa0lEQVR42u3OywnAIBBAwcXSUoCW5D11xDoNCBGNv0MOecJOBSOi1OZMsJ4dvFxEJ1OQnMxBarIKEpNNkJbsBknJYZCSnAYJyVVQziNig7/nZkFEbhTE5HpBVO4dxOXKIDL3BLG5BJ1T6rsbMfep2CaMN00AAAAASUVORK5CYII= "Run Current Chunk")
 
 ```{r}
 ## Create Protection data frame

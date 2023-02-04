@@ -17,9 +17,7 @@ code-block-border-left: "#6B5A75"
 categories: [MEDS, Geospatial, R, Coastal Ecology]
 citation: 
   url: http://ericamarie9016.github.io/2022-12-02-geospatial
-#bibliography: references.bib
-# image: 
-# draft: TRUE
+# image: kelp.png
 ---
 
 ### Introduction
@@ -47,11 +45,10 @@ library(tmap)
 library(ggpubr)    # Combines ggplots
 ```
 
-The data is in both raster and vector formats, reprojected to match coordinate reference systems. The series of raster files depicting each yearly sea surface temperature are all collapsed to show the average for the time range.
+The data is in both raster and vector formats, reprojected to match coordinate reference systems. The series of raster files depicting each yearly sea surface temperature are all collapsed to show the average for the time range. We begin with the regional data as an sf object, a series of annual sea surface temperature raster files, and a single raster ocean depth file.
 
-```{r output = FALSE}
-#### IMPORT DATA
-
+```{r echo = FALSE}
+#### IMPORT DATA ----
 Regions <- read_sf("~/MEDS/Fall-EDS223-Geospatial/data/data_4/wc_regions_clean.shp")
 
 Annual2008 <- rast("~/MEDS/Fall-EDS223-Geospatial/data/data_4/average_annual_sst_2008.tif")
@@ -61,13 +58,14 @@ Annual2011 <- rast("~/MEDS/Fall-EDS223-Geospatial/data/data_4/average_annual_sst
 Annual2012 <- rast("~/MEDS/Fall-EDS223-Geospatial/data/data_4/average_annual_sst_2012.tif")
 
 Depth <- rast("~/MEDS/Fall-EDS223-Geospatial/data/data_4/depth.tif")
+```
 
-
-#### STACK ANNUAL DATA
+```{r output = FALSE}
+#### STACK ANNUAL DATA ----
 SSTAnnual <- c(Annual2008, Annual2009, Annual2010, Annual2011, Annual2012)
 
 
-#### Reproject
+#### Reproject Coordinate System ----
 st_crs(SSTAnnual)     # WGS84, EPSG 9122
 st_crs(Regions)       # WGS84 EPSG 4326
 st_crs(Depth)         # WGS84, EPSG 4326
@@ -76,13 +74,13 @@ SSTAnnual <- project(SSTAnnual, Depth)
 st_crs(SSTAnnual)     # WGS84, EPSG 4326
 
 
-#### Find mean Sea Surface Temperature
+#### Find mean Sea Surface Temperature ----
 
 # Collapse down layers to one SST mean
 SSTMean <- mean(SSTAnnual)
 SSTMean <- (SSTMean$mean - 273.15)
 
-#Check they will match
+# Check they will match
 SSTDepth <- c(Depth, SSTMean)
 ```
 
@@ -91,13 +89,15 @@ SSTDepth <- c(Depth, SSTMean)
 Reclassification here is used to select cells matching range of sea surface temperature and depth suitable for Oysters and set them as 1, all other cells are set as NA. A function is then used to combine the two reclassified raster files to find cells that satisfy both. Each plot depicts the reclassified cells for each step.
 
 ```{r include=TRUE}
-#### Set up reclassification matrices
+#### Set up reclassification matrices ----
+
 SSTrcl <- matrix(c(-Inf, 11, NA,
                    11, 30, 1,        # sea surface temperature: 11-30°C
                    30, Inf, NA),
                      ncol = 3, byrow = TRUE)
 OysterSST <- classify(SSTMean, rcl = SSTrcl)
-plot(OysterSST, col = "blue", main = "Suitable Sea Surface Temperature for Oysters")
+plot(OysterSST, col = "#3632a8", bty = "L",
+     main = "Suitable Sea Surface Temperature for Oysters")
 
 
 Depthrcl <- matrix(c(-Inf, -70, NA,
@@ -105,15 +105,17 @@ Depthrcl <- matrix(c(-Inf, -70, NA,
                      0, Inf, NA),
                      ncol = 3, byrow = TRUE)
 OysterDepth <- classify(Depth, rcl = Depthrcl)
-plot(OysterDepth, col = "blue", main = "Suitable Depth for Oysters")
+plot(OysterDepth, col = "#3632a8", bty = "L",
+     main = "Suitable Depth for Oysters")
 
 
 
-#### Overlay # Find areas that satisfy BOTH
-fun_mult = function(x,y){return(x*y)}     # Function to multiply layers
+#### Overlay to find areas that satisfy BOTH ----
+fun_mult = function(x,y){return(x*y)}     # function to multiply layers
 
 OystersHabitat <- lapp(c(OysterSST, OysterDepth), fun_mult)
-plot(OystersHabitat, col = "blue", main = "Suitable Habitat for Oysters")
+plot(OystersHabitat, col = "#3632a8", bty = "L",
+     main = "Suitable Habitat for Oysters")
 ```
 
 ### Determine the most suitable EEZ
@@ -121,21 +123,22 @@ plot(OystersHabitat, col = "blue", main = "Suitable Habitat for Oysters")
 The Regions vector is now overlayed with the Oysters Habitat as a mask to determine suitable habitat in each region.
 
 ```{r include=TRUE}
-#### Turn Regions data into raster
+#### Turn Regions data into raster ----
 Regions$rgn <- as.factor(Regions$rgn)
 RegionsRast <- rasterize(vect(Regions), OystersHabitat, field = "rgn")
-plot(RegionsRast)
+plot(RegionsRast, bty = "L", 
+     col = rainbow(5, start = 0.35, end = .8))
+text(RegionsRast$lon, y = RegionsRast$lat, RegionsRastt$id, pos = 4)
 
-
-#### Select suitable cells in EEZ
+#### Select suitable cells in EEZ ----
 ROmask <- mask(RegionsRast, OystersHabitat)
 
 
-#### Find total suitable area within each EEZ
+#### Find total suitable area within each EEZ ----
 OysterZone <- expanse(ROmask, unit = "km", byValue = TRUE)
 
 
-#### Find percentage of each zone
+#### Find percentage of each zone ----
 OysterRegion <- cbind(OysterZone, Regions)
 OysterRegion <- OysterRegion |> 
   mutate(percent = (area/area_km2)*100)
@@ -148,7 +151,7 @@ OysterRegion <- OysterRegion |>
 tm_shape(OysterRegion) +
   tm_polygons("area", palette = "YlGn") +
   tm_text(text = "rgn",
-          size = .7) +
+          size = .65) +
   tm_layout(main.title = "Suitable Oyster Area",
             main.title.size = 1.2,
             main.title.position = "center") +
@@ -228,5 +231,12 @@ Species_Habitat <- function(species_name, temp_min, temp_max, depth_max, depth_m
 }
 
 
+```
+
+Let's try the function!
+
+```{r}
 Species_Habitat("Bearica", 17, 33, -20, 0)
 ```
+
+It appears there is very little suitable habitat for our creature "bearica" along the coast. The water temperature is too cold! This creature will probably be better suited in along the equator with warmer waters, hopefully we can find it there!

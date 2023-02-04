@@ -27,14 +27,12 @@ Welcome to my world!
 
 </h2>
 
-<br></br>
+My name is Erica and I have experience with greenhouse, lab, and field research focused on botanical and ecological interactions. I am passionate to visualize ecosystem dynamics through computational modeling and apply data skills to global conservation issues. I aim to work with nonprofits and government entities to utilize data science for science communication and decision making on global issues such as conservation and environmental justice. With regular national and international travel, I enjoy expanding my perspective through hands-on lessons regarding other cultures and regional environmental dynamics.
 
-<h3>Background:</h3>
+My blog highlights essays and data focused projects from my Master's program and beyond.
+
+<h3>Education:</h3>
 
 Masters of Environmental Data Science: <i> Bren School of Environmental Science & Management - University of California, Santa Barbara, Expected June 2023</i>
 
 Bachelors of Science in Biology, Concentration Organismal Biology and Ecology: <i>Towson University, June 2016</i>
-
-Experience with greenhouse, lab, and field research focused on botanical and ecological interactions. I am passionate to visualize ecosystem dynamics through computational modeling and apply data skills to global conservation issues. I aim to work with nonprofits and government entities to utilize data science for science communication and decision making on global issues such as conservation and environmental justice. With regular national and international travel, I enjoy expanding my perspective through hands-on lessons regarding other cultures and regional environmental dynamics.
-
-My blog highlights essays and data focused projects from my Master's program.
