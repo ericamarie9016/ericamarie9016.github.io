@@ -17,9 +17,7 @@ code-block-border-left: "#6B5A75"
 categories: [MEDS, Geospatial, R, Coastal Ecology]
 citation: 
   url: http://ericamarie9016.github.io/2022-12-02-geospatial
-#bibliography: references.bib
-# image: 
-# draft: TRUE
+# image: kelp.png
 ---
 
 ### Introduction
