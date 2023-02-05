@@ -11,8 +11,8 @@ website:
         text: Home
       - href: posts.qmd
         text: Blog Posts
-      - href: /docs/Erica-Dale-Resume.pdf
-        text: Resume
+#      - href: docs/Erica-Dale-Resume.pdf
+#        text: Resume
 #    page-footer:
 #      left:
 #      - "Copyright 2022, Erica Dale"
