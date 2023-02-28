@@ -41,40 +41,18 @@ library(baguette)
 ```
 
 ### My Notes to Clarify:::
-Spotify blog:
-The Why: Utlimate goal is the determine binary Kiran or Erica. Don't necessarily know which one is the best, so explore multiple candidtae models for test data.
 
-Avoid leakage
-Train and test separted, train data not used at all to influence test
-Split data before preprocessing - indirect form of leakage
-- Preprocessing is {tidymodels} functions like step
-- Create recipe, part of preprocessing
+Spotify blog: The Why: Utlimate goal is the determine binary Kiran or Erica. Don't necessarily know which one is the best, so explore multiple candidtae models for test data.
 
-THEN each model separately
-1. fit initial model parameters
-2. optimize hyperparameters, don't know ahead of time, specification of which hyperparameters to tune
-- tune with cross validation folds
-- tries a bunch of combos of hyperparameters with all the folds to give more attemps
-- makes a series of models, measure performance on fold (9 used, 1 test)
-3. fit final model
+Avoid leakage Train and test separted, train data not used at all to influence test Split data before preprocessing - indirect form of leakage - Preprocessing is {tidymodels} functions like step - Create recipe, part of preprocessing
 
-Keeping track information
-Problem: Categorical variable and only one of each - useless variable and issue with NA's
-- dummy variable short circuits using this variable
-Fix:
-1. API, each track has track id so keep that unique identifier
-2. Hold out variable from modelling process
-3. tidymodels specify that variable is neither predictor nor outcome??
-4. Ask Mateo further
+THEN each model separately 1. fit initial model parameters 2. optimize hyperparameters, don't know ahead of time, specification of which hyperparameters to tune - tune with cross validation folds - tries a bunch of combos of hyperparameters with all the folds to give more attemps - makes a series of models, measure performance on fold (9 used, 1 test) 3. fit final model
 
-Why do this
-First step in building recommender system - is person A or B more likely to like this song
+Keeping track information Problem: Categorical variable and only one of each - useless variable and issue with NA's - dummy variable short circuits using this variable Fix: 1. API, each track has track id so keep that unique identifier 2. Hold out variable from modelling process 3. tidymodels specify that variable is neither predictor nor outcome?? 4. Ask Mateo further
 
-Analysis:
-Types of error, confusion matrix (false positives/negatives)
-Distribution of the predictions
-- Output is only 0/1 but internal is probability
+Why do this First step in building recommender system - is person A or B more likely to like this song
 
+Analysis: Types of error, confusion matrix (false positives/negatives) Distribution of the predictions - Output is only 0/1 but internal is probability
 
 ### First step, we need to access the Spotify API to download your data.
 
@@ -120,13 +98,13 @@ while(TRUE) {
 ```
 
 There are other functions to play with inside this {spotifyr} package! I will not be exploring these further in this blog post.
+
 ```{r}
 #| eval: false
 bears_recent <- get_my_recently_played()
 bears_top <- get_my_top_artists_or_tracks()
 unique(bears_top$genres)
 ```
-
 
 Add Audio Features: Looking at this initial playlist, there is a function within the spotify package to add audio features with the song id. This function has a maximum length of 100 so I created another loop below to download all the related audio features and bind the columns to the initial dataframe.
 

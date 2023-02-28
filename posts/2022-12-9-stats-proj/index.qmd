@@ -20,18 +20,18 @@ citation:
 image: RedUrchin.png
 ---
 
-```{r setup, include=FALSE}
+```{r output = FALSE}
 # All libraries here
-library(tidyverse)
-library(leaflet)   # Create interactive map
-library(lubridate)
-library(ggpubr)    # Combines ggplots
-library(here)      # Set location
-library(readr)
-library(gt)
-library(tufte)
-library(feasts)
-library(knitr)     # Creates nice tables
+library(tidyverse)  # Data manipulization and visualization
+library(leaflet)    # Create interactive map
+library(lubridate)  # Working with dates and times
+library(ggpubr)     # Combines ggplots
+library(here)       # Set file location
+library(readr)      # Reading files into data frames
+library(gt)         # Create tables
+library(tufte)      # Implementing Tufte-style graphics
+library(feasts)     # Time series analysis
+library(knitr)      # Creates nice tables
 ```
 
 ### Introduction
@@ -93,7 +93,6 @@ map_sites <- addLegend(
 # Display the map
 map_sites
 ```
-
 
 <br>
 
