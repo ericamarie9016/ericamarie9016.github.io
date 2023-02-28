@@ -23,6 +23,7 @@ image: RedUrchin.png
 ```{r setup, include=FALSE}
 # All libraries here
 library(tidyverse)
+library(leaflet)   # Create interactive map
 library(lubridate)
 library(ggpubr)    # Combines ggplots
 library(here)      # Set location
@@ -41,9 +42,62 @@ Data was used from the Santa Barbara Coastal Long Term Ecological Research datas
 
 Three of the piers are off protected coastal regions, the rest are populated and developed piers. The protected regions are all parks with minimal development and a marine conservation area protecting surrounding water: Gaviota Beach Pier with Kashtayit State Marine Conservation Area, Point Cabrillo Pier with the Point Cabrillo State Marine Reserve, Anacapa Island Pier with a variety of marine protected areas surrounding the Channel Islands chain. The maps below display the survey locations, 3 protected and 5 unprotected.
 
-![Locations of the LTER Survey Sites](images/Map.png)
+#### Locations of the LTER Survey Sites:
 
-This data set explores a variety of species spanning different ecological functions:
+```{r}
+# Create a data frame with the coordinates and protection status
+protection_coordinates <- data.frame(
+  lat = c(34.0085, 39.3142, 34.4645, 37.7523, 34.4152, 34.4133, 32.865, 35.1794),
+  lon = c(-119.4236, -123.7461, -120.2307, -122.5102, -119.8746, -119.6852, -117.2504, -120.7347),
+  protection = c(rep("Protected", 3), rep("Unprotected", 5)),
+  Fullname = c("Anacapa", "Point Cabrillo", "Gaviota", "Ocean Beach", "Ellwood Pier", "Stearns Wharf", "Scripps", "Avila Beach")
+)
+
+# Create a leaflet map centered on California
+map_sites <- leaflet() %>% 
+  setView(lng = -119.4179, lat = 35.7783, zoom = 6) %>% 
+  addTiles()
+
+# Add locations to the map
+map_sites <- map_sites %>%  
+  
+  # Protected points  
+  addCircleMarkers(
+    data = protection_coordinates[protection_coordinates$protection == "Protected", ], 
+    lat = ~lat,             # use lat/long from dataframe
+    lng = ~lon, 
+    color = "blue", 
+    radius = 6,             # set the radius of the marker
+    popup = ~Fullname       # add the site name to the popup
+  ) %>%  
+  
+  # Unprotected points
+  addCircleMarkers(
+    data = protection_coordinates[protection_coordinates$protection == "Unprotected", ], 
+    lat = ~lat, 
+    lng = ~lon, 
+    color = "darkorange", 
+    radius = 6, 
+    popup = ~Fullname # add the site name to the popup
+  )
+
+# Add a legend to the map
+map_sites <- addLegend(
+  map = map_sites,
+  position = "topright",
+  title = "Protection Status",
+  colors = c("blue", "darkorange"),
+  labels = c("Protected", "Unprotected")
+)
+
+# Display the map
+map_sites
+```
+
+
+<br>
+
+#### This data set explores a variety of species spanning different ecological functions:
 
 -   **Arthropoda**: Phylum of lobsters, crabs, and barnacles which have an exoskeleton made of chitin and risks mineralizing in calcium carbonate, a risk of ocean acidification.
 
@@ -63,7 +117,7 @@ This data set explores a variety of species spanning different ecological functi
 
 ### Data Collection and Tidying
 
-#### Importing and Creating Data frames
+#### Importing and Creating Data Frames
 
 This dataset was initially downloaded via DataOne website, link in the references. The metadata stated NA's were written in the data as '-99999', so I included this while importing the data.
 

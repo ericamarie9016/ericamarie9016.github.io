@@ -9,7 +9,7 @@ author:
 date: 2022-12-09
 format:
   html:
-    code-fold: true
+    code-fold: false
     code-summary: "Show the code"
 code-overflow: wrap
 code-block-bg: true
@@ -40,57 +40,93 @@ library(ipred)
 library(baguette)
 ```
 
+### My Notes to Clarify:::
+Spotify blog:
+The Why: Utlimate goal is the determine binary Kiran or Erica. Don't necessarily know which one is the best, so explore multiple candidtae models for test data.
+
+Avoid leakage
+Train and test separted, train data not used at all to influence test
+Split data before preprocessing - indirect form of leakage
+- Preprocessing is {tidymodels} functions like step
+- Create recipe, part of preprocessing
+
+THEN each model separately
+1. fit initial model parameters
+2. optimize hyperparameters, don't know ahead of time, specification of which hyperparameters to tune
+- tune with cross validation folds
+- tries a bunch of combos of hyperparameters with all the folds to give more attemps
+- makes a series of models, measure performance on fold (9 used, 1 test)
+3. fit final model
+
+Keeping track information
+Problem: Categorical variable and only one of each - useless variable and issue with NA's
+- dummy variable short circuits using this variable
+Fix:
+1. API, each track has track id so keep that unique identifier
+2. Hold out variable from modelling process
+3. tidymodels specify that variable is neither predictor nor outcome??
+4. Ask Mateo further
+
+Why do this
+First step in building recommender system - is person A or B more likely to like this song
+
+Analysis:
+Types of error, confusion matrix (false positives/negatives)
+Distribution of the predictions
+- Output is only 0/1 but internal is probability
+
+
 ### First step, we need to access the Spotify API to download your data.
 
 *Client ID and Client Secret are required to create and access token that is required to interact with the API. You can set them as system values so we don't have to do provide them each time. Once you have an account, go to Spotify for developers (\<https://developer.spotify.com/\>) and log in. Click the green "Create a Client ID" button to fill out the form to create an app create an app so you can access the API. On your developer dashboard page, click on the new app you just created. On the app's dashboard page you will find your Client ID just under the header name of your app. Click "Show Client Secret" to access your secondary Client ID. When you do this you'll be issued a Spotify client ID and client secret key.*
 
-Will running this have a problem with rendering?
+Use the below code with your own token and secret code to access your spotify data!
 
 ```{r}
 #| eval: false
-
-
-# Sys.setenv(SPOTIFY_CLIENT_ID = 'your_token')
-# Sys.setenv(SPOTIFY_CLIENT_SECRET = 'your_token')
-# 
-# access_token <- get_spotify_access_token(
-#   client_id = Sys.getenv("SPOTIFY_CLIENT_ID"),
-#   client_secret = Sys.getenv("SPOTIFY_CLIENT_SECRET")
-# )
+Sys.setenv(SPOTIFY_CLIENT_ID = 'your_token')
+Sys.setenv(SPOTIFY_CLIENT_SECRET = 'your_token')
+ 
+access_token <- get_spotify_access_token(
+   client_id = Sys.getenv("SPOTIFY_CLIENT_ID"),
+   client_secret = Sys.getenv("SPOTIFY_CLIENT_SECRET")
+)
 ```
 
 I downloaded my favorited songs, but the built-in function with the spotify package has a limit to download only 20 songs at a time. Below I created a loop to continue adding all of my liked songs.
 
 ```{r}
 #| eval: false
-
-# Starting point for loop
 songs_data <- data.frame()     # create base empty data frame
-offset <- 0
-limit <- 20
+offset <- 0                    # starting point for spotify function offset
+limit <- 20                    # maximum download at a time
 
 # Loop through all liked songs
 while(TRUE) {
+  # the 20 downloaded tracks will temporarily save as a list called tracks
   tracks <- get_my_saved_tracks(limit = limit, offset = offset)
   
-  # Setting when to stop
+  # setting when to stop the loop
   if(length(tracks) == 0) {      
     break
   }
   
-  # add tracks into empty dataframe
+  # add tracks into previously created dataframe songs_data
   songs_data <- rbind(songs_data, tracks)  
   
-  # reset the loop with the next 20
+  # reset the loop to start at the next 20
   offset <- offset + limit   
 }
-
-
-### Playing with other options
-# bears_recent <- get_my_recently_played()
-# bears_top <- get_my_top_artists_or_tracks()
-# unique(bears_top$genres)
 ```
+
+There are other functions to play with inside this {spotifyr} package! I will not be exploring these further in this blog post.
+```{r}
+#| eval: false
+bears_recent <- get_my_recently_played()
+bears_top <- get_my_top_artists_or_tracks()
+unique(bears_top$genres)
+```
+
 
 Add Audio Features: Looking at this initial playlist, there is a function within the spotify package to add audio features with the song id. This function has a maximum length of 100 so I created another loop below to download all the related audio features and bind the columns to the initial dataframe.
 
@@ -147,7 +183,6 @@ write_csv(total_audio, "total_audio.csv")
 All of these previous steps culminate to this total_audio.csv file that I have previously saved and set aside, since I did not want to share my private spotify information at the beginning.
 
 ```{r}
-#| eval: false
 total_audio <- read_csv("total_audio.csv") |> 
     mutate(listener_id = as.factor(listener_id))
 ```
