@@ -1,0 +1,490 @@
+---
+title: "Spotify With Machine Learning"
+description: "Exploring Spotify Music with Different Machine Learning Algorithms"
+author:
+  - name: Erica Dale
+    url: http://ericamarie9016.githubt.io
+    affiliation: MEDS
+    affiliation-url: http://ucsb-meds.github.io
+date: 2022-12-09
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+code-overflow: wrap
+code-block-bg: true
+code-block-border-left: "#6B5A75"
+categories: [MEDS, Machine Learning, R, Spotify, Music]
+citation: 
+  url: http://ericamarie9016.github.io/2023-02-22-spotify
+# image:
+draft: TRUE
+---
+
+Necessary libraries
+
+```{r}
+library(spotifyr) #API interaction
+library(tidyverse)
+library(tidymodels)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(rpart)
+library(caret)
+library(rpart.plot)
+library(vip)
+library(pdp)
+library(parsnip)
+library(ipred)
+library(baguette)
+```
+
+### First step, we need to access the Spotify API to download your data.
+
+*Client ID and Client Secret are required to create and access token that is required to interact with the API. You can set them as system values so we don't have to do provide them each time. Once you have an account, go to Spotify for developers (\<https://developer.spotify.com/\>) and log in. Click the green "Create a Client ID" button to fill out the form to create an app create an app so you can access the API. On your developer dashboard page, click on the new app you just created. On the app's dashboard page you will find your Client ID just under the header name of your app. Click "Show Client Secret" to access your secondary Client ID. When you do this you'll be issued a Spotify client ID and client secret key.*
+
+Will running this have a problem with rendering?
+
+```{r}
+#| eval: false
+
+
+# Sys.setenv(SPOTIFY_CLIENT_ID = 'your_token')
+# Sys.setenv(SPOTIFY_CLIENT_SECRET = 'your_token')
+# 
+# access_token <- get_spotify_access_token(
+#   client_id = Sys.getenv("SPOTIFY_CLIENT_ID"),
+#   client_secret = Sys.getenv("SPOTIFY_CLIENT_SECRET")
+# )
+```
+
+I downloaded my favorited songs, but the built-in function with the spotify package has a limit to download only 20 songs at a time. Below I created a loop to continue adding all of my liked songs.
+
+```{r}
+#| eval: false
+
+# Starting point for loop
+songs_data <- data.frame()     # create base empty data frame
+offset <- 0
+limit <- 20
+
+# Loop through all liked songs
+while(TRUE) {
+  tracks <- get_my_saved_tracks(limit = limit, offset = offset)
+  
+  # Setting when to stop
+  if(length(tracks) == 0) {      
+    break
+  }
+  
+  # add tracks into empty dataframe
+  songs_data <- rbind(songs_data, tracks)  
+  
+  # reset the loop with the next 20
+  offset <- offset + limit   
+}
+
+
+### Playing with other options
+# bears_recent <- get_my_recently_played()
+# bears_top <- get_my_top_artists_or_tracks()
+# unique(bears_top$genres)
+```
+
+Add Audio Features: Looking at this initial playlist, there is a function within the spotify package to add audio features with the song id. This function has a maximum length of 100 so I created another loop below to download all the related audio features and bind the columns to the initial dataframe.
+
+```{r}
+#| eval: false
+audio_features <- data.frame()   # create base empty data frame
+
+for(i in seq(from = 1, to = 283, by = 100)) { # loop through all songs
+  
+  # collect 100 rows starting from i
+  row_index <- i:(i + 99)   
+  
+  # pull out features for set rows
+  audio <- get_track_audio_features(songs_data$track.id[row_index])
+  
+  # add features to dataframe
+  audio_features <- rbind(audio_features, audio)
+}
+
+# Problem, is not stopping at 281 so is pulling out extra NA's
+audio_features <- drop_na(audio_features)
+
+# add songs_data$track.name
+ericas_audio <- cbind(audio_features, 
+                      track.name = songs_data$track.name,
+                      track.popularity = songs_data$track.popularity)
+
+ericas_audio <- ericas_audio |> 
+  select(-c(uri, track_href, analysis_url, type, id))
+  
+# save as csv to share
+write_csv(ericas_audio, "ericas_audio.csv")
+```
+
+My classmate shared her prepared data with me, which I will use to create a series of machine learning models to compare our music tastes. I want to create a model that can predict, using the audio features who is the listener.
+
+```{r}
+#| eval: false
+# Add column to each dataset (same name, different listener #)
+ericas_audio <- ericas_audio |> 
+  mutate(listener_id = "erica")
+
+# Get partner's data as csv
+kirans_audio <- read_csv("kiran_audio.csv") |> 
+  mutate(listener_id = "kiran") |> 
+  select(-c(uri, track_href, analysis_url, type, id))
+
+# rbind datasets
+total_audio <- rbind(ericas_audio, kirans_audio) |> 
+  mutate(listener_id = as.factor(listener_id))
+write_csv(total_audio, "total_audio.csv")
+```
+
+All of these previous steps culminate to this total_audio.csv file that I have previously saved and set aside, since I did not want to share my private spotify information at the beginning.
+
+```{r}
+#| eval: false
+total_audio <- read_csv("total_audio.csv") |> 
+    mutate(listener_id = as.factor(listener_id))
+```
+
+### Going to start with some fun data exploration!
+
+```{r}
+#| eval: false
+# Who listens to the most instrumental music
+arrange(total_audio, desc(instrumentalness)) |> 
+  head()
+# SURPRISED that Kiran does! I mostly listen to music with strong drums and little lyrics.
+
+arrange(total_audio, desc(acousticness)) |> 
+  head()
+# Not surprised that I listen to more acoustic, she listens to louder music
+
+# Comparing Track Popularity, make this a percent instead??
+ggplot(total_audio, aes(x = track.popularity)) +
+  geom_bar(aes(fill = listener_id), alpha = .5) +
+  labs(title = "Who Has More Popular Music Taste")
+# Erica listens to the most 0 popularity music, meaning she's more underground and edgy. Kiran is basic.
+
+ggplot(total_audio, aes(x = danceability, y = energy)) +
+  geom_point(aes(color = listener_id)) +
+  labs(title = "Comparing Dancing Styles")
+# Low energy but high danceable would be slower dance songs, both of us prefer high energy dancing music but Kiran definitely goes harder.
+
+ggplot(total_audio, aes(x = tempo, y = instrumentalness)) +
+  geom_point(aes(color = listener_id))
+
+# Most danceable tracks, I wish we added artist as well
+arrange(total_audio, desc(danceability)) |> 
+  select(track.name, listener_id, danceability) |> 
+  head()
+```
+
+### Set Up Variables
+
+I will be creating several machine learning models, and use these variables as the start for them all.
+
+```{r}
+#| eval: false
+set.seed(14)
+
+
+total_audio <- total_audio |> 
+  select(-track.name)
+
+
+song_split <- initial_split(total_audio)
+song_test <- testing(song_split)
+song_train <- training(song_split)
+
+# Preprocessing
+### MAKE SURE TO CHANGE RECIPE NAMES THROUGHOUT
+song_recipe <- recipe(listener_id ~ ., data = song_train) |> 
+  step_dummy(all_nominal(), -all_outcomes(), one_hot = TRUE) |> 
+  step_normalize(all_numeric(), -all_outcomes()) |> 
+  prep()
+
+# Cross Validation to tune parameter
+cv_folds <- song_train |> 
+  vfold_cv(v = 5)
+```
+
+### K Nearest Neighbors Model
+
+```{r}
+#| eval: false
+
+# Bake
+knn_baked <- bake(song_recipe, song_train)
+
+# Apply recipe to test data
+knn_test <- bake(song_recipe, song_test)
+
+# Specify nearest neighbor model
+knn_spec <- nearest_neighbor(neighbors = 7) |> 
+  set_engine("kknn") |> 
+  set_mode("classification")
+
+# Workflow
+knn_workflow <- workflow() |> 
+  add_model(knn_spec) |> 
+  add_recipe(song_recipe)
+
+# Fit resamples
+knn_res <- knn_workflow |> 
+  fit_resamples(
+    resamples = cv_folds,
+    control = control_resamples(save_pred = TRUE))
+
+# Check Performance
+knn_res |> collect_metrics()
+
+# Specify: Define model with tuning
+# Should I just do this the first time with spec, or run it again??
+knn_spec_tune <- nearest_neighbor(neighbors = tune()) |> 
+  set_engine("kknn") |> 
+  set_mode("classification")
+
+# Workflow: Define new workflow
+# Should I just skip the first spec/workflow??
+knn_workflow_tune <- workflow() |> 
+  add_model(knn_spec_tune) |> 
+  add_recipe(song_recipe)
+
+# Fit workflow on predefined folds and hyperparameters
+knn_cv_fit <- knn_workflow_tune |> 
+  tune_grid(
+    cv_folds,
+    # Select other neighbors??
+    grid = data.frame(neighbors = c(1, 5, seq(10, 100, 10))))
+
+# Check performance
+knn_cv_fit |> collect_metrics()
+#Results will show the n averaged over all the folds. Use this to predict the best
+```
+
+Predict!
+
+```{r}
+#| eval: false
+
+# Workflow: Final
+knn_final_wf <- knn_workflow_tune |> 
+  finalize_workflow(select_best(knn_cv_fit, metric = "accuracy"))
+
+# Fit: Final
+knn_final_fit <- knn_final_wf |> fit(data = song_train)
+
+knn_final_fit <- knn_final_wf |> last_fit(song_split)
+
+knn_metrics <- knn_final_fit |> collect_metrics()
+```
+
+### Decision Tree
+
+```{r}
+#| eval: false
+
+
+# dec tree specification tuned to the optimal parameters
+dec_tree_spec_tune <- decision_tree(
+  cost_complexity = tune(),
+  tree_depth = tune(),
+  min_n = tune()) |>
+   set_engine("rpart") |>
+    set_mode("classification")
+
+dec_tree_grid <- grid_regular(cost_complexity(),
+                          tree_depth(),
+                          min_n(),
+                          levels = 4)
+
+doParallel::registerDoParallel() #build trees in parallel
+
+dec_tree_rs <- tune_grid(
+  dec_tree_spec_tune,
+  listener_id ~ .,
+  resamples = cv_folds,
+  grid = dec_tree_grid,
+  metrics = metric_set(accuracy)
+)
+
+autoplot(dec_tree_rs) + theme_light()
+
+dec_final_tree <- finalize_model(dec_tree_spec_tune, 
+                             select_best(dec_tree_rs))
+
+final_dectree_fit <- last_fit(dec_final_tree, 
+                           listener_id ~ ., 
+                           song_split)   # does training and testing runs
+final_dectree_fit$.predictions
+
+dtree_metrics <- final_dectree_fit |> collect_metrics()
+```
+
+### Bagging
+
+```{r}
+#| eval: false
+
+# Tune specs
+tree_spec_tune <- bag_tree(
+  mode = "classification",
+  cost_complexity = tune(),
+  tree_depth = tune(),
+  min_n = tune()) |> 
+  set_engine("rpart", times = 50)
+
+# Define tree grid
+tree_grid <- grid_regular(cost_complexity(), tree_depth(), min_n(), levels = 5)
+
+# New workflow
+wf_tree_tune <- workflow() |> 
+  add_recipe(song_recipe) |> 
+  add_model(tree_spec_tune)
+
+
+# Build in parallel
+doParallel::registerDoParallel()
+
+# # fit model
+tree_rs <- wf_tree_tune |>
+  tune_grid(listener_id ~ .,
+    resamples = cv_folds,
+    grid = tree_grid,
+    metrics = metric_set(accuracy))
+
+tree_rs |> collect_metrics()
+
+final_bag <- finalize_workflow(wf_tree_tune, select_best(tree_rs, "accuracy")) |> 
+  fit(data = song_train)
+
+# Predictions
+bag_pred <- final_bag |> 
+  predict(new_data = song_test) |> 
+  bind_cols(song_test)
+
+# Output accuracy
+bag_metrics <- bag_pred |> 
+  metrics(truth = listener_id, estimate = .pred_class)
+
+bag_metrics
+```
+
+### Random Forest
+
+```{r}
+#| eval: false
+
+## Defining validating set
+set.seed(123)
+val_set <- validation_split(song_train, 
+                            strata = listener_id, 
+                            prop = 0.70)
+
+## Creating Random Forest specification
+rf_spec <-
+  rand_forest(mtry = tune(),
+              min_n = tune(),
+              trees = 1000) %>%
+  set_engine("ranger") %>%
+  set_mode("classification")
+
+## Defining Random Forest workflow
+rf_workflow <- workflow() %>%
+  add_recipe(song_recipe) %>%
+  add_model(rf_spec)
+
+## Build in parallel
+doParallel::registerDoParallel()
+rf_res <- 
+  rf_workflow %>% 
+  tune_grid(val_set,
+            grid = 25,
+            control = control_grid(save_pred = TRUE),
+            metrics = metric_set(accuracy))
+
+## Output model metrics
+rf_res %>% collect_metrics()
+
+## Find the best accuracy metric
+rf_res %>% 
+  show_best(metric = "accuracy")
+
+## Plot results
+autoplot(rf_res)
+
+## Select best Random Forest model
+best_rf <- select_best(rf_res, "accuracy")
+best_rf
+
+## Output predictions
+rf_res %>% 
+  collect_predictions()
+
+## Defining final model while working in parallel
+doParallel::registerDoParallel()
+last_rf_model <- 
+  rand_forest(mtry = 2, min_n = 3, trees = 1000) %>% 
+  set_engine("ranger", importance = "impurity") %>% 
+  set_mode("classification")
+
+## Updating our workflow
+last_rf_workflow <- 
+  rf_workflow %>% 
+  update_model(last_rf_model)
+
+## Updating our model fit
+set.seed(123)
+last_rf_fit <- 
+  last_rf_workflow %>% 
+  last_fit(music_split)
+
+## Outputting model metrics
+random_forest_metrics <- last_rf_fit %>% 
+  collect_metrics()
+
+random_forest_metrics
+
+## Outputting the variables that are most important to our model
+last_rf_fit %>% 
+  extract_fit_parsnip() %>% 
+  vip::vip(num_features = 12) 
+```
+
+### Comparing Metrics
+
+```{r}
+#| eval: false
+
+# # nearest neighbors metrics
+knn_accuracy <- knn_metrics$.estimate[1]
+# 
+# # decision tree metrics
+dtree_accuracy <- dtree_metrics$.estimate[1]
+# 
+# # bag tree metrics
+bag_accuracy <- bag_metrics$.estimate[1]
+
+# Random Forest metrics
+rf_accuracy <- random_forest_metrics$.estimate[1]
+
+
+model_accuracy <- tribble(
+  ~"model", ~"accuracy",
+  "KNN", knn_accuracy,
+  "Decision Tree", dtree_accuracy,
+  "Bagging", bag_accuracy,
+  "Random Forest", rf_accuracy
+)
+
+ggplot(data = model_accuracy, aes(x = model, y = accuracy)) +
+         geom_col() +
+  theme_minimal() +
+  labs(title = "Comparison of Model Accuracy for Spotify Data")
+```
