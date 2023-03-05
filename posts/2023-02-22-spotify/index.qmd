@@ -17,14 +17,18 @@ code-block-border-left: "#6B5A75"
 categories: [MEDS, Machine Learning, R, Spotify, Music]
 citation: 
   url: http://ericamarie9016.github.io/2023-02-22-spotify
-# image:
+image: music.jpeg
 draft: TRUE
 ---
 
-Necessary libraries
+## Introduction
 
-```{r}
-library(spotifyr) #API interaction
+This fun project will use my personal Spotify music, along with my friend Kiran's, with the goal to build several machine learning algorithms that will determine whose music library a song belongs to. I will explore 4 candidate models (k nearest neighbors, decision trees, bagging, and random forest) to predict this binary outcome. To begin, the code to access your own Spotify account is included!
+
+```{r output = FALSE}
+library(spotifyr)         # API interaction
+library(here)             # Set file location
+library(knitr)      # Creates nice tables
 library(tidyverse)
 library(tidymodels)
 library(readr)
@@ -40,25 +44,21 @@ library(ipred)
 library(baguette)
 ```
 
-### My Notes to Clarify:::
+### Access the Spotify API
 
-Spotify blog: The Why: Utlimate goal is the determine binary Kiran or Erica. Don't necessarily know which one is the best, so explore multiple candidtae models for test data.
+To access the Spotify API, follow the link to \<a href="https://developer.spotify.com"\>Spotify for Developers </a> and follow these instructions:
 
-Avoid leakage Train and test separted, train data not used at all to influence test Split data before preprocessing - indirect form of leakage - Preprocessing is {tidymodels} functions like step - Create recipe, part of preprocessing
+-   Select "Create a Client ID"
 
-THEN each model separately 1. fit initial model parameters 2. optimize hyperparameters, don't know ahead of time, specification of which hyperparameters to tune - tune with cross validation folds - tries a bunch of combos of hyperparameters with all the folds to give more attemps - makes a series of models, measure performance on fold (9 used, 1 test) 3. fit final model
+-   Fill out form to create an app
 
-Keeping track information Problem: Categorical variable and only one of each - useless variable and issue with NA's - dummy variable short circuits using this variable Fix: 1. API, each track has track id so keep that unique identifier 2. Hold out variable from modelling process 3. tidymodels specify that variable is neither predictor nor outcome?? 4. Ask Mateo further
+-   On dashboard page, click new app
 
-Why do this First step in building recommender system - is person A or B more likely to like this song
+-   App's dashboard page will have Client ID
 
-Analysis: Types of error, confusion matrix (false positives/negatives) Distribution of the predictions - Output is only 0/1 but internal is probability
+-   Click "Show Client Secret"
 
-### First step, we need to access the Spotify API to download your data.
-
-*Client ID and Client Secret are required to create and access token that is required to interact with the API. You can set them as system values so we don't have to do provide them each time. Once you have an account, go to Spotify for developers (\<https://developer.spotify.com/\>) and log in. Click the green "Create a Client ID" button to fill out the form to create an app create an app so you can access the API. On your developer dashboard page, click on the new app you just created. On the app's dashboard page you will find your Client ID just under the header name of your app. Click "Show Client Secret" to access your secondary Client ID. When you do this you'll be issued a Spotify client ID and client secret key.*
-
-Use the below code with your own token and secret code to access your spotify data!
+-   Use the below code with your client ID and Client Secret in R!
 
 ```{r}
 #| eval: false
@@ -71,7 +71,7 @@ access_token <- get_spotify_access_token(
 )
 ```
 
-I downloaded my favorited songs, but the built-in function with the spotify package has a limit to download only 20 songs at a time. Below I created a loop to continue adding all of my liked songs.
+I downloaded my liked songs, but the built-in function with the {spotifyr} package has a limit to download only 20 songs at a time. Below I wrote a loop to continue adding all of my liked songs into a dataframe.
 
 ```{r}
 #| eval: false
@@ -79,43 +79,44 @@ songs_data <- data.frame()     # create base empty data frame
 offset <- 0                    # starting point for spotify function offset
 limit <- 20                    # maximum download at a time
 
-# Loop through all liked songs
-while(TRUE) {
-  # the 20 downloaded tracks will temporarily save as a list called tracks
+while(TRUE) {                  # loop through all liked songs
+
   tracks <- get_my_saved_tracks(limit = limit, offset = offset)
   
-  # setting when to stop the loop
-  if(length(tracks) == 0) {      
+  if(length(tracks) == 0) {    # setting when to stop the loop
     break
   }
   
-  # add tracks into previously created dataframe songs_data
+  # add tracks into previously created dataframe
   songs_data <- rbind(songs_data, tracks)  
   
-  # reset the loop to start at the next 20
-  offset <- offset + limit   
+  offset <- offset + limit     # reset the loop to start at the next 20
+
 }
 ```
 
-There are other functions to play with inside this {spotifyr} package! I will not be exploring these further in this blog post.
+There are other functions to play with inside this {spotifyr} package! I will not be exploring these further in this blog post, but some examples I'm excited to explore are here.
 
 ```{r}
 #| eval: false
-bears_recent <- get_my_recently_played()
-bears_top <- get_my_top_artists_or_tracks()
-unique(bears_top$genres)
+bearicas_recent <- get_my_recently_played()
+bearicas_top <- get_my_top_artists_or_tracks()
+unique(bearicas_top$genres)
 ```
 
-Add Audio Features: Looking at this initial playlist, there is a function within the spotify package to add audio features with the song id. This function has a maximum length of 100 so I created another loop below to download all the related audio features and bind the columns to the initial dataframe.
+Exploring the data frame was not very exciting, the columns had a lot of information that did not interest me and a lot of technical columns. This data frame is mostly important to pull out the song ID column, and use that to connect back with Spotify's API for downloading the specific audio features for each song. This function has a maximum download of 100 rows at a time so I created another loop below to download all the related audio features and bind the columns to the initial dataframe.
 
 ```{r}
 #| eval: false
-audio_features <- data.frame()   # create base empty data frame
+audio_features <- data.frame()        # create base empty data frame
 
-for(i in seq(from = 1, to = 283, by = 100)) { # loop through all songs
+for(i in seq(from = 1, to = nrow(songs_data), by = 100)) { 
   
-  # collect 100 rows starting from i
-  row_index <- i:(i + 99)   
+  if (i > nrow(songs_data)) {         # setting when to stop the loop
+    break
+  }
+  
+  row_index <- i:(i + 99)             # collect 100 rows starting from i
   
   # pull out features for set rows
   audio <- get_track_audio_features(songs_data$track.id[row_index])
@@ -124,100 +125,104 @@ for(i in seq(from = 1, to = 283, by = 100)) { # loop through all songs
   audio_features <- rbind(audio_features, audio)
 }
 
-# Problem, is not stopping at 281 so is pulling out extra NA's
+# will read in by 100, so may have NA's from the last loop
 audio_features <- drop_na(audio_features)
 
-# add songs_data$track.name
+# create data frame with songs and fun features!
 ericas_audio <- cbind(audio_features, 
                       track.name = songs_data$track.name,
-                      track.popularity = songs_data$track.popularity)
-
-ericas_audio <- ericas_audio |> 
-  select(-c(uri, track_href, analysis_url, type, id))
+                      track.popularity = songs_data$track.popularity) |> 
+  select(-c(uri, track_href, analysis_url, type))     # remove rows
   
 # save as csv to share
 write_csv(ericas_audio, "ericas_audio.csv")
 ```
 
-My classmate shared her prepared data with me, which I will use to create a series of machine learning models to compare our music tastes. I want to create a model that can predict, using the audio features who is the listener.
+My friend Kiran and I swapped data, which I will use to create a series of machine learning models to compare our music tastes. The goal is to create a model that can predict, using the audio features who is the listener. I would go through four different types of models and at the end compare the metrics of each to decide which was most effective! The outcome variable will be the binary option of Kiran or Erica, set as listener_id.
 
 ```{r}
 #| eval: false
-# Add column to each dataset (same name, different listener #)
 ericas_audio <- ericas_audio |> 
   mutate(listener_id = "erica")
 
-# Get partner's data as csv
-kirans_audio <- read_csv("kiran_audio.csv") |> 
-  mutate(listener_id = "kiran") |> 
-  select(-c(uri, track_href, analysis_url, type, id))
+kirans_audio <- read_csv("kiran_audio.csv") |>  # get partner's data as csv
+  mutate(listener_id = "kiran")
 
-# rbind datasets
+# combine datasets
 total_audio <- rbind(ericas_audio, kirans_audio) |> 
   mutate(listener_id = as.factor(listener_id))
 write_csv(total_audio, "total_audio.csv")
 ```
 
-All of these previous steps culminate to this total_audio.csv file that I have previously saved and set aside, since I did not want to share my private spotify information at the beginning.
+All of these previous steps culminate to this total_audio.csv file that I have previously saved and set aside, since I did not want to share my private Spotify information at the beginning.
 
-```{r}
-total_audio <- read_csv("total_audio.csv") |> 
+```{r output = FALSE}
+total_audio <- read_csv(here("posts", "2023-02-22-spotify", "total_audio.csv")) |> 
     mutate(listener_id = as.factor(listener_id))
 ```
 
-### Going to start with some fun data exploration!
+### Data Exploration!
 
 ```{r}
-#| eval: false
-# Who listens to the most instrumental music
-arrange(total_audio, desc(instrumentalness)) |> 
-  head()
-# SURPRISED that Kiran does! I mostly listen to music with strong drums and little lyrics.
+total_audio %>%
+  arrange(desc(instrumentalness)) |> 
+  select(instrumentalness, track.name, track.popularity, listener_id) |> 
+  head(6) |> 
+  kable()
+```
 
-arrange(total_audio, desc(acousticness)) |> 
-  head()
-# Not surprised that I listen to more acoustic, she listens to louder music
+Surprised to find out that the top instrumental songs belonged mostly to Kiran's playlist, I mostly listen to music with strong drums and little lyrics so expected that I'd be in the top.
 
-# Comparing Track Popularity, make this a percent instead??
+```{r}
+total_audio %>%
+  arrange(desc(acousticness)) |> 
+  select(acousticness, track.name, track.popularity, listener_id) |> 
+  head(6) |> 
+  kable()
+```
+
+Although more of the top acoustic songs belonged in my playlist, Kiran listens to much louder music than me apparently.
+
+```{r}
 ggplot(total_audio, aes(x = track.popularity)) +
   geom_bar(aes(fill = listener_id), alpha = .5) +
   labs(title = "Who Has More Popular Music Taste")
-# Erica listens to the most 0 popularity music, meaning she's more underground and edgy. Kiran is basic.
+```
 
+I listen to the most music listed as 0 popularity, so maybe I'm more underground and edgy with my style.
+
+```{r}
 ggplot(total_audio, aes(x = danceability, y = energy)) +
   geom_point(aes(color = listener_id)) +
   labs(title = "Comparing Dancing Styles")
-# Low energy but high danceable would be slower dance songs, both of us prefer high energy dancing music but Kiran definitely goes harder.
-
-ggplot(total_audio, aes(x = tempo, y = instrumentalness)) +
-  geom_point(aes(color = listener_id))
-
-# Most danceable tracks, I wish we added artist as well
-arrange(total_audio, desc(danceability)) |> 
-  select(track.name, listener_id, danceability) |> 
-  head()
 ```
+
+With this graph, low energy and high danceability would relate to slower (possibly romantic) songs, both of us appear to enjoy high energy and very danceable music but Kiran definitely goes harder.
 
 ### Set Up Variables
 
 I will be creating several machine learning models, and use these variables as the start for them all.
 
-```{r}
-#| eval: false
-set.seed(14)
+ADD EXPLANATION OF TRAIN?TEST SPLIT
 
+Avoid leakage Train and test
+separted, train data not used at all to influence test Split data before
+preprocessing - indirect form of leakage - Preprocessing is {tidymodels}
+functions like step - Create recipe, part of preprocessing
 
-total_audio <- total_audio |> 
-  select(-track.name)
+one_hot method of encoding categorical variable as numerical, turns column (genre) into series of columns for each and 0/1
 
+```{r output = FALSE}
+set.seed(14)                     # allows reproducibility
 
 song_split <- initial_split(total_audio)
-song_test <- testing(song_split)
+song_test <- testing(song_split) 
 song_train <- training(song_split)
 
 # Preprocessing
-### MAKE SURE TO CHANGE RECIPE NAMES THROUGHOUT
 song_recipe <- recipe(listener_id ~ ., data = song_train) |> 
+  update_role(track.name, new_role = "ID") |> 
+  update_role(id, new_role = "ID") |> 
   step_dummy(all_nominal(), -all_outcomes(), one_hot = TRUE) |> 
   step_normalize(all_numeric(), -all_outcomes()) |> 
   prep()
@@ -229,13 +234,17 @@ cv_folds <- song_train |>
 
 ### K Nearest Neighbors Model
 
-```{r}
+Unsure if update role above is working, getting errors
+
+```{r output = FALSE}
 #| eval: false
 
 # Bake
+# NEVER USE THIS AGAIN?????
 knn_baked <- bake(song_recipe, song_train)
 
 # Apply recipe to test data
+# NEVER USE THIS AGAIN????
 knn_test <- bake(song_recipe, song_test)
 
 # Specify nearest neighbor model
@@ -317,7 +326,7 @@ dec_tree_grid <- grid_regular(cost_complexity(),
                           min_n(),
                           levels = 4)
 
-doParallel::registerDoParallel() #build trees in parallel
+doParallel::registerDoParallel()      # build trees in parallel
 
 dec_tree_rs <- tune_grid(
   dec_tree_spec_tune,
