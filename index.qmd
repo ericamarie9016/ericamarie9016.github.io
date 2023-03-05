@@ -39,4 +39,4 @@ Experience with greenhouse, lab, and field research focused on botanical and eco
 
 <br>
 
-My blog highlights essays and data focused projects from my Master's program. Furthermore, I have begun a personal project that showcases my coding skills creating a website dedicated to documenting my travel experiences. To explore this endeavor, please follow <a href="https://ericamarie9016.github.io/travels/">this link</a> and please note that this website is still under development during my limited spare time!
+My blog highlights essays and data focused projects from my Master's program. Furthermore, I have begun a personal project that showcases my coding skills dedicated to documenting my travel experiences. To explore this endeavor, please follow <a href="https://ericamarie9016.github.io/travels/">this link</a> and please note that this website is still under development during my limited spare time!
