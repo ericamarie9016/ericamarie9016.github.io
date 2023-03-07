@@ -13,8 +13,8 @@ website:
         text: Blog Posts
       - href: Erica-Dale-Resume.pdf
         text: Resume
-      - href: https://ericamarie9016.github.io/travels/
-        text: Side Project
+#      - href: https://ericamarie9016.github.io/travels/
+#        text: Side Project
 #    page-footer:
 #      left:
 #      - "Copyright 2022, Erica Dale"
