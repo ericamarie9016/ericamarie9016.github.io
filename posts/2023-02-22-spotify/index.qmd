@@ -14,16 +14,15 @@ format:
 code-overflow: wrap
 code-block-bg: true
 code-block-border-left: "#6B5A75"
-categories: [MEDS, Machine Learning, R, Spotify, Music]
+categories: [MEDS, Machine Learning, R, Spotify, Music, Tutorial]
 citation: 
   url: http://ericamarie9016.github.io/2023-02-22-spotify
 image: music.jpeg
-draft: TRUE
 ---
 
 ## Introduction
 
-This fun project will use my personal Spotify music, along with my friend Kiran's, with the goal to build several machine learning algorithms that will determine whose music library a song belongs to. I will explore 4 candidate models (k nearest neighbors, decision trees, bagging, and random forest) to predict this binary outcome. To begin, the code to access your own Spotify account is included!
+This fun project will use my personal Spotify music, along with my friend Kiran's, with the goal to build several machine learning algorithms that will determine whose music library a song belongs to. I will explore several candidate models (k nearest neighbors, bagging, and random forest) to predict this binary outcome. To begin, the code to access your own Spotify account is included!
 
 ```{r output = FALSE}
 library(spotifyr)         # Spotify API interaction
@@ -47,7 +46,7 @@ library(baguette)         # Building deep learning models
 
 ### Access the Spotify API
 
-To access the Spotify API, follow the link to \<a href="https://developer.spotify.com"\>Spotify for Developers </a> and follow these instructions:
+To access the Spotify API, follow the link to Spotify For Developers (https://developer.spotify.com/) and follow these instructions:
 
 -   Select "Create a Client ID"
 
@@ -237,7 +236,7 @@ With this graph, low energy and high danceability would relate to slower (possib
 I will be creating several machine learning models, and use these variables as the start for them all. This initial train/test split is an important step to divide the dataset in two subsets. The training data will be used throughout to build each model. The test data will only be used once for each model at the end to evaluate the performance of the model on before unseen data. Keeping the data separated avoids leakage, which happens when the final testing data has influence the building of the model.
 
 ```{r output = FALSE}
-set.seed(61234)                     # allows reproducibility
+set.seed(61234)    # allows reproducibility
 
 song_split <- initial_split(total_audio)
 song_test <- testing(song_split) 
@@ -306,65 +305,44 @@ knn_cv_fit <- knn_workflow_tune |>
 
 # Check performance
 knn_cv_fit |> collect_metrics()
-# Results will show the n averaged over all the folds. Use this to predict the best
+# Results will show the n averaged over all the folds. Use this to predict the best.
 
 # Workflow: Final
 knn_final_wf <- knn_workflow_tune |> 
   finalize_workflow(select_best(knn_cv_fit, metric = "accuracy"))
 
 # Fit: Final
-knn_final_fit <- knn_final_wf |> fit(data = song_train)
+knn_final_fit <- knn_final_wf |> fit(song_train)
+knn_last_fit <- knn_final_wf |> last_fit(song_split)
+knn_metrics <- knn_last_fit |> collect_metrics()
 
-knn_final_fit <- knn_final_wf |> last_fit(song_split)
+# Predict labels for test set
+knn_pred <- predict(knn_final_fit,
+                          new_data = song_test)
 
-knn_metrics <- knn_final_fit |> collect_metrics()
+# Pull out actual listener
+song_test_true <- song_test %>%
+  select(listener_id)
+
+# Evaluate model performance on test set
+knn_perf <- knn_pred %>%
+  bind_cols(song_test_true)
+```
+
+```{r}
+# View predicted and actual listeners
+knn_perf |> 
+  select(Predicted = .pred_class, Actual = listener_id) |> 
+  slice(1:10) |> 
+  kable()
+
+knn_perf |> 
+  metrics(truth = listener_id, estimate = .pred_class)
 ```
 
 ### Decision Tree
 
-Decision tree models begin with all the data in a root node and making a split based on the most significant feature. Each split results in nodes of data to split on another feature, until there are finally no features left to split the data on. The model makes predictions by following the path from the root node to a leaf node following the rules set by each node split.
-
-```{r}
-#| eval: false
-set.seed(346346)
-
-# Workflow
-
-# dec tree specification tuned to the optimal parameters
-dec_tree_spec_tune <- decision_tree(
-  cost_complexity = tune(),
-  tree_depth = tune(),
-  min_n = tune()) |>
-   set_engine("rpart") |>
-    set_mode("classification")
-
-dec_tree_grid <- grid_regular(cost_complexity(),
-                          tree_depth(),
-                          min_n(),
-                          levels = 4)
-
-doParallel::registerDoParallel()      # build trees in parallel
-
-dec_tree_rs <- tune_grid(
-  dec_tree_spec_tune,
-  listener_id ~ .,
-  resamples = cv_folds,
-  grid = dec_tree_grid,
-  metrics = metric_set(accuracy)
-)
-
-autoplot(dec_tree_rs) + theme_light()
-
-dec_final_tree <- finalize_model(dec_tree_spec_tune, 
-                             select_best(dec_tree_rs))
-
-final_dectree_fit <- last_fit(dec_final_tree, 
-                           listener_id ~ ., 
-                           song_split)   # does training and testing runs
-final_dectree_fit$.predictions
-
-dtree_metrics <- final_dectree_fit |> collect_metrics()
-```
+The next two models, bagging and random forests, use a series of decision trees. Decision tree models begin with all the data in a root node and making a split based on the most significant feature. Each split results in nodes of data to split on another feature, until there are finally no features left to split the data on. The model makes predictions by following the path from the root node to a leaf node following the rules set by each node split.
 
 ### Bagging
 
@@ -399,8 +377,6 @@ tree_rs <- wf_tree_tune |>
     grid = tree_grid,
     metrics = metric_set(accuracy))
 
-tree_rs |> collect_metrics()
-
 # Final workflow
 final_bag <- finalize_workflow(wf_tree_tune, select_best(tree_rs, "accuracy")) |> 
   fit(data = song_train)
@@ -410,8 +386,20 @@ bag_pred <- final_bag |>
   predict(new_data = song_test) |> 
   bind_cols(song_test)
 
-# Output accuracy
+# Save metrics
 bag_metrics <- bag_pred |> 
+  metrics(truth = listener_id, estimate = .pred_class)
+```
+
+```{r}
+# View predicted and actual listeners
+bag_pred |> 
+  select(Predicted = .pred_class, Actual = listener_id) |> 
+  slice(1:10) |> 
+  kable()
+
+# Evaluate performance
+bag_pred |> 
   metrics(truth = listener_id, estimate = .pred_class)
 ```
 
@@ -479,6 +467,8 @@ last_rf_workflow <-
   update_model(last_rf_model)
 
 # Update model fit
+rf_final_fit <- last_rf_workflow |> fit(song_train)
+
 last_rf_fit <- 
   last_rf_workflow %>% 
   last_fit(song_split)
@@ -486,6 +476,11 @@ last_rf_fit <-
 # Output model metrics
 random_forest_metrics <- last_rf_fit %>% 
   collect_metrics()
+
+# Predict on test set
+rf_pred <- predict(rf_final_fit,
+                     new_data = song_test) |> 
+  bind_cols(song_test)
 ```
 
 ```{r}
@@ -498,15 +493,24 @@ last_rf_fit %>%
   theme_minimal()
 ```
 
+```{r}
+# View predicted and actual listeners
+rf_pred |> 
+  select(Predicted = .pred_class, Actual = listener_id) |> 
+  slice(1:10) |> 
+  kable()
+
+# Evaluate performance
+rf_pred |> 
+  metrics(truth = listener_id, estimate = .pred_class)
+```
 
 ### Comparing Metrics
 
-```{r}
+```{r collapse=TRUE}
+#| code-fold: true #| code-summary: "Show the code"
 # nearest neighbors metrics
 knn_accuracy <- knn_metrics$.estimate[1]
-
-# decision tree metrics
-#dtree_accuracy <- dtree_metrics$.estimate[1]
  
 # bag tree metrics
 bag_accuracy <- bag_metrics$.estimate[1]
@@ -518,13 +522,17 @@ rf_accuracy <- random_forest_metrics$.estimate[1]
 model_accuracy <- tribble(
   ~"model", ~"accuracy",
   "KNN", knn_accuracy,
-#  "Decision Tree", dtree_accuracy,
   "Bagging", bag_accuracy,
   "Random Forest", rf_accuracy
 )
 
 ggplot(data = model_accuracy, aes(x = model, y = accuracy)) +
-         geom_col() +
+         geom_col(fill = "gray") +
   theme_minimal() +
-  labs(title = "Comparison of Model Accuracy for Spotify Data")
+  labs(title = "Comparison of Model Accuracy for Spotify Data",
+       x = "Model", y = "Accuracy") +
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10)) +
+  ylim(0,1)
 ```
