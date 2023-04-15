@@ -48,7 +48,7 @@ library(ggpubr)     # Combines ggplots
 The data is in both raster and vector formats, reprojected to match coordinate reference systems. The series of raster files depicting each yearly sea surface temperature are all collapsed to show the average for the time range. We begin with the regional data as an sf object, a series of annual sea surface temperature raster files, and a single raster ocean depth file.
 
 ```{r echo = FALSE}
-#### IMPORT DATA ----
+#### Import data ----
 Regions <- read_sf("~/MEDS/Fall-EDS223-Geospatial/data/data_4/wc_regions_clean.shp")
 
 Annual2008 <- rast("~/MEDS/Fall-EDS223-Geospatial/data/data_4/average_annual_sst_2008.tif")
@@ -61,7 +61,7 @@ Depth <- rast("~/MEDS/Fall-EDS223-Geospatial/data/data_4/depth.tif")
 ```
 
 ```{r output = FALSE}
-#### STACK ANNUAL DATA ----
+#### Stack annual data ----
 SSTAnnual <- c(Annual2008, Annual2009, Annual2010, Annual2011, Annual2012)
 
 
@@ -100,6 +100,7 @@ plot(OysterSST, col = "#3632a8", bty = "L",
      main = "Suitable Sea Surface Temperature for Oysters")
 
 
+
 Depthrcl <- matrix(c(-Inf, -70, NA,
                      -70, 0, 1,      # depth: 0-70 meters below sea level
                      0, Inf, NA),
@@ -126,9 +127,7 @@ The Regions vector is now overlayed with the Oysters Habitat as a mask to determ
 #### Turn Regions data into raster ----
 Regions$rgn <- as.factor(Regions$rgn)
 RegionsRast <- rasterize(vect(Regions), OystersHabitat, field = "rgn")
-plot(RegionsRast, bty = "L", 
-     col = rainbow(5, start = 0.35, end = .8))
-text(RegionsRast$lon, y = RegionsRast$lat, RegionsRastt$id, pos = 4)
+
 
 #### Select suitable cells in EEZ ----
 ROmask <- mask(RegionsRast, OystersHabitat)
@@ -236,7 +235,7 @@ Species_Habitat <- function(species_name, temp_min, temp_max, depth_max, depth_m
 Let's try the function!
 
 ```{r}
-Species_Habitat("Bearica", 17, 33, -20, 0)
+Species_Habitat("Bearica", 10, 40, -30, 0)
 ```
 
-It appears there is very little suitable habitat for our creature "bearica" along the coast. The water temperature is too cold! This creature will probably be better suited in along the equator with warmer waters, hopefully we can find it there!
+It appears there is very little suitable habitat for our creature the "bearica" along the coast. The water temperature is too cold! This creature will probably be better suited along the equator with warmer waters, hopefully we can find it there!

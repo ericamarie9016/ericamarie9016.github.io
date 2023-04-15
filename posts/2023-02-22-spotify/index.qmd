@@ -26,22 +26,23 @@ draft: TRUE
 This fun project will use my personal Spotify music, along with my friend Kiran's, with the goal to build several machine learning algorithms that will determine whose music library a song belongs to. I will explore 4 candidate models (k nearest neighbors, decision trees, bagging, and random forest) to predict this binary outcome. To begin, the code to access your own Spotify account is included!
 
 ```{r output = FALSE}
-library(spotifyr)         # API interaction
+library(spotifyr)         # Spotify API interaction
 library(here)             # Set file location
-library(knitr)      # Creates nice tables
-library(tidyverse)
-library(tidymodels)
-library(readr)
-library(dplyr)
-library(ggplot2)
-library(rpart)
-library(caret)
-library(rpart.plot)
-library(vip)
-library(pdp)
-library(parsnip)
-library(ipred)
-library(baguette)
+library(knitr)            # Creates nice tables
+library(tidyverse)        # Data manipulation and visualization
+library(tidymodels)       # Building machine learning models
+library(rsample)          # Prepocessing datasets for machine learning
+library(readr)            # Reads structured data files
+library(dplyr)            # Data manipulation and transformation
+library(ggplot2)          # Visualizations and plots
+library(rpart)            # Decision tree algorithms
+library(caret)            # Tools for machine learning models
+library(rpart.plot)       # Visualization of decision trees
+library(vip)              # Computes variable importance
+library(pdp)              # Visualization of partial dependence plots
+library(parsnip)          # Creating and tuning machine learning models
+library(ipred)            # Bagging and bootstrapping for ensemble models
+library(baguette)         # Building deep learning models
 ```
 
 ### Access the Spotify API
@@ -95,7 +96,7 @@ while(TRUE) {                  # loop through all liked songs
 }
 ```
 
-There are other functions to play with inside this {spotifyr} package! I will not be exploring these further in this blog post, but some examples I'm excited to explore are here.
+There are other functions to play with inside this {spotifyr} package! I will not be exploring these further in this blog post.
 
 ```{r}
 #| eval: false
@@ -104,7 +105,7 @@ bearicas_top <- get_my_top_artists_or_tracks()
 unique(bearicas_top$genres)
 ```
 
-Exploring the data frame was not very exciting, the columns had a lot of information that did not interest me and a lot of technical columns. This data frame is mostly important to pull out the song ID column, and use that to connect back with Spotify's API for downloading the specific audio features for each song. This function has a maximum download of 100 rows at a time so I created another loop below to download all the related audio features and bind the columns to the initial dataframe.
+This initial data downloaded is not very exciting to play with. This data frame is mostly important to pull out the song ID column, and use that to connect back with Spotify's API for downloading the specific audio features for each song. This function has a maximum download of 100 rows at a time so I created another loop below to download all the related audio features and bind the columns to the initial dataframe.
 
 ```{r}
 #| eval: false
@@ -138,7 +139,7 @@ ericas_audio <- cbind(audio_features,
 write_csv(ericas_audio, "ericas_audio.csv")
 ```
 
-My friend Kiran and I swapped data, which I will use to create a series of machine learning models to compare our music tastes. The goal is to create a model that can predict, using the audio features who is the listener. I would go through four different types of models and at the end compare the metrics of each to decide which was most effective! The outcome variable will be the binary option of Kiran or Erica, set as listener_id.
+My friend Kiran and I swapped data, which I will use to create a series of machine learning models to compare our music tastes. The goal is to create a model that can predict, using the audio features whose playlist it is from. I will go through four different types of models and at the end compare the metrics of each to decide which was most effective! The outcome variable will be the binary option of Kiran or Erica, set as listener_id.
 
 ```{r}
 #| eval: false
@@ -164,9 +165,13 @@ total_audio <- read_csv(here("posts", "2023-02-22-spotify", "total_audio.csv")) 
 ### Data Exploration!
 
 ```{r}
+#| code-fold: true #| code-summary: "Show the code"
 total_audio %>%
   arrange(desc(instrumentalness)) |> 
   select(instrumentalness, track.name, track.popularity, listener_id) |> 
+  rename('track name' = track.name,
+         'track popularity' = track.popularity,
+         'listener' = listener_id) |> 
   head(6) |> 
   kable()
 ```
@@ -174,9 +179,13 @@ total_audio %>%
 Surprised to find out that the top instrumental songs belonged mostly to Kiran's playlist, I mostly listen to music with strong drums and little lyrics so expected that I'd be in the top.
 
 ```{r}
+#| code-fold: true #| code-summary: "Show the code"
 total_audio %>%
   arrange(desc(acousticness)) |> 
   select(acousticness, track.name, track.popularity, listener_id) |> 
+  rename('track name' = track.name,
+         'track popularity' = track.popularity,
+         'listener' = listener_id) |> 
   head(6) |> 
   kable()
 ```
@@ -184,47 +193,68 @@ total_audio %>%
 Although more of the top acoustic songs belonged in my playlist, Kiran listens to much louder music than me apparently.
 
 ```{r}
-ggplot(total_audio, aes(x = track.popularity)) +
-  geom_bar(aes(fill = listener_id), alpha = .5) +
-  labs(title = "Who Has More Popular Music Taste")
+#| code-fold: true #| code-summary: "Show the code"
+ggplot(total_audio, aes(x = track.popularity, y = listener_id)) +
+  geom_boxplot(aes(fill = listener_id), color = "#000000", alpha = .8) +
+  labs(title = "Distribution of Track Popularity by Listener",
+       x = "Track Popularity", y = "Listener") +
+  scale_fill_manual(values = c("#9954FE", "#289832")) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.position = "none")
 ```
 
 I listen to the most music listed as 0 popularity, so maybe I'm more underground and edgy with my style.
 
-```{r}
+```{r collapse=TRUE}
+#| code-fold: true #| code-summary: "Show the code"
 ggplot(total_audio, aes(x = danceability, y = energy)) +
-  geom_point(aes(color = listener_id)) +
-  labs(title = "Comparing Dancing Styles")
+  geom_point(aes(color = listener_id), alpha = .8, size = 2) +
+  labs(title = "Comparison of Dancing Styles",
+       x = "Danceability", y = "Energy") +
+  scale_color_manual(values = c("#9954FE", "#289832"),
+                     labels = c("Erica", "Kiran")) +
+  geom_text(x = .99, y = .97, label = "Party Dancing",
+            color = "black", size = 4, hjust = 1, vjust = 1) +
+  geom_text(x = 0.95, y = 0.2, label = "Slow Dancing",
+            color = "black", size = 3.5, hjust = 1, vjust = 0) +
+  geom_text(x = 0.2, y = 0.2, label = "Chill Zone",
+            color = "black", size = 3.5, hjust = 0, vjust = 0) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.position = "bottom")
 ```
 
 With this graph, low energy and high danceability would relate to slower (possibly romantic) songs, both of us appear to enjoy high energy and very danceable music but Kiran definitely goes harder.
 
-### Set Up Variables
+### Set Up Variables and Preprocessing
 
-I will be creating several machine learning models, and use these variables as the start for them all.
-
-ADD EXPLANATION OF TRAIN?TEST SPLIT
-
-Avoid leakage Train and test
-separted, train data not used at all to influence test Split data before
-preprocessing - indirect form of leakage - Preprocessing is {tidymodels}
-functions like step - Create recipe, part of preprocessing
-
-one_hot method of encoding categorical variable as numerical, turns column (genre) into series of columns for each and 0/1
+I will be creating several machine learning models, and use these variables as the start for them all. This initial train/test split is an important step to divide the dataset in two subsets. The training data will be used throughout to build each model. The test data will only be used once for each model at the end to evaluate the performance of the model on before unseen data. Keeping the data separated avoids leakage, which happens when the final testing data has influence the building of the model.
 
 ```{r output = FALSE}
-set.seed(14)                     # allows reproducibility
+set.seed(61234)                     # allows reproducibility
 
 song_split <- initial_split(total_audio)
 song_test <- testing(song_split) 
 song_train <- training(song_split)
 
-# Preprocessing
+# Preprocessing, creating recipe with outcome and predictors
 song_recipe <- recipe(listener_id ~ ., data = song_train) |> 
-  update_role(track.name, new_role = "ID") |> 
+  
+  # Keep data but do not use are predictor
+  update_role(track.name, new_role = "ID") |>   
   update_role(id, new_role = "ID") |> 
+  step_rm(track.name, id) |> 
+  
+  # Dummy code and normalize predictors
   step_dummy(all_nominal(), -all_outcomes(), one_hot = TRUE) |> 
   step_normalize(all_numeric(), -all_outcomes()) |> 
+  
   prep()
 
 # Cross Validation to tune parameter
@@ -234,20 +264,12 @@ cv_folds <- song_train |>
 
 ### K Nearest Neighbors Model
 
-Unsure if update role above is working, getting errors
+This is a type of supervised machine learning algorithm used for classification and regression tasks. In this case, I will be using it as classification because we have the binary output variable of listener_id. When predicting the value of an input data point, this model looks for the "K" closest data points within the training set. The output prediction is based on the majority class or mean value of the K neighbors.
 
 ```{r output = FALSE}
-#| eval: false
+set.seed(45634)
 
-# Bake
-# NEVER USE THIS AGAIN?????
-knn_baked <- bake(song_recipe, song_train)
-
-# Apply recipe to test data
-# NEVER USE THIS AGAIN????
-knn_test <- bake(song_recipe, song_test)
-
-# Specify nearest neighbor model
+# Define nearest neighbor model
 knn_spec <- nearest_neighbor(neighbors = 7) |> 
   set_engine("kknn") |> 
   set_mode("classification")
@@ -266,14 +288,12 @@ knn_res <- knn_workflow |>
 # Check Performance
 knn_res |> collect_metrics()
 
-# Specify: Define model with tuning
-# Should I just do this the first time with spec, or run it again??
+# Tune the hyperparameters
 knn_spec_tune <- nearest_neighbor(neighbors = tune()) |> 
   set_engine("kknn") |> 
   set_mode("classification")
 
 # Workflow: Define new workflow
-# Should I just skip the first spec/workflow??
 knn_workflow_tune <- workflow() |> 
   add_model(knn_spec_tune) |> 
   add_recipe(song_recipe)
@@ -282,18 +302,11 @@ knn_workflow_tune <- workflow() |>
 knn_cv_fit <- knn_workflow_tune |> 
   tune_grid(
     cv_folds,
-    # Select other neighbors??
     grid = data.frame(neighbors = c(1, 5, seq(10, 100, 10))))
 
 # Check performance
 knn_cv_fit |> collect_metrics()
-#Results will show the n averaged over all the folds. Use this to predict the best
-```
-
-Predict!
-
-```{r}
-#| eval: false
+# Results will show the n averaged over all the folds. Use this to predict the best
 
 # Workflow: Final
 knn_final_wf <- knn_workflow_tune |> 
@@ -309,9 +322,13 @@ knn_metrics <- knn_final_fit |> collect_metrics()
 
 ### Decision Tree
 
+Decision tree models begin with all the data in a root node and making a split based on the most significant feature. Each split results in nodes of data to split on another feature, until there are finally no features left to split the data on. The model makes predictions by following the path from the root node to a leaf node following the rules set by each node split.
+
 ```{r}
 #| eval: false
+set.seed(346346)
 
+# Workflow
 
 # dec tree specification tuned to the optimal parameters
 dec_tree_spec_tune <- decision_tree(
@@ -351,8 +368,10 @@ dtree_metrics <- final_dectree_fit |> collect_metrics()
 
 ### Bagging
 
-```{r}
-#| eval: false
+Bagging is a form of bootstrap aggregation, this means that this is an ensemble model. The model constructs multiple versions of the same base model using random samples of the training data. All of these sub-models are aggregated into a final model. These steps improve the model performance by reducing variance and overfitting.
+
+```{r output = FALSE}
+set.seed(4657345)
 
 # Tune specs
 tree_spec_tune <- bag_tree(
@@ -370,11 +389,10 @@ wf_tree_tune <- workflow() |>
   add_recipe(song_recipe) |> 
   add_model(tree_spec_tune)
 
-
-# Build in parallel
+# Build each model in parallel
 doParallel::registerDoParallel()
 
-# # fit model
+# Fit model
 tree_rs <- wf_tree_tune |>
   tune_grid(listener_id ~ .,
     resamples = cv_folds,
@@ -383,6 +401,7 @@ tree_rs <- wf_tree_tune |>
 
 tree_rs |> collect_metrics()
 
+# Final workflow
 final_bag <- finalize_workflow(wf_tree_tune, select_best(tree_rs, "accuracy")) |> 
   fit(data = song_train)
 
@@ -394,22 +413,20 @@ bag_pred <- final_bag |>
 # Output accuracy
 bag_metrics <- bag_pred |> 
   metrics(truth = listener_id, estimate = .pred_class)
-
-bag_metrics
 ```
 
 ### Random Forest
 
-```{r}
-#| eval: false
+Random forest is another ensemble model, but this one cannot be done in parallel. This method creates multiple decision trees on random subsets of the data, and the key difference with this model is the random selection of features to include for each model. Not using all the features in each model then combining the decision trees improves the accuracy of the model.
 
-## Defining validating set
-set.seed(123)
+```{r  output = FALSE}
+# Define validating set
+set.seed(1368)
 val_set <- validation_split(song_train, 
                             strata = listener_id, 
                             prop = 0.70)
 
-## Creating Random Forest specification
+# Create Random Forest specification
 rf_spec <-
   rand_forest(mtry = tune(),
               min_n = tune(),
@@ -417,12 +434,12 @@ rf_spec <-
   set_engine("ranger") %>%
   set_mode("classification")
 
-## Defining Random Forest workflow
+# Define Random Forest workflow
 rf_workflow <- workflow() %>%
   add_recipe(song_recipe) %>%
   add_model(rf_spec)
 
-## Build in parallel
+# Build in parallel
 doParallel::registerDoParallel()
 rf_res <- 
   rf_workflow %>% 
@@ -431,66 +448,67 @@ rf_res <-
             control = control_grid(save_pred = TRUE),
             metrics = metric_set(accuracy))
 
-## Output model metrics
+# Output model metrics
 rf_res %>% collect_metrics()
 
-## Find the best accuracy metric
+# Find the best accuracy metric
 rf_res %>% 
   show_best(metric = "accuracy")
 
-## Plot results
-autoplot(rf_res)
+# Plot results
+autoplot(rf_res) +
+  theme_minimal()
 
-## Select best Random Forest model
+# Select best Random Forest model
 best_rf <- select_best(rf_res, "accuracy")
-best_rf
 
-## Output predictions
+# Output predictions
 rf_res %>% 
   collect_predictions()
 
-## Defining final model while working in parallel
+# Defining final model while working in parallel
 doParallel::registerDoParallel()
 last_rf_model <- 
   rand_forest(mtry = 2, min_n = 3, trees = 1000) %>% 
   set_engine("ranger", importance = "impurity") %>% 
   set_mode("classification")
 
-## Updating our workflow
+# Update workflow
 last_rf_workflow <- 
   rf_workflow %>% 
   update_model(last_rf_model)
 
-## Updating our model fit
-set.seed(123)
+# Update model fit
 last_rf_fit <- 
   last_rf_workflow %>% 
-  last_fit(music_split)
+  last_fit(song_split)
 
-## Outputting model metrics
+# Output model metrics
 random_forest_metrics <- last_rf_fit %>% 
   collect_metrics()
+```
 
-random_forest_metrics
-
-## Outputting the variables that are most important to our model
+```{r}
+# Output the variables that are most important to our model
 last_rf_fit %>% 
   extract_fit_parsnip() %>% 
-  vip::vip(num_features = 12) 
+  vip(num_features = 12) +
+  ggtitle("Variable Importance Plot") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_minimal()
 ```
+
 
 ### Comparing Metrics
 
 ```{r}
-#| eval: false
-
-# # nearest neighbors metrics
+# nearest neighbors metrics
 knn_accuracy <- knn_metrics$.estimate[1]
-# 
-# # decision tree metrics
-dtree_accuracy <- dtree_metrics$.estimate[1]
-# 
-# # bag tree metrics
+
+# decision tree metrics
+#dtree_accuracy <- dtree_metrics$.estimate[1]
+ 
+# bag tree metrics
 bag_accuracy <- bag_metrics$.estimate[1]
 
 # Random Forest metrics
@@ -500,7 +518,7 @@ rf_accuracy <- random_forest_metrics$.estimate[1]
 model_accuracy <- tribble(
   ~"model", ~"accuracy",
   "KNN", knn_accuracy,
-  "Decision Tree", dtree_accuracy,
+#  "Decision Tree", dtree_accuracy,
   "Bagging", bag_accuracy,
   "Random Forest", rf_accuracy
 )
