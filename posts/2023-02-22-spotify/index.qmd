@@ -3,7 +3,7 @@ title: "Spotify With Machine Learning"
 description: "Exploring Spotify Music with Different Machine Learning Algorithms"
 author:
   - name: Erica Dale
-    url: http://ericamarie9016.githubt.io
+    url: http://ericamarie9016.github.io
     affiliation: MEDS
     affiliation-url: http://ucsb-meds.github.io
 date: 2022-12-09
