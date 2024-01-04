@@ -1,0 +1,53 @@
+---
+title: "Travels"
+---
+
+```{r, echo=FALSE, message=FALSE}
+library(tidyverse)
+library(leaflet)
+
+# BASE DATAFRAME -----
+travel_list <- tribble(~long, ~lat, ~name, ~status, ~trip,
+           -77.4169, 39.1459, "Hometown", "home", "Hometown",
+           -71.3128, 41.4901, "Home 1996-1997", "home", "Childhood move",
+           -76.6019, 39.4015, "Home 2013-2016", "home", "Earned a Bachelors of Science in Biology with a concentration of Organismal Biology and Ecology at Towson University.",
+           -120.2308, 37.8389, "Home 2020", "home", "Seasonal position working for the Forest Service as a field botanist in Stanislaus National Forest.",
+           -112.0740, 33.4484, "Home 2021-2022", "home", "Explored the backcountry, worked remotely with Scientific Technology Sales, and volunteered at a community garden.",
+           -119.6982, 34.4308, "Home 2022-2023", "home", "Earned a Masters of Environmental Data Science at UC Santa Barbara and worked with an Environmental Consulting Firm.",
+           -71.4074, -11.8880, "Peru 2015", "travel", "Undergraduate Independent Research in the Peruvian Amazon studying the cascading effects of overhunting megafauna on the biodiversity of plant life.",
+           120.9759, 14.6014, "Philippines 2015", "travel", "Trip for a friends wedding and explored the country.",
+           -84.1383, 9.3911, "Costa Rica 2017", "travel", "Trip to explore meditation and study Taoism.",
+           23.4272, -30.7396, "South Africa 2017", "travel", "Traveling southern Africa and volunteering with Wildlife Act to track endangered species on a wildlife reserve",
+           23.0581, -19.1939, "Botswana 2017", "travel", "Camping throughout the country; highlights include the Okavango Delta, Elephant Sands, and Chobe National Park.",
+           25.8445, -17.9234, "Zimbabwe/Zambia 2017", "travel", "Extending my southern Africa trip to swim at the top of Victoria Falls.",
+           -102.5323, 39.9189, "Roadtrip around US 2019", "travel", "Half-year solo roadtrip to experience America's cities and National Parks. Visited 26 states and 32 National Parks/Monuments.",
+           -102.2543, 21.2841, "Central Mexico 2021", "travel", "Visiting friends for a wedding and taking a roadtrip from the mountains to the beach."
+           )
+
+
+# SET CUSTOM ICON BY STATUS -----
+# https://rstudio.github.io/leaflet/markers.html
+awesome_icons <- awesomeIconList(
+  "home" = makeAwesomeIcon(icon = "home",
+                           library = "fa",
+                           marker = "blue"),
+  "travel" = makeAwesomeIcon(icon = "plane",
+                             library = "fa",
+                             marker = "purple"))
+
+
+# MAKE MAP -----
+leaflet(data = travel_list, options = leafletOptions(minZoom = 1, maxZoom = NULL)) |>
+  addProviderTiles("CartoDB.Positron") |>
+  addAwesomeMarkers(~long, ~lat,
+                    label = ~name,
+                    popup = ~trip,
+                    group = travel_list$trip,
+                    icon = ~awesome_icons[status]) |>
+  addMiniMap(
+    tiles = providers$Esri.WorldImagery,
+    toggleDisplay = FALSE
+  )
+```
+
+\* This map depicts the different places I have lived and traveled along with some highlights of my professional, volunteer, and personal experiences.
